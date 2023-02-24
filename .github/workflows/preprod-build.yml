@@ -1,6 +1,8 @@
 name: CI/CD PREPROD API-Ludosaure - BUILD
 
 on:
+  push:
+    branches: [preprod]
   pull_request:
     branches: [preprod]
 jobs:
