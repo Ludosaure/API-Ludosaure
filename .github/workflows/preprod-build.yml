@@ -1,10 +1,10 @@
-name: CI/CD PROD API-Ludosaure - BUILD
+name: CI/CD PREPROD API-Ludosaure - BUILD
 
 on:
   push:
-    branches: [main]
+    branches: [preprod]
   pull_request:
-    branches: [main]
+    branches: [preprod]
 jobs:
   build:
     name: build
