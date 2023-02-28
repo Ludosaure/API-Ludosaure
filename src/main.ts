@@ -1,9 +1,6 @@
-import {ValidationPipe, Logger} from '@nestjs/common';
+import {Logger} from '@nestjs/common';
 import {NestFactory} from '@nestjs/core';
-import {
-    FastifyAdapter,
-    NestFastifyApplication,
-} from '@nestjs/platform-fastify';
+import {FastifyAdapter, NestFastifyApplication,} from '@nestjs/platform-fastify';
 import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger';
 import {AppModule} from './app.module';
 import {environmentConfig} from "./config/environment.config";
@@ -13,7 +10,7 @@ function setupSwagger(app: NestFastifyApplication): void {
         .setTitle('API-Ludosaure')
         .setDescription('La ludosaure API description')
         .setVersion('1.0')
-        .addTag('auth')
+        .addTag('api')
         .addBearerAuth()
         .build();
     const document = SwaggerModule.createDocument(app, config);
@@ -26,8 +23,6 @@ async function bootstrap() {
         AppModule,
         new FastifyAdapter(),
     );
-    // app.enableCors();
-    app.useGlobalPipes(new ValidationPipe());
     setupSwagger(app);
     await app.listen(environmentConfig.port, '0.0.0.0');
     logger.log(`Application started on port ${environmentConfig.port}`);
