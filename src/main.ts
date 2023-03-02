@@ -17,6 +17,7 @@ function setupSwagger(app: NestFastifyApplication): void {
     SwaggerModule.setup('api', app, document);
 }
 
+
 async function bootstrap() {
     const logger = new Logger('bootstrap');
     const app = await NestFactory.create<NestFastifyApplication>(
