@@ -5,13 +5,14 @@ import {USER_REPOSITORY} from "../../../config/constants";
 import {Repository} from "typeorm";
 import {User} from "../../../database/model/user.entity";
 import {GetAllUsersResponse} from "../../dto/response/get-all-users-response";
+import {UserRepository} from "../../user.repository";
 
 @QueryHandler(GetAllUsersQuery)
 export class GetAllUsersHandler implements ICommandHandler<GetAllUsersQuery> {
 
     constructor(
         @Inject(USER_REPOSITORY)
-        private userRepository: Repository<User>,
+        private userRepository: UserRepository,
     ) {
     }
 
