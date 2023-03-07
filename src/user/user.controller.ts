@@ -6,8 +6,8 @@ import {GetAllUsersRequest} from "./dto/request/get-all-users-request";
 import {GetAllUsersResponse} from "./dto/response/get-all-users-response";
 import {GetAllUsersQuery} from "./application/query/get-all-users.query";
 
-@ApiTags('user')
-@Controller('user')
+@ApiTags('User')
+@Controller('users')
 export class UserController {
     private readonly commandBus: CommandBus;
     private readonly queryBus: QueryBus;
@@ -17,7 +17,7 @@ export class UserController {
         this.queryBus = queryBus;
     }
 
-    @Get('/getAll')
+    @Get('')
     async getAll(@Query() getUsersByNameRequest: GetAllUsersRequest) {
         try {
             return await this.queryBus.execute<GetAllUsersQuery, GetAllUsersResponse>(GetAllUsersQuery.of(getUsersByNameRequest));
