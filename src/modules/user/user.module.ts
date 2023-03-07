@@ -1,11 +1,10 @@
 import {Module} from '@nestjs/common';
 import {UserController} from "./user.controller";
-import {userProviders} from "./user.provider";
 import {CqrsModule} from "@nestjs/cqrs";
 import {GetAllUsersHandler} from "./application/query/get-all-users.handler";
 import {TypeOrmModule} from "@nestjs/typeorm";
-import {User} from "../database/model/user.entity";
-import {UserRepository} from "./user.repository";
+import {User} from "../../infrastructure/model/user.entity";
+import {UserEntityRepository} from "./db/user-entity-repository.service";
 
 @Module({
     imports: [
@@ -13,10 +12,10 @@ import {UserRepository} from "./user.repository";
     ],
     controllers: [UserController],
     providers: [
-        UserRepository,
+        UserEntityRepository,
         GetAllUsersHandler,
     ],
-    exports: [UserRepository, GetAllUsersHandler]
+    exports: [UserEntityRepository, GetAllUsersHandler]
 })
 export class UserModule {
 }

@@ -1,8 +1,7 @@
 import {Controller, Get, InternalServerErrorException, Query} from "@nestjs/common";
-import {User} from "../database/model/user.entity";
+import {User} from "../../infrastructure/model/user.entity";
 import {ApiTags} from "@nestjs/swagger";
 import {CommandBus, QueryBus} from "@nestjs/cqrs";
-import {GetAllUsersRequest} from "./dto/request/get-all-users-request";
 import {GetAllUsersResponse} from "./dto/response/get-all-users-response";
 import {GetAllUsersQuery} from "./application/query/get-all-users.query";
 
@@ -18,9 +17,9 @@ export class UserController {
     }
 
     @Get('')
-    async getAll(@Query() getUsersByNameRequest: GetAllUsersRequest) {
+    async getAll() {
         try {
-            return await this.queryBus.execute<GetAllUsersQuery, GetAllUsersResponse>(GetAllUsersQuery.of(getUsersByNameRequest));
+            return await this.queryBus.execute<GetAllUsersQuery, GetAllUsersResponse>(GetAllUsersQuery.of());
         } catch (error) {
             console.error(error);
             throw new InternalServerErrorException();
