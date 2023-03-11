@@ -14,8 +14,16 @@ export class UserEntityRepository extends Repository<User> implements UserReposi
         super(userRepository.target, userRepository.manager, userRepository.queryRunner);
     }
 
+    findById(userId: string): Promise<User> {
+        return this.findOneBy({id: userId});
+    }
+
     async findByEmail(email: string): Promise<User> {
-        return await this.userRepository.findOneBy({email});
+        return await this.userRepository.findOneBy({email: email});
+    }
+
+    async saveUser(user: User): Promise<void> {
+        await this.save(user);
     }
 
 }

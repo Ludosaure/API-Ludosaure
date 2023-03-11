@@ -23,4 +23,10 @@ export class User {
 
     @Column({nullable: false})
     password: string;
+
+    @Column({nullable: true})
+    login: string;
+
+    @Column({nullable: false, default: false})
+    is_account_verified: string;
 }
