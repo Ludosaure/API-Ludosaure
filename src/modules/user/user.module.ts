@@ -6,11 +6,21 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import {User} from "../../infrastructure/model/user.entity";
 import {UserEntityRepository} from "./db/user-entity-repository.service";
 import {RegisterHandler} from "./application/commands/register.handler";
-import {RegisterValidator} from "./registerValidator";
+import {JwtModule, JwtService} from '@nestjs/jwt';
+import {LoginHandler} from "./application/commands/login.handler";
+import {RegisterValidator} from "./application/register.validator";
+import {PassportModule} from "@nestjs/passport";
+import {environmentConfig} from "../../config/environment.config";
 
 @Module({
     imports: [
-        CqrsModule, TypeOrmModule.forFeature([User])
+        CqrsModule,
+        PassportModule,
+        JwtModule.register({
+            secret: environmentConfig.jwtAccessSecret,
+            signOptions: { expiresIn: environmentConfig.jwtAccessTokenDuration },
+        }),
+        TypeOrmModule.forFeature([User])
     ],
     controllers: [UserController],
     providers: [
@@ -18,12 +28,14 @@ import {RegisterValidator} from "./registerValidator";
         UserEntityRepository,
         GetAllUsersHandler,
         RegisterHandler,
+        LoginHandler,
     ],
     exports: [
         RegisterValidator,
         UserEntityRepository,
         GetAllUsersHandler,
         RegisterHandler,
+        LoginHandler,
     ]
 })
 export class UserModule {

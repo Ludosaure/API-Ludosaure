@@ -1,11 +1,11 @@
 import {CommandHandler, ICommandHandler} from '@nestjs/cqrs';
 
 import {RegisterCommand} from './register.command';
-import {RegisterValidator} from "../../registerValidator";
 import {MailAlreadyExistsException} from "../exception/mail-already-exists.exception";
 import {User} from "../../../../infrastructure/model/user.entity";
 import {hash} from "argon2";
 import {UserEntityRepository} from "../../db/user-entity-repository.service";
+import {RegisterValidator} from "../register.validator";
 
 @CommandHandler(RegisterCommand)
 export class RegisterHandler implements ICommandHandler<RegisterCommand> {

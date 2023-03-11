@@ -28,5 +28,5 @@ export class User {
     login: string;
 
     @Column({nullable: false, default: false})
-    is_account_verified: string;
+    is_account_verified: boolean;
 }

@@ -8,6 +8,8 @@ export interface Config {
     dataSourceUsername: string;
     dataSourcePassword: string;
     dataSourcePort: number;
+    jwtAccessSecret: string;
+    jwtAccessTokenDuration: string;
 }
 
 export class EnvironmentConfig implements Config {
@@ -18,6 +20,8 @@ export class EnvironmentConfig implements Config {
     dataSourceUsername: string;
     dataSourcePassword: string;
     dataSourcePort: number;
+    jwtAccessSecret: string;
+    jwtAccessTokenDuration: string;
 
     constructor() {
         this.port = Number(process.env.PORT) || 3000;
@@ -27,6 +31,8 @@ export class EnvironmentConfig implements Config {
         this.dataSourceUsername = process.env.RDS_USERNAME;
         this.dataSourcePassword = process.env.RDS_PASSWORD;
         this.dataSourcePort = Number(process.env.RDS_PORT);
+        this.jwtAccessSecret = process.env.JWT_ACCESS_TOKEN_SECRET;
+        this.jwtAccessTokenDuration = process.env.JWT_ACCESS_TOKEN_DURATION;
     }
 }
 
