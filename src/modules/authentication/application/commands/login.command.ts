@@ -1,4 +1,4 @@
-import { LoginRequestDTO } from '../../../dto/request/login-request.dto';
+import { LoginRequestDTO } from '../../dto/request/login-request.dto';
 
 export class LoginCommand {
   public readonly email: string;
