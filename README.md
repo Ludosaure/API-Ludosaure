@@ -67,7 +67,6 @@ $ nest g module <nom_du_module>
 ## CQRS
 ### Pour ajouter une commande ou une query à un module
 Ne pas oublier d'ajouter le handler dans le fichier <nom_du_module>.module.ts dans les providers et les exports
-ainsi que toutes les dépendances injectées dans le constructeur du handler
 
 ## Support
 
