@@ -1,6 +1,6 @@
 import {User} from "../../../../infrastructure/model/user.entity";
 
-export class GetAllUsersResponse {
+export class GetAllUsersResponseDto {
     constructor(users: User[]) {
         this.users = users;
     }

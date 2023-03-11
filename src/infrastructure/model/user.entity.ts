@@ -13,7 +13,7 @@ export class User {
     @Column({nullable: false})
     lastname: string;
 
-    @Column({nullable: false})
+    @Column({nullable: false, unique: true})
     @IsEmail()
     email: string;
 
@@ -24,7 +24,7 @@ export class User {
     @Column({nullable: false})
     password: string;
 
-    @Column({nullable: true})
+    @Column({nullable: true, unique: true})
     pseudo: string;
 
     @Column({nullable: false, default: false})

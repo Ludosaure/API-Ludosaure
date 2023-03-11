@@ -4,11 +4,13 @@ import {ConfigModule} from '@nestjs/config';
 import {UserModule} from './modules/user/user.module';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {environmentConfig} from "./config/environment.config";
+import {AuthenticationModule} from "./modules/authentication/authentication.module";
 
 @Module({
     controllers: [AppController],
     imports: [
         UserModule,
+        AuthenticationModule,
         ConfigModule.forRoot({
             isGlobal: true,
             cache: true,

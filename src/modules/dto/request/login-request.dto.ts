@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class LoginRequest {
+export class LoginRequestDTO {
   @ApiProperty({ default: 'example@example.com' })
   public readonly email: string;
   @ApiProperty({ default: 'Azerty1234!' })

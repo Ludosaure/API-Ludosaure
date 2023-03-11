@@ -2,16 +2,16 @@ import {BadRequestException, Body, Controller, Get, InternalServerErrorException
 import {User} from "../../infrastructure/model/user.entity";
 import {ApiTags} from "@nestjs/swagger";
 import {CommandBus, QueryBus} from "@nestjs/cqrs";
-import {GetAllUsersResponse} from "./dto/response/get-all-users-response";
+import {GetAllUsersResponseDto} from "./dto/response/get-all-users-response.dto";
 import {GetAllUsersQuery} from "./application/query/get-all-users.query";
-import {MailAlreadyUsedException} from "./application/exception/mail-already-used.exception";
-import {RegisterCommand} from "./application/commands/register.command";
-import {RegisterRequest} from "./dto/request/register-request.dto";
-import {LoginRequest} from "./dto/request/login-request.dto";
-import {LoginCommand} from "./application/commands/login.command";
-import {LoginResponse} from "./dto/response/login-response-dto";
+import {MailAlreadyUsedException} from "../authentication/exception/mail-already-used.exception";
+import {RegisterCommand} from "../authentication/application/commands/register.command";
+import {RegisterRequestDTO} from "../dto/request/register-request.dto";
+import {LoginRequestDTO} from "../dto/request/login-request.dto";
+import {LoginCommand} from "../authentication/application/commands/login.command";
 import {UserNotFoundException} from "../../shared/exceptions/user-not-found.exception";
-import {PasswordsDoesNotMatchException} from "./application/exception/password-does-not-match.exception";
+import {PasswordsDoesNotMatchException} from "../authentication/exception/password-does-not-match.exception";
+import {LoginResponseDTO} from "../dto/response/login-response.dto";
 
 @ApiTags('User')
 @Controller('users')
@@ -27,43 +27,10 @@ export class UserController {
     @Get('')
     async getAll() {
         try {
-            return await this.queryBus.execute<GetAllUsersQuery, GetAllUsersResponse>(GetAllUsersQuery.of());
+            return await this.queryBus.execute<GetAllUsersQuery, GetAllUsersResponseDto>(GetAllUsersQuery.of());
         } catch (error) {
             console.error(error);
             throw new InternalServerErrorException();
-        }
-    }
-
-    @Post('/login')
-    async login(@Body() loginRequest: LoginRequest) {
-        try {
-            return await this.commandBus.execute<LoginCommand, LoginResponse>(
-                LoginCommand.of(loginRequest),
-            );
-        } catch (error) {
-            if (error instanceof UserNotFoundException) {
-                throw new UserNotFoundException();
-            }
-            if (error instanceof PasswordsDoesNotMatchException) {
-                throw new PasswordsDoesNotMatchException();
-            }
-            console.error(error);
-            throw new InternalServerErrorException();
-        }
-    }
-
-    @Post('/register')
-    async function(@Body() registerRequest: RegisterRequest) {
-        try {
-            await this.commandBus.execute<RegisterCommand, void>(
-                RegisterCommand.of(registerRequest),
-            );
-        } catch (error) {
-            if (error instanceof MailAlreadyUsedException) {
-                throw new MailAlreadyUsedException();
-            }
-            console.error(error);
-            throw new BadRequestException();
         }
     }
 }

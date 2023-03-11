@@ -1,7 +1,7 @@
 import {ApiProperty} from '@nestjs/swagger';
 import {IsEmail, IsNotEmpty, IsPhoneNumber} from 'class-validator';
 
-export class RegisterRequest {
+export class RegisterRequestDTO {
   @IsEmail()
   @ApiProperty({ default: 'example@example.com' })
   public readonly email: string;

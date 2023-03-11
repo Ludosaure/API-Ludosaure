@@ -1,16 +1,16 @@
 import {Injectable} from '@nestjs/common';
 import {RegisterCommand} from './commands/register.command';
-import {PasswordAndConfirmPasswordNotMatchException} from './exception/password-and-confirm-not-match.exception';
-import {BadPasswordFormatException} from "./exception/bad-password-format.exception";
+import {PasswordAndConfirmPasswordNotMatchException} from '../exception/password-and-confirm-not-match.exception';
+import {BadPasswordFormatException} from "../exception/bad-password-format.exception";
 import {passwordStrength} from "check-password-strength";
 
 interface Validator<T> {
-    validate(command: T): boolean;
+    validate(command: T): void;
 }
 
 @Injectable()
 export class RegisterValidator implements Validator<RegisterCommand> {
-    validate(command: RegisterCommand): boolean {
+    validate(command: RegisterCommand): void {
         if (command.confirmPassword != command.password) {
             throw new PasswordAndConfirmPasswordNotMatchException();
         }
@@ -23,6 +23,5 @@ export class RegisterValidator implements Validator<RegisterCommand> {
             !strength.contains.includes('symbol')) {
             throw new BadPasswordFormatException();
         }
-        return true;
     }
 }
