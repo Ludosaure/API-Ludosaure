@@ -1,7 +1,7 @@
 import {CommandHandler, ICommandHandler} from '@nestjs/cqrs';
 
 import {RegisterCommand} from './register.command';
-import {MailAlreadyExistsException} from "../exception/mail-already-exists.exception";
+import {MailAlreadyUsedException} from "../exception/mail-already-used.exception";
 import {User} from "../../../../infrastructure/model/user.entity";
 import {hash} from "argon2";
 import {UserEntityRepository} from "../../db/user-entity-repository.service";
@@ -17,7 +17,7 @@ export class RegisterHandler implements ICommandHandler<RegisterCommand> {
     async execute(command: RegisterCommand): Promise<void> {
         const foundUser = await this.userRepository.findByEmail(command.email);
         if (foundUser != null) {
-          throw new MailAlreadyExistsException();
+          throw new MailAlreadyUsedException();
         }
 
         this.registerValidator.validate(command);

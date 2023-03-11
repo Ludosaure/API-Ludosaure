@@ -1,6 +1,6 @@
 import {Injectable} from '@nestjs/common';
 import {RegisterCommand} from './commands/register.command';
-import {PasswordAndConfirmPasswordNotMatch} from './exception/password-and-confirm-not-match.exception';
+import {PasswordAndConfirmPasswordNotMatchException} from './exception/password-and-confirm-not-match.exception';
 import {BadPasswordFormatException} from "./exception/bad-password-format.exception";
 import {passwordStrength} from "check-password-strength";
 
@@ -12,7 +12,7 @@ interface Validator<T> {
 export class RegisterValidator implements Validator<RegisterCommand> {
     validate(command: RegisterCommand): boolean {
         if (command.confirmPassword != command.password) {
-            throw new PasswordAndConfirmPasswordNotMatch();
+            throw new PasswordAndConfirmPasswordNotMatchException();
         }
         const strength = passwordStrength(command.password);
         if (strength.id === 0 &&

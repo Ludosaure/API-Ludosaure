@@ -2,7 +2,7 @@ import {CommandHandler, ICommandHandler} from '@nestjs/cqrs';
 import {LoginCommand} from './login.command';
 import {LoginResponse} from '../../dto/response/login-response-dto';
 import {UserNotFoundException} from 'src/shared/exceptions/user-not-found.exception';
-import {PasswordsDoesNotMatch} from '../exception/password-does-not-match.exception';
+import {PasswordsDoesNotMatchException} from '../exception/password-does-not-match.exception';
 import {JwtService} from '@nestjs/jwt';
 import {verify} from 'argon2';
 import {AccountNotVerifiedException} from "../exception/account-not-verified.exception";
@@ -21,14 +21,13 @@ export class LoginHandler implements ICommandHandler<LoginCommand> {
         if (!user) {
             throw new UserNotFoundException();
         }
+        if(!user.is_account_verified) {
+            throw new AccountNotVerifiedException();
+        }
 
         const passwordMatched = await verify(user.password, password);
         if (!passwordMatched) {
-            throw new PasswordsDoesNotMatch();
-        }
-
-        if(!user.is_account_verified) {
-            throw new AccountNotVerifiedException();
+            throw new PasswordsDoesNotMatchException();
         }
 
         const token = this.jwtService.sign({userId: user.id});

@@ -1,7 +1,7 @@
 import { HttpException } from '@nestjs/common';
 import {ErrorCode} from "../../../../shared/error-code.enum";
 
-export class PasswordAndConfirmPasswordNotMatch extends HttpException {
+export class PasswordAndConfirmPasswordNotMatchException extends HttpException {
   constructor() {
     super(
       'Passwords and confirm password are not matching',
