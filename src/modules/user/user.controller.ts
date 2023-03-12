@@ -1,14 +1,9 @@
-import {
-  Controller,
-  Get,
-  InternalServerErrorException,
-  UseGuards,
-} from '@nestjs/common';
+import {Controller, Get, InternalServerErrorException, UseGuards,} from '@nestjs/common';
 import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { GetAllUsersResponseDto } from './dto/response/get-all-users-response.dto';
-import { GetAllUsersQuery } from './application/query/get-all-users.query';
-import {JwtAuthGuard} from "../authentication/application/jwt-auth.guard";
+import {CommandBus, QueryBus} from '@nestjs/cqrs';
+import {GetAllUsersResponseDto} from './dto/response/get-all-users-response.dto';
+import {GetAllUsersQuery} from './application/query/get-all-users.query';
+import {JwtAuthGuard} from "../../shared/jwt-auth.guard";
 
 @ApiTags('User')
 @Controller('users')

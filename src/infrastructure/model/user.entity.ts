@@ -1,5 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import { IsEmail, IsPhoneNumber } from 'class-validator';
+import {Role} from "./enum/role";
 
 @Entity()
 @Unique(['email'])
@@ -29,4 +30,24 @@ export class User {
 
   @Column({ nullable: false, default: false })
   is_account_verified: boolean;
+
+  @Column({ nullable: false, default: false })
+  must_change_password: boolean;
+
+  @Column({ nullable: true })
+  profile_picture_path: string;
+
+  @Column({ nullable: false, default: false })
+  has_disabled_mail_notifications: boolean;
+
+  @Column({ nullable: false, default: false })
+  has_disabled_phone_notifications: boolean;
+
+  @Column({
+    nullable: false,
+    type: 'enum',
+    enum: Role,
+    default: Role.CLIENT,
+  })
+  role: Role;
 }

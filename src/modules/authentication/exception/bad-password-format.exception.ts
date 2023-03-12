@@ -1,5 +1,5 @@
 import { HttpException } from '@nestjs/common';
-import { ErrorCode } from '../../../shared/error-code.enum';
+import { ErrorCode } from '../../../shared/enums/error-code.enum';
 
 export class BadPasswordFormatException extends HttpException {
   constructor() {
