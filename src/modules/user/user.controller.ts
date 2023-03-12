@@ -4,10 +4,11 @@ import {
   InternalServerErrorException,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GetAllUsersResponseDto } from './dto/response/get-all-users-response.dto';
 import { GetAllUsersQuery } from './application/query/get-all-users.query';
+import {JwtAuthGuard} from "../authentication/application/jwt-auth.guard";
 
 @ApiTags('User')
 @Controller('users')
@@ -21,6 +22,8 @@ export class UserController {
   }
 
   @Get()
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   async getAll() {
     try {
       return await this.queryBus.execute<
