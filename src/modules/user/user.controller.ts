@@ -4,6 +4,9 @@ import {CommandBus, QueryBus} from '@nestjs/cqrs';
 import {GetAllUsersResponseDto} from './dto/response/get-all-users-response.dto';
 import {GetAllUsersQuery} from './application/query/get-all-users.query';
 import {JwtAuthGuard} from "../../shared/jwt-auth.guard";
+import {RolesGuard} from "../../shared/roles.guard";
+import {Role} from "../../infrastructure/model/enum/role";
+import {Roles} from "../../shared/roles.decorator";
 
 @ApiTags('User')
 @Controller('users')
@@ -18,7 +21,8 @@ export class UserController {
 
   @Get()
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   async getAll() {
     try {
       return await this.queryBus.execute<

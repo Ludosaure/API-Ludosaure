@@ -1,20 +1,14 @@
-import { ApiTags } from '@nestjs/swagger';
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  InternalServerErrorException,
-  Post,
-} from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { LoginRequestDTO } from './dto/request/login-request.dto';
-import { LoginCommand } from './application/commands/login.command';
-import { LoginResponseDTO } from './dto/response/login-response.dto';
-import { UserNotFoundException } from '../../shared/exceptions/user-not-found.exception';
-import { PasswordsDoesNotMatchException } from './exception/password-does-not-match.exception';
-import { RegisterRequestDTO } from './dto/request/register-request.dto';
-import { RegisterCommand } from './application/commands/register.command';
-import { MailAlreadyUsedException } from './exception/mail-already-used.exception';
+import {ApiTags} from '@nestjs/swagger';
+import {BadRequestException, Body, Controller, InternalServerErrorException, Post, Req,} from '@nestjs/common';
+import {CommandBus, QueryBus} from '@nestjs/cqrs';
+import {LoginRequestDTO} from './dto/request/login-request.dto';
+import {LoginCommand} from './application/commands/login.command';
+import {LoginResponseDTO} from './dto/response/login-response.dto';
+import {UserNotFoundException} from '../../shared/exceptions/user-not-found.exception';
+import {PasswordsDoesNotMatchException} from './exception/password-does-not-match.exception';
+import {RegisterRequestDTO} from './dto/request/register-request.dto';
+import {RegisterCommand} from './application/commands/register.command';
+import {MailAlreadyUsedException} from './exception/mail-already-used.exception';
 
 @ApiTags('Authentication')
 @Controller('authentication')
@@ -28,7 +22,7 @@ export class AuthenticationController {
   }
 
   @Post('/login')
-  async login(@Body() loginRequest: LoginRequestDTO) {
+  async login(@Body() loginRequest: LoginRequestDTO, @Req() request) {
     try {
       return await this.commandBus.execute<LoginCommand, LoginResponseDTO>(
         LoginCommand.of(loginRequest),
