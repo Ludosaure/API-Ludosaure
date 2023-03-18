@@ -13,11 +13,13 @@ import {CloseAccountHandler} from "./application/command/close-account.handler";
     providers: [
         UserEntityRepository,
         GetAllUsersHandler,
-        CloseAccountHandler,],
+        CloseAccountHandler,
+    ],
     exports: [
         UserEntityRepository,
         GetAllUsersHandler,
-        CloseAccountHandler,],
+        CloseAccountHandler,
+    ],
 })
 export class UserModule {
 }

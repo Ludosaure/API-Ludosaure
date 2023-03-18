@@ -52,8 +52,8 @@ export class UserController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.CLIENT, Role.ADMIN)
-  @Get()
-  async getAll() {
+  @Get('/all')
+  async getAll(): Promise<GetAllUsersResponseDto> {
     try {
       return await this.queryBus.execute<
         GetAllUsersQuery,

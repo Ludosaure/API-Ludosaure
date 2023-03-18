@@ -3,6 +3,6 @@ import { ErrorCode } from '../../../shared/enums/error-code.enum';
 
 export class AccountClosedException extends HttpException {
   constructor() {
-    super('The account closed', ErrorCode.UNAUTHORIZED);
+    super('The account is closed', ErrorCode.UNAUTHORIZED);
   }
 }
