@@ -1,4 +1,4 @@
-import {ApiTags} from '@nestjs/swagger';
+import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
 import {
   BadRequestException,
   Body,
@@ -7,7 +7,7 @@ import {
   InternalServerErrorException,
   Post,
   Query,
-  Req,
+  Req, UseGuards,
 } from '@nestjs/common';
 import {CommandBus, QueryBus} from '@nestjs/cqrs';
 import {LoginRequestDTO} from './dto/request/login-request.dto';
@@ -22,6 +22,15 @@ import {ConfirmAccountRequestDTO} from "./dto/request/confirm-account-request.dt
 import {ConfirmAccountCommand} from "./application/commands/confirm-account.command";
 import {ResendConfirmationMailRequestDTO} from "./dto/request/resend-confirmation-mail-request.dto";
 import {ResendConfirmationMailCommand} from "./application/commands/resend-confirmation-mail.command";
+import {AccountNotVerifiedException} from "./exception/account-not-verified.exception";
+import {AccountClosedException} from "./exception/account-closed.exception";
+import {AccountAlreadyVerifiedException} from "./exception/account-already-verified.exception";
+import {CloseAccountRequestDTO} from "./dto/request/close-account-request.dto";
+import {CloseAccountCommand} from "./application/commands/close-account.command";
+import {JwtAuthGuard} from "../../shared/jwt-auth.guard";
+import {RolesGuard} from "../../shared/roles.guard";
+import {Roles} from "../../shared/roles.decorator";
+import {Role} from "../../infrastructure/model/enum/role";
 
 @ApiTags('Authentication')
 @Controller('authentication')
@@ -43,12 +52,16 @@ export class AuthenticationController {
     } catch (error) {
       if (error instanceof UserNotFoundException) {
         throw new UserNotFoundException();
-      }
-      if (error instanceof PasswordsDoesNotMatchException) {
+      } else if (error instanceof AccountNotVerifiedException) {
+        throw new AccountNotVerifiedException();
+      } else if (error instanceof AccountClosedException) {
+        throw new AccountClosedException();
+      } else if (error instanceof PasswordsDoesNotMatchException) {
         throw new PasswordsDoesNotMatchException();
+      } else {
+        console.error(error);
+        throw new InternalServerErrorException();
       }
-      console.error(error);
-      throw new InternalServerErrorException();
     }
   }
 
@@ -61,9 +74,26 @@ export class AuthenticationController {
     } catch (error) {
       if (error instanceof MailAlreadyUsedException) {
         throw new MailAlreadyUsedException();
+      } else {
+        console.error(error);
+        throw new BadRequestException();
       }
-      console.error(error);
-      throw new BadRequestException();
+    }
+  }
+
+  @Get('/confirm-account')
+  async confirmAccount(@Query() confirmAccountRequest: ConfirmAccountRequestDTO) {
+    try {
+      await this.commandBus.execute<ConfirmAccountCommand, void>(
+        ConfirmAccountCommand.of(confirmAccountRequest),
+      );
+    } catch (error) {
+      if (error instanceof UserNotFoundException) {
+        throw new UserNotFoundException();
+      } else {
+        console.error(error);
+        throw new BadRequestException();
+      }
     }
   }
 
@@ -71,26 +101,36 @@ export class AuthenticationController {
   async resendConfirmationMail(@Body() resendConfirmationMailRequest: ResendConfirmationMailRequestDTO) {
     try {
       await this.commandBus.execute<ResendConfirmationMailCommand, void>(
-        ResendConfirmationMailCommand.of(resendConfirmationMailRequest),
+          ResendConfirmationMailCommand.of(resendConfirmationMailRequest),
       );
     } catch (error) {
-      console.error(error);
-      throw new BadRequestException();
+      if (error instanceof UserNotFoundException) {
+        throw new UserNotFoundException();
+      } else if (error instanceof AccountAlreadyVerifiedException) {
+        throw new AccountAlreadyVerifiedException();
+      } else {
+        console.error(error);
+        throw new BadRequestException();
+      }
     }
   }
 
-  @Get('/confirm-account')
-  async confirm(@Query() confirmAccountRequest: ConfirmAccountRequestDTO) {
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.CLIENT, Role.ADMIN)
+  @Post('/close-account')
+  async closeAccount(@Body() closeAccountRequest: CloseAccountRequestDTO) {
     try {
-      await this.commandBus.execute<ConfirmAccountCommand, void>(
-        ConfirmAccountCommand.of(confirmAccountRequest),
+      await this.commandBus.execute<CloseAccountCommand, void>(
+        CloseAccountCommand.of(closeAccountRequest),
       );
     } catch (error) {
-      if (error instanceof MailAlreadyUsedException) {
-        throw new MailAlreadyUsedException();
+      if (error instanceof UserNotFoundException) {
+        throw new UserNotFoundException();
+      } else {
+        console.error(error);
+        throw new BadRequestException();
       }
-      console.error(error);
-      throw new BadRequestException();
     }
   }
 }

@@ -21,7 +21,7 @@ export class UserEntityRepository
   }
 
   findById(userId: string): Promise<User> {
-    return this.findOneBy({ id: userId });
+    return this.findOneBy({ user_id: userId });
   }
 
   async findByEmail(email: string): Promise<User> {

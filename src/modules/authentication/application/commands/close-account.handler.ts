@@ -10,25 +10,23 @@ import {EmailConfirmationService} from "../email-confirmation.service";
 import {ConfirmAccountCommand} from "./confirm-account.command";
 import {BadRequestException} from "@nestjs/common";
 import {UserNotFoundException} from "../../../../shared/exceptions/user-not-found.exception";
+import {CloseAccountCommand} from "./close-account.command";
 
-@CommandHandler(ConfirmAccountCommand)
-export class ConfirmAccountHandler implements ICommandHandler<ConfirmAccountCommand> {
+@CommandHandler(CloseAccountCommand)
+export class CloseAccountHandler implements ICommandHandler<CloseAccountCommand> {
   constructor(
     private readonly userRepository: UserEntityRepository,
-    private readonly emailConfirmationService: EmailConfirmationService,
   ) {}
 
-  async execute(command: ConfirmAccountCommand): Promise<void> {
-    const email = await this.emailConfirmationService.decodeConfirmationToken(command.token);
-
-    const foundUser = await this.userRepository.findByEmail(email);
+  async execute(command: CloseAccountCommand): Promise<void> {
+    const foundUser = await this.userRepository.findById(command.userId);
     if (foundUser == null) {
       throw new UserNotFoundException();
     }
 
     const user = new User();
     user.user_id = foundUser.user_id;
-    user.is_account_verified = true;
+    user.is_account_closed = true;
     await this.userRepository.saveOrUpdateUser(user);
   }
 }

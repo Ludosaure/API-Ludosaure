@@ -19,10 +19,10 @@ export class UserController {
     this.queryBus = queryBus;
   }
 
-  @Get()
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.CLIENT, Role.ADMIN)
+  @Get()
   async getAll() {
     try {
       return await this.queryBus.execute<

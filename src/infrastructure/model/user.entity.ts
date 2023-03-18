@@ -6,7 +6,7 @@ import {Role} from "./enum/role";
 @Unique(['email'])
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  user_id: string;
 
   @Column({ nullable: false })
   firstname: string;

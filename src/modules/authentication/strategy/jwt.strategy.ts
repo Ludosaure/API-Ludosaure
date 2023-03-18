@@ -4,6 +4,9 @@ import {Injectable, UnauthorizedException} from '@nestjs/common';
 import {environmentConfig} from "../../../config/environment.config";
 import {UserEntityRepository} from "../../user/db/user-entity-repository.service";
 import {JwtPayload} from "./jwt.payload";
+import {UserNotFoundException} from "../../../shared/exceptions/user-not-found.exception";
+import {AccountNotVerifiedException} from "../exception/account-not-verified.exception";
+import {AccountClosedException} from "../exception/account-closed.exception";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -18,8 +21,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     async validate(payload: JwtPayload) {
         const user = await this.userRepository.findById(payload.userId);
 
-        if (!user || !user.is_account_verified || user.is_account_closed) {
-            throw new UnauthorizedException();
+        if (!user) {
+            throw new UserNotFoundException();
+        } else if (!user.is_account_verified) {
+            throw new AccountNotVerifiedException();
+        } else if(user.is_account_closed) {
+            throw new AccountClosedException();
         }
         return user;
     }

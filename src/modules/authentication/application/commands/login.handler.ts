@@ -36,7 +36,7 @@ export class LoginHandler implements ICommandHandler<LoginCommand> {
             throw new PasswordsDoesNotMatchException();
         }
 
-        const token = this.jwtService.sign({userId: user.id});
+        const token = this.jwtService.sign({userId: user.user_id});
         return new LoginResponseDTO(token, user);
     }
 }
