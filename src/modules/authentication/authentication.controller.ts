@@ -20,6 +20,8 @@ import {RegisterCommand} from './application/commands/register.command';
 import {MailAlreadyUsedException} from './exception/mail-already-used.exception';
 import {ConfirmAccountRequestDTO} from "./dto/request/confirm-account-request.dto";
 import {ConfirmAccountCommand} from "./application/commands/confirm-account.command";
+import {ResendConfirmationMailRequestDTO} from "./dto/request/resend-confirmation-mail-request.dto";
+import {ResendConfirmationMailCommand} from "./application/commands/resend-confirmation-mail.command";
 
 @ApiTags('Authentication')
 @Controller('authentication')
@@ -60,6 +62,18 @@ export class AuthenticationController {
       if (error instanceof MailAlreadyUsedException) {
         throw new MailAlreadyUsedException();
       }
+      console.error(error);
+      throw new BadRequestException();
+    }
+  }
+
+  @Post('/resend-confirmation-mail')
+  async resendConfirmationMail(@Body() resendConfirmationMailRequest: ResendConfirmationMailRequestDTO) {
+    try {
+      await this.commandBus.execute<ResendConfirmationMailCommand, void>(
+        ResendConfirmationMailCommand.of(resendConfirmationMailRequest),
+      );
+    } catch (error) {
       console.error(error);
       throw new BadRequestException();
     }

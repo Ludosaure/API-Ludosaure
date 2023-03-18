@@ -14,6 +14,7 @@ import {JwtStrategy} from "./strategy/jwt.strategy";
 import {EmailModule} from "../email/email.module";
 import {EmailConfirmationService} from "./application/email-confirmation.service";
 import {ConfirmAccountHandler} from "./application/commands/confirm-account.handler";
+import {ResendConfirmationMailHandler} from "./application/commands/resend-confirmation-mail.handler";
 
 @Module({
     imports: [
@@ -35,6 +36,7 @@ import {ConfirmAccountHandler} from "./application/commands/confirm-account.hand
         RegisterHandler,
         LoginHandler,
         ConfirmAccountHandler,
+        ResendConfirmationMailHandler,
     ],
     exports: [
         JwtStrategy,
@@ -44,6 +46,7 @@ import {ConfirmAccountHandler} from "./application/commands/confirm-account.hand
         RegisterHandler,
         LoginHandler,
         ConfirmAccountHandler,
+        ResendConfirmationMailHandler,
     ],
 })
 export class AuthenticationModule {

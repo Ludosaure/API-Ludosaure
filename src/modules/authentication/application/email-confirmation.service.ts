@@ -13,7 +13,7 @@ export class EmailConfirmationService {
     public sendVerificationLink(email: string) {
         const token = this.jwtService.sign({ email: email });
 
-        const url = `${environmentConfig.emailConfirmationUrl}?token=${token}`;
+        const confirmationAccountUrl = `${environmentConfig.emailConfirmationUrl}?token=${token}`;
 
         return this.emailService.sendMail({
             from: environmentConfig.emailUser,
@@ -169,7 +169,7 @@ export class EmailConfirmationService {
                                         <table border="0" cellpadding="0" cellspacing="0">
                                           <tr>
                                             <td align="center" bgcolor="#1a82e2" style="border-radius: 6px;">
-                                              <a href="${url}" target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;">Confirmer mon compte</a>
+                                              <a href="${confirmationAccountUrl}" target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;">Confirmer mon compte</a>
                                             </td>
                                           </tr>
                                         </table>
@@ -184,7 +184,7 @@ export class EmailConfirmationService {
                               <tr>
                                 <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
                                   <p style="margin: 0;">Si cela ne fonctionne pas, copiez et collez le lien suivant dans votre navigateur :</p>
-                                  <p style="margin: 0;"><a href="${url}" target="_blank">${url}</a></p>
+                                  <p style="margin: 0;"><a href="${confirmationAccountUrl}" target="_blank">${confirmationAccountUrl}</a></p>
                                 </td>
                               </tr>
                               <!-- end copy -->
