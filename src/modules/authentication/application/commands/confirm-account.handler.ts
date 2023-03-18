@@ -29,6 +29,6 @@ export class ConfirmAccountHandler implements ICommandHandler<ConfirmAccountComm
     const user = new User();
     user.id = foundUser.id;
     user.is_account_verified = true;
-    await this.userRepository.updateUser(user);
+    await this.userRepository.saveOrUpdateUser(user);
   }
 }

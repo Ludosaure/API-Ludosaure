@@ -28,11 +28,7 @@ export class UserEntityRepository
     return this.findOneBy({ email: email });
   }
 
-  async saveUser(user: User): Promise<void> {
-    await this.save(user);
-  }
-
-  async updateUser(user: User): Promise<void> {
+  async saveOrUpdateUser(user: User): Promise<void> {
     await this.save(user);
   }
 }
