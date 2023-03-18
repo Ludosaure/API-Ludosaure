@@ -3,7 +3,7 @@ import { IsEmail, IsNotEmpty, IsPhoneNumber } from 'class-validator';
 
 export class RegisterRequestDTO {
   @IsEmail()
-  @ApiProperty({ default: 'example@example.com' })
+  @ApiProperty({ default: 'alois.zimmermann45@gmail.com' })
   public readonly email: string;
 
   @ApiProperty({ default: 'Azerty1234!' })

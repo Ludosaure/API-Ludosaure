@@ -1,5 +1,14 @@
 import {ApiTags} from '@nestjs/swagger';
-import {BadRequestException, Body, Controller, InternalServerErrorException, Post, Req,} from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  InternalServerErrorException,
+  Post,
+  Query,
+  Req,
+} from '@nestjs/common';
 import {CommandBus, QueryBus} from '@nestjs/cqrs';
 import {LoginRequestDTO} from './dto/request/login-request.dto';
 import {LoginCommand} from './application/commands/login.command';
@@ -9,6 +18,8 @@ import {PasswordsDoesNotMatchException} from './exception/password-does-not-matc
 import {RegisterRequestDTO} from './dto/request/register-request.dto';
 import {RegisterCommand} from './application/commands/register.command';
 import {MailAlreadyUsedException} from './exception/mail-already-used.exception';
+import {ConfirmAccountRequestDTO} from "./dto/request/confirm-account-request.dto";
+import {ConfirmAccountCommand} from "./application/commands/confirm-account.command";
 
 @ApiTags('Authentication')
 @Controller('authentication')
@@ -40,10 +51,25 @@ export class AuthenticationController {
   }
 
   @Post('/register')
-  async function(@Body() registerRequest: RegisterRequestDTO) {
+  async register(@Body() registerRequest: RegisterRequestDTO) {
     try {
       await this.commandBus.execute<RegisterCommand, void>(
         RegisterCommand.of(registerRequest),
+      );
+    } catch (error) {
+      if (error instanceof MailAlreadyUsedException) {
+        throw new MailAlreadyUsedException();
+      }
+      console.error(error);
+      throw new BadRequestException();
+    }
+  }
+
+  @Get('/confirm-account')
+  async confirm(@Query() confirmAccountRequest: ConfirmAccountRequestDTO) {
+    try {
+      await this.commandBus.execute<ConfirmAccountCommand, void>(
+        ConfirmAccountCommand.of(confirmAccountRequest),
       );
     } catch (error) {
       if (error instanceof MailAlreadyUsedException) {

@@ -11,6 +11,9 @@ import {PassportModule} from '@nestjs/passport';
 import {JwtModule} from '@nestjs/jwt';
 import {environmentConfig} from '../../config/environment.config';
 import {JwtStrategy} from "./strategy/jwt.strategy";
+import {EmailModule} from "../email/email.module";
+import {EmailConfirmationService} from "./application/email-confirmation.service";
+import {ConfirmAccountHandler} from "./application/commands/confirm-account.handler";
 
 @Module({
     imports: [
@@ -21,21 +24,26 @@ import {JwtStrategy} from "./strategy/jwt.strategy";
             signOptions: {expiresIn: environmentConfig.jwtAccessTokenDuration},
         }),
         TypeOrmModule.forFeature([User]),
+        EmailModule,
     ],
     controllers: [AuthenticationController],
     providers: [
+        JwtStrategy,
+        EmailConfirmationService,
         RegisterValidator,
         UserEntityRepository,
         RegisterHandler,
         LoginHandler,
-        JwtStrategy,
+        ConfirmAccountHandler,
     ],
     exports: [
+        JwtStrategy,
+        EmailConfirmationService,
         RegisterValidator,
         UserEntityRepository,
         RegisterHandler,
         LoginHandler,
-        JwtStrategy,
+        ConfirmAccountHandler,
     ],
 })
 export class AuthenticationModule {

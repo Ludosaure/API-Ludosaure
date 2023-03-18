@@ -6,12 +6,14 @@ import { User } from '../../../../infrastructure/model/user.entity';
 import { hash } from 'argon2';
 import { UserEntityRepository } from '../../../user/db/user-entity-repository.service';
 import { RegisterValidator } from '../register.validator';
+import {EmailConfirmationService} from "../email-confirmation.service";
 
 @CommandHandler(RegisterCommand)
 export class RegisterHandler implements ICommandHandler<RegisterCommand> {
   constructor(
     private readonly userRepository: UserEntityRepository,
     private readonly registerValidator: RegisterValidator,
+    private readonly emailConfirmationService: EmailConfirmationService
   ) {}
 
   async execute(command: RegisterCommand): Promise<void> {
@@ -28,5 +30,7 @@ export class RegisterHandler implements ICommandHandler<RegisterCommand> {
     user.phone = command.phone;
     user.password = await hash(command.password);
     await this.userRepository.saveUser(user);
+
+    await this.emailConfirmationService.sendVerificationLink(user.email);
   }
 }

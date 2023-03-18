@@ -68,6 +68,14 @@ $ nest g module <nom_du_module>
 ### Pour ajouter une commande ou une query à un module
 Ne pas oublier d'ajouter le handler dans le fichier <nom_du_module>.module.ts dans les providers et les exports
 
+## IMPORTANT POUR L'ENVOI DE MAILS VIA UN COMPTE GMAIL
+Il faut paramétrer le compte gmail pour autoriser l'envoi de mails depuis une application tierce.
+- Aller sur l'espace sécurité de votre compte gmail.
+- Activer l'authentification à deux facteurs.
+- Cliquer sur les mots de passe des applications juste en dessous de l'authentification à deux facteurs.
+- Sur la sélection d'application, sélectionner "autres" et renseigner le nom de l'application (api-ludosaure).
+- Copier le mot de passe généré et le renseigner dans le fichier .env du projet dans la variable GENERATED_EMAIL_PASSWORD.
+
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
