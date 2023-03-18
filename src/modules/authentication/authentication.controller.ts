@@ -25,8 +25,8 @@ import {ResendConfirmationMailCommand} from "./application/commands/resend-confi
 import {AccountNotVerifiedException} from "./exception/account-not-verified.exception";
 import {AccountClosedException} from "./exception/account-closed.exception";
 import {AccountAlreadyVerifiedException} from "./exception/account-already-verified.exception";
-import {CloseAccountRequestDTO} from "./dto/request/close-account-request.dto";
-import {CloseAccountCommand} from "./application/commands/close-account.command";
+import {CloseAccountRequestDTO} from "../user/dto/request/close-account-request.dto";
+import {CloseAccountCommand} from "../user/application/command/close-account.command";
 import {JwtAuthGuard} from "../../shared/jwt-auth.guard";
 import {RolesGuard} from "../../shared/roles.guard";
 import {Roles} from "../../shared/roles.decorator";
@@ -108,25 +108,6 @@ export class AuthenticationController {
         throw new UserNotFoundException();
       } else if (error instanceof AccountAlreadyVerifiedException) {
         throw new AccountAlreadyVerifiedException();
-      } else {
-        console.error(error);
-        throw new BadRequestException();
-      }
-    }
-  }
-
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.CLIENT, Role.ADMIN)
-  @Post('/close-account')
-  async closeAccount(@Body() closeAccountRequest: CloseAccountRequestDTO) {
-    try {
-      await this.commandBus.execute<CloseAccountCommand, void>(
-        CloseAccountCommand.of(closeAccountRequest),
-      );
-    } catch (error) {
-      if (error instanceof UserNotFoundException) {
-        throw new UserNotFoundException();
       } else {
         console.error(error);
         throw new BadRequestException();
