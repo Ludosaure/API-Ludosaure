@@ -50,4 +50,7 @@ export class User {
     default: Role.CLIENT,
   })
   role: Role;
+
+  @Column({ nullable: false, default: false })
+  is_account_closed: boolean;
 }
