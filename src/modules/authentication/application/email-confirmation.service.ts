@@ -123,7 +123,7 @@ export class EmailConfirmationService {
                             <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                               <tr>
                                 <td align="center" valign="top" style="padding: 36px 24px;">
-                                  <a href="https://www.blogdesire.com" target="_blank" style="display: inline-block;">
+                                  <a href="//TODO rediriger vers site" target="_blank" style="display: inline-block;">
                                     <img src="https://kengo.bzh/media/image/aaf9a0e8-b90f-4727-8d5d-1b94ab6f7a6c_sticker-kengojpg.jpg" alt="Logo" border="0" width="150" style="display: block; width: 150px; max-width: 150px; min-width: 48px;">
                                   </a>
                                 </td>
@@ -155,7 +155,7 @@ export class EmailConfirmationService {
                               <!-- start copy -->
                               <tr>
                                 <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-                                  <p style="margin: 0;">Bienvenue chez la Ludosaure ! </br> Pour terminer votre inscription, veuillez cliquer sur le bouton ci-dessous afin de confirmer la création de votre compte.</p>
+                                  <p style="margin: 0;">Bienvenue chez la Ludosaure !</br>Pour terminer votre inscription, veuillez cliquer sur le bouton ci-dessous afin de confirmer la création de votre compte.</p>
                                 </td>
                               </tr>
                               <!-- end copy -->

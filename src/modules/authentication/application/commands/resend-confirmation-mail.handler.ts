@@ -5,7 +5,7 @@ import {MailAlreadyUsedException} from '../../exception/mail-already-used.except
 import {User} from '../../../../infrastructure/model/user.entity';
 import {hash} from 'argon2';
 import {UserEntityRepository} from '../../../user/db/user-entity-repository.service';
-import {RegisterValidator} from '../register.validator';
+import {PasswordValidator} from '../../../../shared/password-validator.service';
 import {EmailConfirmationService} from "../email-confirmation.service";
 import {ResendConfirmationMailCommand} from "./resend-confirmation-mail.command";
 import {UserNotFoundException} from "../../../../shared/exceptions/user-not-found.exception";

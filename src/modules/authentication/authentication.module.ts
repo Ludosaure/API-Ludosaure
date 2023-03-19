@@ -3,7 +3,7 @@ import {CqrsModule} from '@nestjs/cqrs';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {User} from '../../infrastructure/model/user.entity';
 import {AuthenticationController} from './authentication.controller';
-import {RegisterValidator} from './application/register.validator';
+import {PasswordValidator} from '../../shared/password-validator.service';
 import {UserEntityRepository} from '../user/db/user-entity-repository.service';
 import {RegisterHandler} from './application/commands/register.handler';
 import {LoginHandler} from './application/commands/login.handler';
@@ -32,7 +32,7 @@ import {CloseAccountHandler} from "../user/application/command/close-account.han
     providers: [
         JwtStrategy,
         EmailConfirmationService,
-        RegisterValidator,
+        PasswordValidator,
         UserEntityRepository,
         RegisterHandler,
         LoginHandler,
@@ -42,7 +42,7 @@ import {CloseAccountHandler} from "../user/application/command/close-account.han
     exports: [
         JwtStrategy,
         EmailConfirmationService,
-        RegisterValidator,
+        PasswordValidator,
         UserEntityRepository,
         RegisterHandler,
         LoginHandler,

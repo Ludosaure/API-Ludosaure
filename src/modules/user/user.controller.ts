@@ -18,6 +18,8 @@ import {Roles} from "../../shared/roles.decorator";
 import {CloseAccountRequestDTO} from "./dto/request/close-account-request.dto";
 import {CloseAccountCommand} from "./application/command/close-account.command";
 import {UserNotFoundException} from "../../shared/exceptions/user-not-found.exception";
+import {UpdateUserCommand} from "./application/command/update-user.command";
+import {UpdateUserRequestDTO} from "./dto/request/update-user-request.dto";
 
 @ApiTags('User')
 @Controller('user')
@@ -33,6 +35,7 @@ export class UserController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.CLIENT, Role.ADMIN)
+  //TODO Réservé seulement à l'utilisateur connecté ou à un admin
   @Post('/close-account')
   async closeAccount(@Body() closeAccountRequest: CloseAccountRequestDTO) {
     try {
@@ -51,7 +54,7 @@ export class UserController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.CLIENT, Role.ADMIN)
+  @Roles(Role.ADMIN)
   @Get('/all')
   async getAll(): Promise<GetAllUsersResponseDto> {
     try {
@@ -62,6 +65,26 @@ export class UserController {
     } catch (error) {
       console.error(error);
       throw new InternalServerErrorException();
+    }
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.CLIENT, Role.ADMIN)
+  //TODO Réservé seulement à l'utilisateur connecté ou à un admin
+  @Post('/update')
+  async update(@Body() updateUserRequest: UpdateUserRequestDTO) {
+    try {
+      await this.commandBus.execute<UpdateUserCommand, void>(
+          UpdateUserCommand.of(updateUserRequest),
+      );
+    } catch (error) {
+      if (error instanceof UserNotFoundException) {
+        throw new UserNotFoundException();
+      } else {
+        console.error(error);
+        throw new BadRequestException();
+      }
     }
   }
 }
