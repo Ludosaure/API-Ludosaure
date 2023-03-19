@@ -1,5 +1,5 @@
-import {HttpException} from '@nestjs/common';
-import {ErrorCode} from '../../../shared/enums/error-code.enum';
+import { HttpException } from '@nestjs/common';
+import { ErrorCode } from '../../../shared/enums/error-code.enum';
 
 export class AccountNotVerifiedException extends HttpException {
   constructor() {

@@ -1,12 +1,14 @@
-import {config} from 'dotenv';
-import {Logger} from '@nestjs/common';
-import {NestFactory} from '@nestjs/core';
-import {FastifyAdapter, NestFastifyApplication,} from '@nestjs/platform-fastify';
-import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger';
-import {AppModule} from './app.module';
-import {environmentConfig} from './config/environment.config';
-
+import { config } from 'dotenv';
 config();
+import { Logger } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AppModule } from './app.module';
+import { environmentConfig } from './config/environment.config';
 
 function setupSwagger(app: NestFastifyApplication): void {
   const config = new DocumentBuilder()

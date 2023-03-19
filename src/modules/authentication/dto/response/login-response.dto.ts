@@ -1,4 +1,4 @@
-import {User} from '../../../../infrastructure/model/user.entity';
+import { User } from '../../../../infrastructure/model/user.entity';
 
 export class LoginResponseDTO {
   constructor(accessToken: string, user: User) {
