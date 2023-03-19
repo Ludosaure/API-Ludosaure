@@ -5,7 +5,7 @@ import {
   Get,
   InternalServerErrorException,
   Post,
-  Query,
+  Query, Req,
   UseGuards,
 } from '@nestjs/common';
 import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
@@ -23,6 +23,7 @@ import {UpdateUserCommand} from "./application/command/update-user.command";
 import {UpdateUserRequestDTO} from "./dto/request/update-user-request.dto";
 import {UnsubscribeRequestDTO} from "./dto/request/unsubscribe-request.dto";
 import {UnsubscribeCommand} from "./application/command/unsubscribe.command";
+import {OwnGuard} from "../../shared/own.guard";
 
 @ApiTags('User')
 @Controller('user')
@@ -36,9 +37,7 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.CLIENT, Role.ADMIN)
-  //TODO Réservé seulement à l'utilisateur connecté ou à un admin
+  @UseGuards(JwtAuthGuard, OwnGuard)
   @Post('/close-account')
   async closeAccount(@Body() closeAccountRequest: CloseAccountRequestDTO) {
     try {
@@ -72,9 +71,7 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.CLIENT, Role.ADMIN)
-  //TODO Réservé seulement à l'utilisateur connecté ou à un admin
+  @UseGuards(JwtAuthGuard, OwnGuard)
   @Post('/update')
   async update(@Body() updateUserRequest: UpdateUserRequestDTO) {
     try {

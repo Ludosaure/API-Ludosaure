@@ -2,6 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsPhoneNumber } from 'class-validator';
 
 export class CloseAccountRequestDTO {
-  @ApiProperty({ default: '2ace9cf2-fbdd-4b99-92b6-9b2e21bd6cd3' })
+  @ApiProperty({ default: '011aada6-df74-43e9-a63c-dd09c5cdf4dd' })
   public readonly userId: string;
 }
