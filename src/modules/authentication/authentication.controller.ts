@@ -27,8 +27,8 @@ import {AccountClosedException} from "./exception/account-closed.exception";
 import {AccountAlreadyVerifiedException} from "./exception/account-already-verified.exception";
 import {CloseAccountRequestDTO} from "../user/dto/request/close-account-request.dto";
 import {CloseAccountCommand} from "../user/application/command/close-account.command";
-import {JwtAuthGuard} from "../../shared/jwt-auth.guard";
-import {RolesGuard} from "../../shared/roles.guard";
+import {JwtAuthGuard} from "../../shared/guards/jwt-auth.guard";
+import {RolesGuard} from "../../shared/guards/roles.guard";
 import {Roles} from "../../shared/roles.decorator";
 import {Role} from "../../infrastructure/model/enum/role";
 

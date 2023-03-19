@@ -12,8 +12,8 @@ import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
 import {CommandBus, QueryBus} from '@nestjs/cqrs';
 import {GetAllUsersResponseDto} from './dto/response/get-all-users-response.dto';
 import {GetAllUsersQuery} from './application/query/get-all-users.query';
-import {JwtAuthGuard} from "../../shared/jwt-auth.guard";
-import {RolesGuard} from "../../shared/roles.guard";
+import {JwtAuthGuard} from "../../shared/guards/jwt-auth.guard";
+import {RolesGuard} from "../../shared/guards/roles.guard";
 import {Role} from "../../infrastructure/model/enum/role";
 import {Roles} from "../../shared/roles.decorator";
 import {CloseAccountRequestDTO} from "./dto/request/close-account-request.dto";
@@ -23,7 +23,7 @@ import {UpdateUserCommand} from "./application/command/update-user.command";
 import {UpdateUserRequestDTO} from "./dto/request/update-user-request.dto";
 import {UnsubscribeRequestDTO} from "./dto/request/unsubscribe-request.dto";
 import {UnsubscribeCommand} from "./application/command/unsubscribe.command";
-import {OwnGuard} from "../../shared/own.guard";
+import {OwnGuard} from "../../shared/guards/own.guard";
 
 @ApiTags('User')
 @Controller('user')

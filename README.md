@@ -72,6 +72,28 @@ Ne pas oublier d'ajouter le handler dans le fichier <nom_du_module>.module.ts da
 Lorsqu'une exception est relevée dans un handler, il faut penser à l'ajouter dans le catch de la route correspondante 
 dans le controller.
 
+## Utilisation des guards
+Différents guards sont utilisables dans l'application.
+- JwtAuthGuard : permet de vérifier que l'utilisateur est authentifié via un token jwt. Ce guard doit être accompagné
+d'un décorateur ```@ApiBearerAuth()``` sur la route concernée afin de pouvoir récupérer le token dans le bearer auth.
+- RolesGuard : permet de vérifier que l'utilisateur a le rôle nécessaire pour accéder à la ressource. Ce guard doit être
+accompagné d'un décorateur ```@Roles()``` sur la route concernée contenant les rôles autorisés.
+- OwnGuard : permet de vérifier que l'utilisateur est propriétaire de la ressource concernée ou qu'il a le rôle admin.
+
+Sur la majorité des routes, il faut utiliser le guard JwtAuthGuard. Il faut ensuite ajouter un guard parmi
+RolesGuard ou OwnGuard en fonction de l'accès nécessaire à cette route. OwnGuard et RolesGuard ne devraient pas être 
+utilisés en même temps sur une route.
+
+Exemple d'utilisation :
+```
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard, OwnGuard)
+```
+```
+@UseGuards(RolesGuard)
+@Roles(Role.ADMIN)
+```
+
 ## IMPORTANT POUR L'ENVOI DE MAILS VIA UN COMPTE GMAIL
 Il faut paramétrer le compte gmail pour autoriser l'envoi de mails depuis une application tierce.
 - Aller sur l'espace sécurité de votre compte gmail.

@@ -53,4 +53,8 @@ export class User {
 
   @Column({ nullable: false, default: false })
   is_account_closed: boolean;
+
+  isAccountActive(): boolean {
+    return this.is_account_verified && !this.is_account_closed;
+  }
 }
