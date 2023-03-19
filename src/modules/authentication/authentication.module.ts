@@ -20,10 +20,6 @@ import {ResendConfirmationMailHandler} from "./application/commands/resend-confi
     imports: [
         CqrsModule,
         PassportModule,
-        JwtModule.register({
-            secret: environmentConfig.jwtAccessSecret,
-            signOptions: {expiresIn: environmentConfig.jwtAccessTokenDuration},
-        }),
         TypeOrmModule.forFeature([User]),
         EmailModule,
     ],

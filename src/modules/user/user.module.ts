@@ -18,10 +18,6 @@ import {EmailModule} from "../email/email.module";
 @Module({
     imports: [
         CqrsModule,
-        JwtModule.register({
-            secret: environmentConfig.jwtAccessSecret,
-            signOptions: {expiresIn: environmentConfig.jwtAccessTokenDuration},
-        }),
         TypeOrmModule.forFeature([User]),
         EmailModule,
     ],
