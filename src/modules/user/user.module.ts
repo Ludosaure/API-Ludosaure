@@ -11,30 +11,18 @@ import {PasswordValidator} from "../../shared/password-validator.service";
 import {UnsubscribeHandler} from "./application/command/unsubscribe.handler";
 import {EmailConfirmationService} from "../authentication/application/email-confirmation.service";
 import {JwtStrategy} from "../authentication/strategy/jwt.strategy";
-import {JwtModule} from "@nestjs/jwt";
-import {environmentConfig} from "../../config/environment.config";
-import {EmailModule} from "../email/email.module";
+import EmailService from "../email/email.service";
 
 @Module({
     imports: [
         CqrsModule,
         TypeOrmModule.forFeature([User]),
-        EmailModule,
     ],
     controllers: [UserController],
     providers: [
         JwtStrategy,
         EmailConfirmationService,
-        UserEntityRepository,
-        GetAllUsersHandler,
-        CloseAccountHandler,
-        UpdateUserHandler,
-        PasswordValidator,
-        UnsubscribeHandler,
-    ],
-    exports: [
-        JwtStrategy,
-        EmailConfirmationService,
+        EmailService,
         UserEntityRepository,
         GetAllUsersHandler,
         CloseAccountHandler,

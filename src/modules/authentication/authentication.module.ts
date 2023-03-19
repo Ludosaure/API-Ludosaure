@@ -8,35 +8,23 @@ import {UserEntityRepository} from '../user/db/user-entity-repository.service';
 import {RegisterHandler} from './application/commands/register.handler';
 import {LoginHandler} from './application/commands/login.handler';
 import {PassportModule} from '@nestjs/passport';
-import {JwtModule} from '@nestjs/jwt';
-import {environmentConfig} from '../../config/environment.config';
 import {JwtStrategy} from "./strategy/jwt.strategy";
-import {EmailModule} from "../email/email.module";
 import {EmailConfirmationService} from "./application/email-confirmation.service";
 import {ConfirmAccountHandler} from "./application/commands/confirm-account.handler";
 import {ResendConfirmationMailHandler} from "./application/commands/resend-confirmation-mail.handler";
+import EmailService from "../email/email.service";
 
 @Module({
     imports: [
         CqrsModule,
         PassportModule,
         TypeOrmModule.forFeature([User]),
-        EmailModule,
     ],
     controllers: [AuthenticationController],
     providers: [
         JwtStrategy,
         EmailConfirmationService,
-        PasswordValidator,
-        UserEntityRepository,
-        RegisterHandler,
-        LoginHandler,
-        ConfirmAccountHandler,
-        ResendConfirmationMailHandler,
-    ],
-    exports: [
-        JwtStrategy,
-        EmailConfirmationService,
+        EmailService,
         PasswordValidator,
         UserEntityRepository,
         RegisterHandler,
