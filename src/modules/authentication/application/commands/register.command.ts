@@ -1,4 +1,4 @@
-import {RegisterRequestDTO} from '../../dto/request/register-request.dto';
+import { RegisterRequestDTO } from '../../dto/request/register-request.dto';
 
 export class RegisterCommand {
   public readonly email: string;
