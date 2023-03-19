@@ -14,6 +14,7 @@ export class EmailConfirmationService {
         const token = this.jwtService.sign({ email: email });
 
         const confirmationAccountUrl = `${environmentConfig.emailConfirmationUrl}?token=${token}`;
+        const unsubscribeUrl = `${environmentConfig.unsubscribeUrl}?token=${token}`;
 
         return this.emailService.sendMail({
             from: environmentConfig.emailUser,
@@ -217,7 +218,7 @@ export class EmailConfirmationService {
                               <!-- start unsubscribe -->
                               <tr>
                                 <td align="center" bgcolor="#e9ecef" style="padding: 12px 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;">
-                                  <p style="margin: 0;">Pour ne plus recevoir d'autres emails de notre part, vous pouvez <a href="//TODO" target="_blank">vous désabonner</a> à tout moment.</p>
+                                  <p style="margin: 0;">Pour ne plus recevoir d'autres emails de notre part, vous pouvez <a href="${unsubscribeUrl}" target="_blank">vous désabonner</a> à tout moment.</p>
                                   <p style="margin: 0;">2 BIS Boulevard Cahours, Janzé, France</p>
                                 </td>
                               </tr>

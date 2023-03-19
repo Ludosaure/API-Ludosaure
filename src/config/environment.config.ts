@@ -11,6 +11,7 @@ export interface Config {
     jwtAccessSecret: string;
     jwtAccessTokenDuration: string;
     emailConfirmationUrl: string;
+    unsubscribeUrl: string;
     emailService: string;
     emailUser: string;
     emailPassword: string;
@@ -29,6 +30,7 @@ export class EnvironmentConfig implements Config {
     jwtAccessSecret: string;
     jwtAccessTokenDuration: string;
     emailConfirmationUrl: string;
+    unsubscribeUrl: string;
     emailService: string;
     emailUser: string;
     emailPassword: string;
@@ -45,6 +47,7 @@ export class EnvironmentConfig implements Config {
         this.jwtAccessSecret = process.env.JWT_ACCESS_TOKEN_SECRET;
         this.jwtAccessTokenDuration = process.env.JWT_ACCESS_TOKEN_DURATION;
         this.emailConfirmationUrl = process.env.EMAIL_CONFIRMATION_URL;
+        this.unsubscribeUrl = process.env.UNSUBSCRIBE_URL;
         this.emailService = process.env.EMAIL_SERVICE;
         this.emailUser = process.env.EMAIL_USER;
         this.emailPassword = process.env.EMAIL_PASSWORD;

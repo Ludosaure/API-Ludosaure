@@ -5,6 +5,7 @@ import {
   Get,
   InternalServerErrorException,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
@@ -20,6 +21,8 @@ import {CloseAccountCommand} from "./application/command/close-account.command";
 import {UserNotFoundException} from "../../shared/exceptions/user-not-found.exception";
 import {UpdateUserCommand} from "./application/command/update-user.command";
 import {UpdateUserRequestDTO} from "./dto/request/update-user-request.dto";
+import {UnsubscribeRequestDTO} from "./dto/request/unsubscribe-request.dto";
+import {UnsubscribeCommand} from "./application/command/unsubscribe.command";
 
 @ApiTags('User')
 @Controller('user')
@@ -77,6 +80,22 @@ export class UserController {
     try {
       await this.commandBus.execute<UpdateUserCommand, void>(
           UpdateUserCommand.of(updateUserRequest),
+      );
+    } catch (error) {
+      if (error instanceof UserNotFoundException) {
+        throw new UserNotFoundException();
+      } else {
+        console.error(error);
+        throw new BadRequestException();
+      }
+    }
+  }
+
+  @Get('/unsubscribe')
+  async unsubscribe(@Query() unsubscribeRequest: UnsubscribeRequestDTO) {
+    try {
+      await this.commandBus.execute<UnsubscribeCommand, void>(
+          UnsubscribeCommand.of(unsubscribeRequest),
       );
     } catch (error) {
       if (error instanceof UserNotFoundException) {

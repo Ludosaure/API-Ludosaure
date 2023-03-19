@@ -15,7 +15,6 @@ import {EmailModule} from "../email/email.module";
 import {EmailConfirmationService} from "./application/email-confirmation.service";
 import {ConfirmAccountHandler} from "./application/commands/confirm-account.handler";
 import {ResendConfirmationMailHandler} from "./application/commands/resend-confirmation-mail.handler";
-import {CloseAccountHandler} from "../user/application/command/close-account.handler";
 
 @Module({
     imports: [
