@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { RegisterCommand } from '../modules/authentication/application/commands/register.command';
-import { PasswordAndConfirmPasswordNotMatchException } from '../modules/authentication/exception/password-and-confirm-not-match.exception';
-import { BadPasswordFormatException } from '../modules/authentication/exception/bad-password-format.exception';
-import { passwordStrength } from 'check-password-strength';
+import {Injectable} from '@nestjs/common';
+import {
+  PasswordAndConfirmPasswordNotMatchException
+} from '../modules/authentication/exception/password-and-confirm-not-match.exception';
+import {BadPasswordFormatException} from '../modules/authentication/exception/bad-password-format.exception';
+import {passwordStrength} from 'check-password-strength';
 
 @Injectable()
 export class PasswordValidator {

@@ -1,6 +1,6 @@
 import {ExtractJwt, Strategy} from 'passport-jwt';
 import {PassportStrategy} from '@nestjs/passport';
-import {Injectable, UnauthorizedException} from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
 import {environmentConfig} from "../../../config/environment.config";
 import {UserEntityRepository} from "../../user/db/user-entity-repository.service";
 import {JwtPayload} from "./jwt.payload";

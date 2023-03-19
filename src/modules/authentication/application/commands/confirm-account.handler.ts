@@ -1,14 +1,8 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-
-import { RegisterCommand } from './register.command';
-import { MailAlreadyUsedException } from '../../exception/mail-already-used.exception';
-import { User } from '../../../../infrastructure/model/user.entity';
-import { hash } from 'argon2';
-import { UserEntityRepository } from '../../../user/db/user-entity-repository.service';
-import { PasswordValidator } from '../../../../shared/password-validator.service';
+import {CommandHandler, ICommandHandler} from '@nestjs/cqrs';
+import {User} from '../../../../infrastructure/model/user.entity';
+import {UserEntityRepository} from '../../../user/db/user-entity-repository.service';
 import {EmailConfirmationService} from "../email-confirmation.service";
 import {ConfirmAccountCommand} from "./confirm-account.command";
-import {BadRequestException} from "@nestjs/common";
 import {UserNotFoundException} from "../../../../shared/exceptions/user-not-found.exception";
 
 @CommandHandler(ConfirmAccountCommand)
