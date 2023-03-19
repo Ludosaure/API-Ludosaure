@@ -1,5 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
-import { IsEmail, IsPhoneNumber } from 'class-validator';
+import {Column, Entity, PrimaryGeneratedColumn, Unique} from 'typeorm';
+import {IsEmail, IsPhoneNumber} from 'class-validator';
 import {Role} from "./enum/role";
 
 @Entity()

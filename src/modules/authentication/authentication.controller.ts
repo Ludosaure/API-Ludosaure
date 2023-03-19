@@ -1,4 +1,4 @@
-import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
+import {ApiTags} from '@nestjs/swagger';
 import {
   BadRequestException,
   Body,
@@ -7,7 +7,7 @@ import {
   InternalServerErrorException,
   Post,
   Query,
-  Req, UseGuards,
+  Req,
 } from '@nestjs/common';
 import {CommandBus, QueryBus} from '@nestjs/cqrs';
 import {LoginRequestDTO} from './dto/request/login-request.dto';
@@ -25,12 +25,6 @@ import {ResendConfirmationMailCommand} from "./application/commands/resend-confi
 import {AccountNotVerifiedException} from "./exception/account-not-verified.exception";
 import {AccountClosedException} from "./exception/account-closed.exception";
 import {AccountAlreadyVerifiedException} from "./exception/account-already-verified.exception";
-import {CloseAccountRequestDTO} from "../user/dto/request/close-account-request.dto";
-import {CloseAccountCommand} from "../user/application/command/close-account.command";
-import {JwtAuthGuard} from "../../shared/jwt-auth.guard";
-import {RolesGuard} from "../../shared/roles.guard";
-import {Roles} from "../../shared/roles.decorator";
-import {Role} from "../../infrastructure/model/enum/role";
 
 @ApiTags('Authentication')
 @Controller('authentication')
