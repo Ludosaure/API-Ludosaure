@@ -1,7 +1,7 @@
 import {Injectable, Logger} from '@nestjs/common';
 import {createTransport} from 'nodemailer';
 import * as Mail from 'nodemailer/lib/mailer';
-import {environmentConfig} from "../../config/environment.config";
+import {emailConfig} from "../../config/email.config";
 
 const logger = new Logger('bootstrap');
 @Injectable()
@@ -10,13 +10,13 @@ export default class EmailService {
 
     constructor() {
         this.nodemailerTransport = createTransport({
-            service: environmentConfig.emailService,
+            service: emailConfig.emailService,
             host: 'smtp.gmail.com',
             port: 465,
             secure: true,
             auth: {
-                user: environmentConfig.emailUser,
-                pass: environmentConfig.generatedEmailPassword,
+                user: emailConfig.emailUser,
+                pass: emailConfig.generatedEmailPassword,
             }
         });
     }

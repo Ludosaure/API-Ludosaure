@@ -5,7 +5,7 @@ import {
   Get,
   InternalServerErrorException,
   Post,
-  Query, Req,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';

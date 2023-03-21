@@ -1,7 +1,9 @@
 import {BadRequestException, Injectable} from '@nestjs/common';
 import {JwtService} from '@nestjs/jwt';
 import EmailService from "../../email/email.service";
-import {environmentConfig} from "../../../config/environment.config";
+import {emailConfig} from "../../../config/email.config";
+import {urlConfig} from "../../../config/url.config";
+import {jwtConfig} from "../../../config/jwt.config";
 
 @Injectable()
 export class EmailConfirmationService {
@@ -13,11 +15,11 @@ export class EmailConfirmationService {
     public sendVerificationLink(email: string) {
         const token = this.jwtService.sign({ email: email });
 
-        const confirmationAccountUrl = `${environmentConfig.emailConfirmationUrl}?token=${token}`;
-        const unsubscribeUrl = `${environmentConfig.unsubscribeUrl}?token=${token}`;
+        const confirmationAccountUrl = `${urlConfig.emailConfirmationUrl}?token=${token}`;
+        const unsubscribeUrl = `${urlConfig.unsubscribeUrl}?token=${token}`;
 
         return this.emailService.sendMail({
-            from: environmentConfig.emailUser,
+            from: emailConfig.emailUser,
             to: email,
             subject: 'La Ludosaure - Confirmation de compte',
             html: `<!DOCTYPE html>
@@ -240,7 +242,7 @@ export class EmailConfirmationService {
     public async decodeConfirmationToken(token: string) {
         try {
             const payload = await this.jwtService.verify(token, {
-                secret: environmentConfig.jwtAccessSecret,
+                secret: jwtConfig.jwtAccessSecret,
             });
 
             if (typeof payload === 'object' && 'email' in payload) {

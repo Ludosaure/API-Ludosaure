@@ -1,13 +1,13 @@
 import {JwtModule} from "@nestjs/jwt";
-import {environmentConfig} from "./config/environment.config";
 import {Global, Module} from "@nestjs/common";
+import {jwtConfig} from "./config/jwt.config";
 
 @Global()
 @Module({
     imports: [
         JwtModule.register({
-            secret: environmentConfig.jwtAccessSecret,
-            signOptions: {expiresIn: environmentConfig.jwtAccessTokenDuration},
+            secret: jwtConfig.jwtAccessSecret,
+            signOptions: {expiresIn: jwtConfig.jwtAccessTokenDuration},
         }),
     ],
     providers: [
