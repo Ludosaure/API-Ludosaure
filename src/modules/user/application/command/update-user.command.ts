@@ -7,8 +7,8 @@ export class UpdateUserCommand {
     public readonly phoneNumber: string;
     public readonly pseudo: string;
     public readonly profilePicture: string;
-    public readonly hasDisabledMailNotifications: boolean;
-    public readonly hasDisabledPhoneNotifications: boolean;
+    public readonly hasEnabledMailNotifications: boolean;
+    public readonly hasEnabledPhoneNotifications: boolean;
 
 
     private constructor(
@@ -18,8 +18,8 @@ export class UpdateUserCommand {
         phoneNumber: string,
         pseudo: string,
         profilePicture: string,
-        hasDisabledMailNotifications: boolean,
-        hasDisabledPhoneNotifications: boolean,
+        hasEnabledMailNotifications: boolean,
+        hasEnabledPhoneNotifications: boolean,
     ) {
         this.userId = userId;
         this.password = password;
@@ -27,8 +27,8 @@ export class UpdateUserCommand {
         this.phoneNumber = phoneNumber;
         this.pseudo = pseudo;
         this.profilePicture = profilePicture;
-        this.hasDisabledMailNotifications = hasDisabledMailNotifications;
-        this.hasDisabledPhoneNotifications = hasDisabledPhoneNotifications;
+        this.hasEnabledMailNotifications = hasEnabledMailNotifications;
+        this.hasEnabledPhoneNotifications = hasEnabledPhoneNotifications;
     }
 
     public static of(updateUserRequestDTO: UpdateUserRequestDTO): UpdateUserCommand {
@@ -39,8 +39,8 @@ export class UpdateUserCommand {
             phoneNumber,
             pseudo,
             profilePicture,
-            hasDisabledMailNotifications,
-            hasDisabledPhoneNotifications
+            hasEnabledMailNotifications,
+            hasEnabledPhoneNotifications
         } = updateUserRequestDTO;
         return new UpdateUserCommand(
             userId,
@@ -48,7 +48,7 @@ export class UpdateUserCommand {
             confirmPassword,
             phoneNumber, pseudo,
             profilePicture,
-            hasDisabledMailNotifications,
-            hasDisabledPhoneNotifications);
+            hasEnabledMailNotifications,
+            hasEnabledPhoneNotifications);
     }
 }

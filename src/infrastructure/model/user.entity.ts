@@ -6,7 +6,7 @@ import {Role} from "./enum/role";
 @Unique(['email'])
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  user_id: string;
+  id: string;
 
   @Column({ nullable: false })
   firstname: string;
@@ -37,11 +37,11 @@ export class User {
   @Column({ nullable: true })
   profile_picture_path: string;
 
-  @Column({ nullable: false, default: false })
-  has_disabled_mail_notifications: boolean;
+  @Column({ nullable: false, default: true })
+  has_enabled_mail_notifications: boolean;
 
-  @Column({ nullable: false, default: false })
-  has_disabled_phone_notifications: boolean;
+  @Column({ nullable: false, default: true })
+  has_enabled_phone_notifications: boolean;
 
   @Column({
     nullable: false,

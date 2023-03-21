@@ -22,10 +22,10 @@ export class UpdateUserRequestDTO {
     public readonly profilePicture: string;
 
     @ApiProperty({default: true})
-    public readonly hasDisabledMailNotifications: boolean;
+    public readonly hasEnabledMailNotifications: boolean;
 
     @ApiProperty({default: true})
-    public readonly hasDisabledPhoneNotifications: boolean;
+    public readonly hasEnabledPhoneNotifications: boolean;
 
 
 }
