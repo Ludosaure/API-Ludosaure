@@ -24,7 +24,7 @@ export default class EmailService {
     sendMail(options: Mail.Options) {
         return this.nodemailerTransport.sendMail(options, function (error, info) {
             if (error) {
-                logger.log('Error in sending email  ' + error);
+                logger.error('Error in sending email  ' + error);
                 return true;
             } else {
                 logger.log('Email sent: ' + info.response);
