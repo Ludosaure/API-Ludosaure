@@ -5,13 +5,15 @@ import { MailAlreadyUsedException } from '../../exception/mail-already-used.exce
 import { User } from '../../../../infrastructure/model/user.entity';
 import { hash } from 'argon2';
 import { UserEntityRepository } from '../../../user/db/user-entity-repository.service';
-import { RegisterValidator } from '../register.validator';
+import { PasswordValidator } from '../../../../shared/password-validator.service';
+import {EmailConfirmationService} from "../email-confirmation.service";
 
 @CommandHandler(RegisterCommand)
 export class RegisterHandler implements ICommandHandler<RegisterCommand> {
   constructor(
     private readonly userRepository: UserEntityRepository,
-    private readonly registerValidator: RegisterValidator,
+    private readonly passwordValidator: PasswordValidator,
+    private readonly emailConfirmationService: EmailConfirmationService
   ) {}
 
   async execute(command: RegisterCommand): Promise<void> {
@@ -20,13 +22,15 @@ export class RegisterHandler implements ICommandHandler<RegisterCommand> {
       throw new MailAlreadyUsedException();
     }
 
-    this.registerValidator.validate(command);
+    this.passwordValidator.validate(command.password, command.confirmPassword);
     const user = new User();
     user.email = command.email;
     user.firstname = command.firstname;
     user.lastname = command.lastname;
     user.phone = command.phone;
     user.password = await hash(command.password);
-    await this.userRepository.saveUser(user);
+    await this.userRepository.saveOrUpdateUser(user);
+
+    await this.emailConfirmationService.sendVerificationLink(user.email);
   }
 }

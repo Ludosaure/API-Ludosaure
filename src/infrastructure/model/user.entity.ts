@@ -37,11 +37,11 @@ export class User {
   @Column({ nullable: true })
   profile_picture_path: string;
 
-  @Column({ nullable: false, default: false })
-  has_disabled_mail_notifications: boolean;
+  @Column({ nullable: false, default: true })
+  has_enabled_mail_notifications: boolean;
 
-  @Column({ nullable: false, default: false })
-  has_disabled_phone_notifications: boolean;
+  @Column({ nullable: false, default: true })
+  has_enabled_phone_notifications: boolean;
 
   @Column({
     nullable: false,
@@ -50,4 +50,11 @@ export class User {
     default: Role.CLIENT,
   })
   role: Role;
+
+  @Column({ nullable: false, default: false })
+  is_account_closed: boolean;
+
+  isAccountActive(): boolean {
+    return this.is_account_verified && !this.is_account_closed;
+  }
 }

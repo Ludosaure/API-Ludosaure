@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsNotEmpty, IsPhoneNumber } from 'class-validator';
 
-export class LoginRequestDTO {
+export class ResendConfirmationMailRequestDTO {
+  @IsEmail()
   @ApiProperty({ default: 'alois.zimmermann45@gmail.com' })
   public readonly email: string;
-  @ApiProperty({ default: 'Azerty1234!' })
-  public readonly password: string;
 }

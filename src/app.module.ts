@@ -1,16 +1,16 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { ConfigModule } from '@nestjs/config';
-import { UserModule } from './modules/user/user.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { environmentConfig } from './config/environment.config';
-import { AuthenticationModule } from './modules/authentication/authentication.module';
+import {Module} from '@nestjs/common';
+import {AppController} from './app.controller';
+import {ConfigModule} from '@nestjs/config';
+import {UserModule} from './modules/user/user.module';
+import {TypeOrmModule} from '@nestjs/typeorm';
+import {environmentConfig} from './config/environment.config';
+import {AuthenticationModule} from './modules/authentication/authentication.module';
+import {EmailModule} from './modules/email/email.module';
+import {CoreModule} from "./core.module";
 
 @Module({
   controllers: [AppController],
   imports: [
-    UserModule,
-    AuthenticationModule,
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
@@ -25,6 +25,10 @@ import { AuthenticationModule } from './modules/authentication/authentication.mo
         synchronize: true,
       }),
     }),
+    CoreModule,
+    UserModule,
+    AuthenticationModule,
+    EmailModule,
   ],
 })
 export class AppModule {}
