@@ -5,9 +5,9 @@ import {PasswordsDoesNotMatchException} from '../../exception/password-does-not-
 import {JwtService} from '@nestjs/jwt';
 import {verify} from 'argon2';
 import {AccountNotVerifiedException} from '../../exception/account-not-verified.exception';
-import {UserEntityRepository} from '../../../user/db/user-entity-repository.service';
 import {LoginResponseDTO} from '../../dto/response/login-response.dto';
 import {AccountClosedException} from "../../exception/account-closed.exception";
+import {UserEntityRepository} from "../../../user/user-entity.repository";
 
 @CommandHandler(LoginCommand)
 export class LoginHandler implements ICommandHandler<LoginCommand> {
@@ -24,10 +24,10 @@ export class LoginHandler implements ICommandHandler<LoginCommand> {
         if (!user) {
             throw new UserNotFoundException();
         }
-        if (!user.is_account_verified) {
+        if (!user.isAccountVerified) {
             throw new AccountNotVerifiedException();
         }
-        if (user.is_account_closed) {
+        if (user.isAccountClosed) {
             throw new AccountClosedException();
         }
 

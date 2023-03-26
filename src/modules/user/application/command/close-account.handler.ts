@@ -1,7 +1,7 @@
 import {CommandHandler, ICommandHandler} from '@nestjs/cqrs';
-import {UserEntityRepository} from '../../db/user-entity-repository.service';
 import {UserNotFoundException} from "../../../../shared/exceptions/user-not-found.exception";
 import {CloseAccountCommand} from "./close-account.command";
+import {UserEntityRepository} from "../../user-entity.repository";
 
 @CommandHandler(CloseAccountCommand)
 export class CloseAccountHandler implements ICommandHandler<CloseAccountCommand> {
@@ -15,7 +15,7 @@ export class CloseAccountHandler implements ICommandHandler<CloseAccountCommand>
       throw new UserNotFoundException();
     }
 
-    foundUser.is_account_closed = true;
+    foundUser.isAccountClosed = true;
     await this.userRepository.saveOrUpdateUser(foundUser);
   }
 }

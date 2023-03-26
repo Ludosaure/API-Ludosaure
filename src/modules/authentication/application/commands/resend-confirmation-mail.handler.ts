@@ -1,9 +1,9 @@
 import {CommandHandler, ICommandHandler} from '@nestjs/cqrs';
-import {UserEntityRepository} from '../../../user/db/user-entity-repository.service';
 import {EmailConfirmationService} from "../email-confirmation.service";
 import {ResendConfirmationMailCommand} from "./resend-confirmation-mail.command";
 import {UserNotFoundException} from "../../../../shared/exceptions/user-not-found.exception";
 import {AccountAlreadyVerifiedException} from "../../exception/account-already-verified.exception";
+import {UserEntityRepository} from "../../../user/user-entity.repository";
 
 @CommandHandler(ResendConfirmationMailCommand)
 export class ResendConfirmationMailHandler implements ICommandHandler<ResendConfirmationMailCommand> {
@@ -18,7 +18,7 @@ export class ResendConfirmationMailHandler implements ICommandHandler<ResendConf
         if (foundUser == null) {
             throw new UserNotFoundException();
         }
-        if(foundUser.is_account_verified) {
+        if(foundUser.isAccountVerified) {
             throw new AccountAlreadyVerifiedException();
         }
 

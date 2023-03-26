@@ -1,12 +1,12 @@
 import {ExtractJwt, Strategy} from 'passport-jwt';
 import {PassportStrategy} from '@nestjs/passport';
 import {Injectable} from '@nestjs/common';
-import {UserEntityRepository} from "../../user/db/user-entity-repository.service";
 import {JwtPayload} from "./jwt.payload";
 import {UserNotFoundException} from "../../../shared/exceptions/user-not-found.exception";
 import {AccountNotVerifiedException} from "../exception/account-not-verified.exception";
 import {AccountClosedException} from "../exception/account-closed.exception";
 import {jwtConfig} from "../../../config/jwt.config";
+import {UserEntityRepository} from "../../user/user-entity.repository";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -23,9 +23,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
         if (!user) {
             throw new UserNotFoundException();
-        } else if (!user.is_account_verified) {
+        } else if (!user.isAccountVerified) {
             throw new AccountNotVerifiedException();
-        } else if(user.is_account_closed) {
+        } else if(user.isAccountClosed) {
             throw new AccountClosedException();
         }
         return user;

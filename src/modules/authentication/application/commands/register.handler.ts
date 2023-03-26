@@ -4,9 +4,9 @@ import { RegisterCommand } from './register.command';
 import { MailAlreadyUsedException } from '../../exception/mail-already-used.exception';
 import { User } from '../../../../infrastructure/model/user.entity';
 import { hash } from 'argon2';
-import { UserEntityRepository } from '../../../user/db/user-entity-repository.service';
 import { PasswordValidator } from '../../../../shared/password-validator.service';
 import {EmailConfirmationService} from "../email-confirmation.service";
+import {UserEntityRepository} from "../../../user/user-entity.repository";
 
 @CommandHandler(RegisterCommand)
 export class RegisterHandler implements ICommandHandler<RegisterCommand> {
