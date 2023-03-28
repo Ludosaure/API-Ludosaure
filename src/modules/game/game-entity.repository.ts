@@ -21,4 +21,12 @@ export class GameEntityRepository extends Repository<Game> implements GameReposi
     findById(gameId: string): Promise<Game> {
         return this.findOneBy({id: gameId});
     }
+
+    async saveOrUpdateGame(game: Game): Promise<void> {
+        await this.save(game);
+    }
+
+    async deleteGame(game: Game): Promise<void> {
+        await this.remove(game);
+    }
 }

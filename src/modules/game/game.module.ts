@@ -4,8 +4,9 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import {Game} from "../../infrastructure/model/game.entity";
 import {GameController} from "./game.controller";
 import {GameEntityRepository} from "./game-entity.repository";
-import {GetAllGamesHandler} from "./dto/request/get-all-games.handler";
+import {GetAllGamesHandler} from "./application/query/get-all-games.handler";
 import {Category} from "../../infrastructure/model/category.entity";
+import {CreateGameHandler} from "./application/command/create-game.handler";
 
 @Module({
     imports: [
@@ -16,6 +17,7 @@ import {Category} from "../../infrastructure/model/category.entity";
     providers: [
         GameEntityRepository,
         GetAllGamesHandler,
+        CreateGameHandler,
     ],
 })
 export class GameModule {}

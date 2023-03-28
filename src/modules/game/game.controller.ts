@@ -1,12 +1,14 @@
 import {ApiBearerAuth, ApiTags} from "@nestjs/swagger";
-import {BadRequestException, Controller, Get, UseGuards} from "@nestjs/common";
+import {BadRequestException, Body, Controller, Get, Post, UseGuards} from "@nestjs/common";
 import {CommandBus, QueryBus} from "@nestjs/cqrs";
 import {RolesGuard} from "../../shared/guards/roles.guard";
 import {JwtAuthGuard} from "../../shared/guards/jwt-auth.guard";
 import {Roles} from "../../shared/roles.decorator";
 import {Role} from "../../infrastructure/model/enum/role";
-import {GetAllGamesResponseDto} from "./dto/response/get-all-games-response.dto";
-import {GetAllGamesQuery} from "./dto/request/get-all-games.query";
+import {GetAllGamesResponseDTO} from "./dto/response/get-all-games-response.dto";
+import {GetAllGamesQuery} from "./application/query/get-all-games.query";
+import {CreateGameCommand} from "./application/command/create-game.command";
+import {CreateGameRequestDTO} from "./dto/request/create-game-request.dto";
 
 @ApiTags('Game')
 @Controller('game')
@@ -19,16 +21,28 @@ export class GameController {
         this.queryBus = queryBus;
     }
 
-    @ApiBearerAuth()
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.ADMIN, Role.CLIENT)
     @Get('/all')
-    async getAllGames(): Promise<GetAllGamesResponseDto> {
+    async getAllGames(): Promise<GetAllGamesResponseDTO> {
         try {
             return await this.queryBus.execute<
                 GetAllGamesQuery,
-                GetAllGamesResponseDto
+                GetAllGamesResponseDTO
             >(GetAllGamesQuery.of());
+        } catch (error) {
+            console.error(error);
+            throw new BadRequestException();
+        }
+    }
+
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.ADMIN)
+    @Post('/create')
+    async createGame(@Body() createGameRequest: CreateGameRequestDTO){
+        try {
+            return await this.commandBus.execute<CreateGameCommand, void>(
+                CreateGameCommand.of(createGameRequest),
+            );
         } catch (error) {
             console.error(error);
             throw new BadRequestException();

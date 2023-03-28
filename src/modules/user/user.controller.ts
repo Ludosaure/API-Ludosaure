@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
 import {CommandBus, QueryBus} from '@nestjs/cqrs';
-import {GetAllUsersResponseDto} from './dto/response/get-all-users-response.dto';
+import {GetAllUsersResponseDTO} from './dto/response/get-all-users-response.dto';
 import {GetAllUsersQuery} from './application/query/get-all-users.query';
 import {JwtAuthGuard} from "../../shared/guards/jwt-auth.guard";
 import {RolesGuard} from "../../shared/guards/roles.guard";
@@ -58,11 +58,11 @@ export class UserController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
   @Get('/all')
-  async getAll(): Promise<GetAllUsersResponseDto> {
+  async getAll(): Promise<GetAllUsersResponseDTO> {
     try {
       return await this.queryBus.execute<
         GetAllUsersQuery,
-        GetAllUsersResponseDto
+        GetAllUsersResponseDTO
       >(GetAllUsersQuery.of());
     } catch (error) {
       console.error(error);

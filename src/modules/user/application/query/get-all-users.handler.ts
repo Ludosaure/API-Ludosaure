@@ -1,6 +1,6 @@
 import { ICommandHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetAllUsersQuery } from './get-all-users.query';
-import { GetAllUsersResponseDto } from '../../dto/response/get-all-users-response.dto';
+import { GetAllUsersResponseDTO } from '../../dto/response/get-all-users-response.dto';
 import {UserEntityRepository} from "../../user-entity.repository";
 
 @QueryHandler(GetAllUsersQuery)
@@ -9,8 +9,8 @@ export class GetAllUsersHandler implements ICommandHandler<GetAllUsersQuery> {
     private readonly userRepository: UserEntityRepository,
   ) {}
 
-  async execute(): Promise<GetAllUsersResponseDto> {
+  async execute(): Promise<GetAllUsersResponseDTO> {
     const users = await this.userRepository.find();
-    return new GetAllUsersResponseDto(users);
+    return new GetAllUsersResponseDTO(users);
   }
 }
