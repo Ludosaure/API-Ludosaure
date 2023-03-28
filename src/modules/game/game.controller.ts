@@ -9,6 +9,8 @@ import {GetAllGamesResponseDTO} from "./dto/response/get-all-games-response.dto"
 import {GetAllGamesQuery} from "./application/query/get-all-games.query";
 import {CreateGameCommand} from "./application/command/create-game.command";
 import {CreateGameRequestDTO} from "./dto/request/create-game-request.dto";
+import {UserNotFoundException} from "../../shared/exceptions/user-not-found.exception";
+import {CategoryNotFoundException} from "../../shared/exceptions/category-not-found.exception";
 
 @ApiTags('Game')
 @Controller('game')
@@ -44,8 +46,12 @@ export class GameController {
                 CreateGameCommand.of(createGameRequest),
             );
         } catch (error) {
-            console.error(error);
-            throw new BadRequestException();
+            if (error instanceof CategoryNotFoundException) {
+                throw new CategoryNotFoundException();
+            } else {
+                console.error(error);
+                throw new BadRequestException();
+            }
         }
     }
 }

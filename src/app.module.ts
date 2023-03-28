@@ -8,6 +8,7 @@ import {AuthenticationModule} from './modules/authentication/authentication.modu
 import {EmailModule} from './modules/email/email.module';
 import {CoreModule} from "./core.module";
 import {GameModule} from "./modules/game/game.module";
+import {CategoryModule} from "./modules/category/category.module";
 
 @Module({
   controllers: [AppController],
@@ -31,6 +32,7 @@ import {GameModule} from "./modules/game/game.module";
     AuthenticationModule,
     EmailModule,
     GameModule,
+    CategoryModule,
   ],
 })
 export class AppModule {}

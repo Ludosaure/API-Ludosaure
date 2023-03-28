@@ -7,6 +7,7 @@ import {GameEntityRepository} from "./game-entity.repository";
 import {GetAllGamesHandler} from "./application/query/get-all-games.handler";
 import {Category} from "../../infrastructure/model/category.entity";
 import {CreateGameHandler} from "./application/command/create-game.handler";
+import {CategoryEntityRepository} from "../category/category-entity.repository";
 
 @Module({
     imports: [
@@ -15,6 +16,7 @@ import {CreateGameHandler} from "./application/command/create-game.handler";
     ],
     controllers: [GameController],
     providers: [
+        CategoryEntityRepository,
         GameEntityRepository,
         GetAllGamesHandler,
         CreateGameHandler,
