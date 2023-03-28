@@ -1,4 +1,4 @@
-import {UpdateGameRequestDTO} from "../../dto/request/update-game-request.dto";
+import {UpdateGameRequestDto} from "../../dto/request/update-game-request.dto";
 
 export class UpdateGameCommand {
     public readonly id: string;
@@ -26,7 +26,7 @@ export class UpdateGameCommand {
         this.categoryId = categoryId;
     }
 
-    public static of(updateGameRequestDTO: UpdateGameRequestDTO): UpdateGameCommand {
+    public static of(updateGameRequestDto: UpdateGameRequestDto): UpdateGameCommand {
         const {
             id,
             name,
@@ -38,7 +38,7 @@ export class UpdateGameCommand {
             ageMax,
             weeklyAmount,
             categoryId
-        } = updateGameRequestDTO;
+        } = updateGameRequestDto;
         return new UpdateGameCommand(id, name, description, nbPlayersMin, nbPlayersMax, averageDuration,
             ageMin, ageMax, weeklyAmount, categoryId);
     }

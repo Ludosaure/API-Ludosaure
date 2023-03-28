@@ -1,4 +1,4 @@
-import {CreateGameRequestDTO} from "../../dto/request/create-game-request.dto";
+import {CreateGameRequestDto} from "../../dto/request/create-game-request.dto";
 
 export class CreateGameCommand {
     public readonly name: string;
@@ -24,7 +24,7 @@ export class CreateGameCommand {
         this.categoryId = categoryId;
     }
 
-    public static of(createGameRequest: CreateGameRequestDTO): CreateGameCommand {
+    public static of(createGameRequest: CreateGameRequestDto): CreateGameCommand {
         const {
             name,
             description,

@@ -1,7 +1,7 @@
 import {IsNotEmpty} from "class-validator";
 import {ApiProperty} from "@nestjs/swagger";
 
-export class CreateGameRequestDTO {
+export class CreateGameRequestDto {
     @IsNotEmpty()
     @ApiProperty({default: "Game name"})
     name: string;

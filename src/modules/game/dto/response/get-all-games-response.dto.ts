@@ -1,6 +1,6 @@
 import {Game} from "../../../../infrastructure/model/game.entity";
 
-export class GetAllGamesResponseDTO {
+export class GetAllGamesResponseDto {
     readonly games: Game[];
 
     constructor(games: Game[]) {

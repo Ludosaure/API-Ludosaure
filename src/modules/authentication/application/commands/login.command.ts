@@ -1,4 +1,4 @@
-import { LoginRequestDTO } from '../../dto/request/login-request.dto';
+import { LoginRequestDto } from '../../dto/request/login-request.dto';
 
 export class LoginCommand {
   public readonly email: string;
@@ -7,7 +7,7 @@ export class LoginCommand {
     this.email = email;
     this.password = password;
   }
-  public static of(loginRequest: LoginRequestDTO): LoginCommand {
+  public static of(loginRequest: LoginRequestDto): LoginCommand {
     const { email, password } = loginRequest;
     return new LoginCommand(email, password);
   }

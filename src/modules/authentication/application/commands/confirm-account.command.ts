@@ -1,4 +1,4 @@
-import {ConfirmAccountRequestDTO} from "../../dto/request/confirm-account-request.dto";
+import {ConfirmAccountRequestDto} from "../../dto/request/confirm-account-request.dto";
 
 export class ConfirmAccountCommand {
     public readonly token: string;
@@ -9,8 +9,8 @@ export class ConfirmAccountCommand {
         this.token = token;
     }
 
-    public static of(confirmAccountRequestDTO: ConfirmAccountRequestDTO): ConfirmAccountCommand {
-        const {token} = confirmAccountRequestDTO;
+    public static of(confirmAccountRequestDto: ConfirmAccountRequestDto): ConfirmAccountCommand {
+        const {token} = confirmAccountRequestDto;
         return new ConfirmAccountCommand(
             token
         );

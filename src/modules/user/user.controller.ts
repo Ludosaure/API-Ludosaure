@@ -10,18 +10,18 @@ import {
 } from '@nestjs/common';
 import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
 import {CommandBus, QueryBus} from '@nestjs/cqrs';
-import {GetAllUsersResponseDTO} from './dto/response/get-all-users-response.dto';
+import {GetAllUsersResponseDto} from './dto/response/get-all-users-response.dto';
 import {GetAllUsersQuery} from './application/query/get-all-users.query';
 import {JwtAuthGuard} from "../../shared/guards/jwt-auth.guard";
 import {RolesGuard} from "../../shared/guards/roles.guard";
 import {Role} from "../../infrastructure/model/enum/role";
 import {Roles} from "../../shared/roles.decorator";
-import {CloseAccountRequestDTO} from "./dto/request/close-account-request.dto";
+import {CloseAccountRequestDto} from "./dto/request/close-account-request.dto";
 import {CloseAccountCommand} from "./application/command/close-account.command";
 import {UserNotFoundException} from "../../shared/exceptions/user-not-found.exception";
 import {UpdateUserCommand} from "./application/command/update-user.command";
-import {UpdateUserRequestDTO} from "./dto/request/update-user-request.dto";
-import {UnsubscribeRequestDTO} from "./dto/request/unsubscribe-request.dto";
+import {UpdateUserRequestDto} from "./dto/request/update-user-request.dto";
+import {UnsubscribeRequestDto} from "./dto/request/unsubscribe-request.dto";
 import {UnsubscribeCommand} from "./application/command/unsubscribe.command";
 import {OwnGuard} from "../../shared/guards/own.guard";
 
@@ -39,7 +39,7 @@ export class UserController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, OwnGuard)
   @Post('/close-account')
-  async closeAccount(@Body() closeAccountRequest: CloseAccountRequestDTO) {
+  async closeAccount(@Body() closeAccountRequest: CloseAccountRequestDto) {
     try {
       await this.commandBus.execute<CloseAccountCommand, void>(
           CloseAccountCommand.of(closeAccountRequest),
@@ -58,11 +58,11 @@ export class UserController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
   @Get('/all')
-  async getAll(): Promise<GetAllUsersResponseDTO> {
+  async getAll(): Promise<GetAllUsersResponseDto> {
     try {
       return await this.queryBus.execute<
         GetAllUsersQuery,
-        GetAllUsersResponseDTO
+        GetAllUsersResponseDto
       >(GetAllUsersQuery.of());
     } catch (error) {
       console.error(error);
@@ -73,7 +73,7 @@ export class UserController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, OwnGuard)
   @Post('/update')
-  async update(@Body() updateUserRequest: UpdateUserRequestDTO) {
+  async update(@Body() updateUserRequest: UpdateUserRequestDto) {
     try {
       await this.commandBus.execute<UpdateUserCommand, void>(
           UpdateUserCommand.of(updateUserRequest),
@@ -89,7 +89,7 @@ export class UserController {
   }
 
   @Get('/unsubscribe')
-  async unsubscribe(@Query() unsubscribeRequest: UnsubscribeRequestDTO) {
+  async unsubscribe(@Query() unsubscribeRequest: UnsubscribeRequestDto) {
     try {
       await this.commandBus.execute<UnsubscribeCommand, void>(
           UnsubscribeCommand.of(unsubscribeRequest),

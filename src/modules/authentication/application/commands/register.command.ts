@@ -1,4 +1,4 @@
-import { RegisterRequestDTO } from '../../dto/request/register-request.dto';
+import { RegisterRequestDto } from '../../dto/request/register-request.dto';
 
 export class RegisterCommand {
   public readonly email: string;
@@ -24,7 +24,7 @@ export class RegisterCommand {
     this.phone = phone;
   }
 
-  public static of(registerRequest: RegisterRequestDTO): RegisterCommand {
+  public static of(registerRequest: RegisterRequestDto): RegisterCommand {
     const { email, password, confirmPassword, lastname, firstname, phone } =
       registerRequest;
     return new RegisterCommand(

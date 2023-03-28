@@ -5,7 +5,7 @@ import {PasswordsDoesNotMatchException} from '../../exception/password-does-not-
 import {JwtService} from '@nestjs/jwt';
 import {verify} from 'argon2';
 import {AccountNotVerifiedException} from '../../exception/account-not-verified.exception';
-import {LoginResponseDTO} from '../../dto/response/login-response.dto';
+import {LoginResponseDto} from '../../dto/response/login-response.dto';
 import {AccountClosedException} from "../../exception/account-closed.exception";
 import {UserEntityRepository} from "../../../user/user-entity.repository";
 
@@ -17,7 +17,7 @@ export class LoginHandler implements ICommandHandler<LoginCommand> {
     ) {
     }
 
-    async execute(command: LoginCommand): Promise<LoginResponseDTO> {
+    async execute(command: LoginCommand): Promise<LoginResponseDto> {
         const {email, password} = command;
 
         const user = await this.userRepository.findByEmail(email);
@@ -37,6 +37,6 @@ export class LoginHandler implements ICommandHandler<LoginCommand> {
         }
 
         const token = this.jwtService.sign({userId: user.id});
-        return new LoginResponseDTO(token, user);
+        return new LoginResponseDto(token, user);
     }
 }

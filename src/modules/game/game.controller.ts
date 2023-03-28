@@ -5,15 +5,17 @@ import {RolesGuard} from "../../shared/guards/roles.guard";
 import {JwtAuthGuard} from "../../shared/guards/jwt-auth.guard";
 import {Roles} from "../../shared/roles.decorator";
 import {Role} from "../../infrastructure/model/enum/role";
-import {GetAllGamesResponseDTO} from "./dto/response/get-all-games-response.dto";
+import {GetAllGamesResponseDto} from "./dto/response/get-all-games-response.dto";
 import {GetAllGamesQuery} from "./application/query/get-all-games.query";
 import {CreateGameCommand} from "./application/command/create-game.command";
-import {CreateGameRequestDTO} from "./dto/request/create-game-request.dto";
+import {CreateGameRequestDto} from "./dto/request/create-game-request.dto";
 import {UserNotFoundException} from "../../shared/exceptions/user-not-found.exception";
 import {CategoryNotFoundException} from "../../shared/exceptions/category-not-found.exception";
-import {UpdateGameRequestDTO} from "./dto/request/update-game-request.dto";
+import {UpdateGameRequestDto} from "./dto/request/update-game-request.dto";
 import {UpdateGameCommand} from "./application/command/update-game.command";
 import {GameNotFoundException} from "../../shared/exceptions/game-not-found.exception";
+import {DeleteGameRequestDto} from "./dto/request/delete-game-request.dto";
+import {DeleteGameCommand} from "./application/command/delete-game.command";
 
 @ApiTags('Game')
 @Controller('game')
@@ -27,11 +29,11 @@ export class GameController {
     }
 
     @Get('/all')
-    async getAllGames(): Promise<GetAllGamesResponseDTO> {
+    async getAllGames(): Promise<GetAllGamesResponseDto> {
         try {
             return await this.queryBus.execute<
                 GetAllGamesQuery,
-                GetAllGamesResponseDTO
+                GetAllGamesResponseDto
             >(GetAllGamesQuery.of());
         } catch (error) {
             console.error(error);
@@ -43,7 +45,7 @@ export class GameController {
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
     @Post('/create')
-    async createGame(@Body() createGameRequest: CreateGameRequestDTO) {
+    async createGame(@Body() createGameRequest: CreateGameRequestDto) {
         try {
             return await this.commandBus.execute<CreateGameCommand, void>(
                 CreateGameCommand.of(createGameRequest),
@@ -62,7 +64,7 @@ export class GameController {
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
     @Post('/update')
-    async updateGame(@Body() updateGameRequest: UpdateGameRequestDTO) {
+    async updateGame(@Body() updateGameRequest: UpdateGameRequestDto) {
         try {
             return await this.commandBus.execute<UpdateGameCommand, void>(
                 UpdateGameCommand.of(updateGameRequest),
@@ -71,6 +73,25 @@ export class GameController {
             if (error instanceof CategoryNotFoundException) {
                 throw new CategoryNotFoundException();
             } else if (error instanceof GameNotFoundException) {
+                throw new GameNotFoundException();
+            } else {
+                console.error(error);
+                throw new BadRequestException();
+            }
+        }
+    }
+
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.ADMIN)
+    @Post('/delete')
+    async deleteGame(@Body() deleteGameRequest: DeleteGameRequestDto) {
+        try {
+            return await this.commandBus.execute<DeleteGameCommand, void>(
+                DeleteGameCommand.of(deleteGameRequest),
+            );
+        } catch (error) {
+            if (error instanceof GameNotFoundException) {
                 throw new GameNotFoundException();
             } else {
                 console.error(error);
