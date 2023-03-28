@@ -11,6 +11,9 @@ import {CreateGameCommand} from "./application/command/create-game.command";
 import {CreateGameRequestDTO} from "./dto/request/create-game-request.dto";
 import {UserNotFoundException} from "../../shared/exceptions/user-not-found.exception";
 import {CategoryNotFoundException} from "../../shared/exceptions/category-not-found.exception";
+import {UpdateGameRequestDTO} from "./dto/request/update-game-request.dto";
+import {UpdateGameCommand} from "./application/command/update-game.command";
+import {GameNotFoundException} from "../../shared/exceptions/game-not-found.exception";
 
 @ApiTags('Game')
 @Controller('game')
@@ -40,7 +43,7 @@ export class GameController {
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
     @Post('/create')
-    async createGame(@Body() createGameRequest: CreateGameRequestDTO){
+    async createGame(@Body() createGameRequest: CreateGameRequestDTO) {
         try {
             return await this.commandBus.execute<CreateGameCommand, void>(
                 CreateGameCommand.of(createGameRequest),
@@ -48,6 +51,27 @@ export class GameController {
         } catch (error) {
             if (error instanceof CategoryNotFoundException) {
                 throw new CategoryNotFoundException();
+            } else {
+                console.error(error);
+                throw new BadRequestException();
+            }
+        }
+    }
+
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.ADMIN)
+    @Post('/update')
+    async updateGame(@Body() updateGameRequest: UpdateGameRequestDTO) {
+        try {
+            return await this.commandBus.execute<UpdateGameCommand, void>(
+                UpdateGameCommand.of(updateGameRequest),
+            );
+        } catch (error) {
+            if (error instanceof CategoryNotFoundException) {
+                throw new CategoryNotFoundException();
+            } else if (error instanceof GameNotFoundException) {
+                throw new GameNotFoundException();
             } else {
                 console.error(error);
                 throw new BadRequestException();

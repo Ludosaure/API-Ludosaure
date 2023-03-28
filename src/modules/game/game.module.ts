@@ -8,6 +8,7 @@ import {GetAllGamesHandler} from "./application/query/get-all-games.handler";
 import {Category} from "../../infrastructure/model/category.entity";
 import {CreateGameHandler} from "./application/command/create-game.handler";
 import {CategoryEntityRepository} from "../category/category-entity.repository";
+import {UpdateGameHandler} from "./application/command/update-game.handler";
 
 @Module({
     imports: [
@@ -20,6 +21,7 @@ import {CategoryEntityRepository} from "../category/category-entity.repository";
         GameEntityRepository,
         GetAllGamesHandler,
         CreateGameHandler,
+        UpdateGameHandler,
     ],
 })
 export class GameModule {}
