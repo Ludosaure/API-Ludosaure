@@ -31,7 +31,7 @@ export class CreateGameHandler {
         game.ageMin = command.ageMin;
         game.ageMax = command.ageMax;
         game.weeklyAmount = command.weeklyAmount;
-        game.categoryId = command.categoryId;
+        game.category = foundCategory;
         await this.gameRepository.saveOrUpdate(game);
     }
 }

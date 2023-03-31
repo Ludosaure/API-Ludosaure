@@ -32,5 +32,5 @@ export class Game {
 
     @ManyToOne(() => Category, (category) => category.id, {nullable: false})
     @JoinColumn({name: 'category_id'})
-    categoryId: string;
+    category: Category;
 }

@@ -42,7 +42,7 @@ export class UpdateGameHandler {
             if (foundCategory == null) {
                 throw new CategoryNotFoundException();
             }
-            foundGame.categoryId = foundCategory.id;
+            foundGame.category = foundCategory;
         }
         await this.gameRepository.saveOrUpdate(foundGame);
     }
