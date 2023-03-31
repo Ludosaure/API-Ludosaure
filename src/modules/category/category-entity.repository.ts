@@ -21,4 +21,16 @@ export class CategoryEntityRepository extends Repository<Category> implements Ca
     findById(categoryId: string): Promise<Category> {
         return this.findOneBy({id: categoryId});
     }
+
+    findAll(): Promise<Category[]> {
+        return this.find();
+    }
+
+    async saveOrUpdate(category: Category): Promise<void> {
+        await this.save(category);
+    }
+
+    async deleteCategory(categoryId: string): Promise<void> {
+        await this.delete(categoryId);
+    }
 }

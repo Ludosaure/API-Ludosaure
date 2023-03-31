@@ -1,6 +1,5 @@
 import {CommandHandler} from "@nestjs/cqrs";
 import {GameEntityRepository} from "../../game-entity.repository";
-import {Game} from "../../../../infrastructure/model/game.entity";
 import {CategoryEntityRepository} from "../../../category/category-entity.repository";
 import {CategoryNotFoundException} from "../../../../shared/exceptions/category-not-found.exception";
 import {UpdateGameCommand} from "./update-game.command";
@@ -45,6 +44,6 @@ export class UpdateGameHandler {
             }
             foundGame.categoryId = foundCategory.id;
         }
-        await this.gameRepository.saveOrUpdateGame(foundGame);
+        await this.gameRepository.saveOrUpdate(foundGame);
     }
 }

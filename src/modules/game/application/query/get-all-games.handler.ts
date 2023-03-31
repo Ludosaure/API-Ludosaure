@@ -9,7 +9,7 @@ export class GetAllGamesHandler implements ICommandHandler<GetAllGamesQuery> {
     constructor(private readonly gameRepository: GameEntityRepository) {
     }
     async execute(): Promise<GetAllGamesResponseDto> {
-        const games = await this.gameRepository.find();
+        const games = await this.gameRepository.findAll();
         return new GetAllGamesResponseDto(games);
     }
 }

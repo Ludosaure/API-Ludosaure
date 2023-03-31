@@ -18,11 +18,15 @@ export class GameEntityRepository extends Repository<Game> implements GameReposi
         );
     }
 
+    findAll(): Promise<Game[]> {
+        return this.find();
+    }
+
     findById(gameId: string): Promise<Game> {
         return this.findOneBy({id: gameId});
     }
 
-    async saveOrUpdateGame(game: Game): Promise<void> {
+    async saveOrUpdate(game: Game): Promise<void> {
         await this.save(game);
     }
 

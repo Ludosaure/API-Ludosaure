@@ -16,6 +16,6 @@ export class CloseAccountHandler implements ICommandHandler<CloseAccountCommand>
     }
 
     foundUser.isAccountClosed = true;
-    await this.userRepository.saveOrUpdateUser(foundUser);
+    await this.userRepository.saveOrUpdate(foundUser);
   }
 }

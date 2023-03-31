@@ -1,9 +1,12 @@
 import {Game} from "../infrastructure/model/game.entity";
 
 export interface GameRepository {
+
+    findAll(): Promise<Game[]>;
+
     findById(gameId: string): Promise<Game>;
 
-    saveOrUpdateGame(game: Game): Promise<void>;
+    saveOrUpdate(game: Game): Promise<void>;
 
     deleteGame(game: Game): Promise<void>;
 }

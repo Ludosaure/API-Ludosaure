@@ -20,6 +20,6 @@ export class ConfirmAccountHandler implements ICommandHandler<ConfirmAccountComm
     }
 
     foundUser.isAccountVerified = true;
-    await this.userRepository.saveOrUpdateUser(foundUser);
+    await this.userRepository.saveOrUpdate(foundUser);
   }
 }

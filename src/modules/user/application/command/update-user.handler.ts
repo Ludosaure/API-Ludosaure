@@ -34,6 +34,6 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
             foundUser.hasEnabledMailNotifications = command.hasEnabledMailNotifications;
         if (command.hasEnabledPhoneNotifications != null)
             foundUser.hasEnabledPhoneNotifications = command.hasEnabledPhoneNotifications;
-        await this.userRepository.saveOrUpdateUser(foundUser);
+        await this.userRepository.saveOrUpdate(foundUser);
     }
 }

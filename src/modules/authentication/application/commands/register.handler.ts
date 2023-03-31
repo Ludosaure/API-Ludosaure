@@ -29,7 +29,7 @@ export class RegisterHandler implements ICommandHandler<RegisterCommand> {
     user.lastname = command.lastname;
     user.phone = command.phone;
     user.password = await hash(command.password);
-    await this.userRepository.saveOrUpdateUser(user);
+    await this.userRepository.saveOrUpdate(user);
 
     await this.emailConfirmationService.sendVerificationLink(user.email);
   }

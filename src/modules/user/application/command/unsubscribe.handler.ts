@@ -20,6 +20,6 @@ export class UnsubscribeHandler implements ICommandHandler<UnsubscribeCommand> {
     }
 
     foundUser.hasEnabledMailNotifications = false;
-    await this.userRepository.saveOrUpdateUser(foundUser);
+    await this.userRepository.saveOrUpdate(foundUser);
   }
 }
