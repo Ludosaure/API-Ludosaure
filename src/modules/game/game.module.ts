@@ -10,6 +10,7 @@ import {CreateGameHandler} from "./application/command/create-game.handler";
 import {CategoryEntityRepository} from "../category/category-entity.repository";
 import {UpdateGameHandler} from "./application/command/update-game.handler";
 import {DeleteGameHandler} from "./application/command/delete-game.handler";
+import {GetGameByIdHandler} from "./application/query/get-game-by-id.handler";
 
 @Module({
     imports: [
@@ -21,6 +22,7 @@ import {DeleteGameHandler} from "./application/command/delete-game.handler";
         CategoryEntityRepository,
         GameEntityRepository,
         GetAllGamesHandler,
+        GetGameByIdHandler,
         CreateGameHandler,
         UpdateGameHandler,
         DeleteGameHandler,

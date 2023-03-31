@@ -1,5 +1,5 @@
 import {ApiBearerAuth, ApiTags} from "@nestjs/swagger";
-import {BadRequestException, Body, Controller, Get, Post, UseGuards} from "@nestjs/common";
+import {BadRequestException, Body, Controller, Get, Param, Post, Query, UseGuards} from "@nestjs/common";
 import {CommandBus, QueryBus} from "@nestjs/cqrs";
 import {RolesGuard} from "../../shared/guards/roles.guard";
 import {JwtAuthGuard} from "../../shared/guards/jwt-auth.guard";
@@ -16,6 +16,9 @@ import {UpdateGameCommand} from "./application/command/update-game.command";
 import {GameNotFoundException} from "../../shared/exceptions/game-not-found.exception";
 import {DeleteGameRequestDto} from "./dto/request/delete-game-request.dto";
 import {DeleteGameCommand} from "./application/command/delete-game.command";
+import {GetGameByIdResponseDto} from "./dto/response/get-game-by-id-response.dto";
+import {GetGameByIdRequestDto} from "./dto/request/get-game-by-id-request.dto";
+import {GetGameByIdQuery} from "./application/query/get-game-by-id.query";
 
 @ApiTags('Game')
 @Controller('game')
@@ -38,6 +41,23 @@ export class GameController {
         } catch (error) {
             console.error(error);
             throw new BadRequestException();
+        }
+    }
+
+    @Get('/getById')
+    async getGameById(@Query() getGameByIdRequest: GetGameByIdRequestDto) {
+        try {
+            return await this.queryBus.execute<
+                GetGameByIdQuery,
+                GetGameByIdResponseDto
+            >(GetGameByIdQuery.of(getGameByIdRequest));
+        } catch (error) {
+            if (error instanceof GameNotFoundException) {
+                throw new GameNotFoundException();
+            } else {
+                console.error(error);
+                throw new BadRequestException();
+            }
         }
     }
 
