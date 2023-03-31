@@ -1,9 +1,9 @@
-import {CommandHandler} from "@nestjs/cqrs";
+import {QueryHandler} from "@nestjs/cqrs";
 import {GetAllCategoriesQuery} from "./get-all-categories.query";
 import {CategoryEntityRepository} from "../../category-entity.repository";
 import {GetAllCategoriesResponseDto} from "../../dto/response/get-all-categories-response.dto";
 
-@CommandHandler(GetAllCategoriesQuery)
+@QueryHandler(GetAllCategoriesQuery)
 export class GetAllCategoriesHandler {
     constructor(private readonly categoryRepository: CategoryEntityRepository) {
     }
