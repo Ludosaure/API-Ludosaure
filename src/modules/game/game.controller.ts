@@ -19,6 +19,9 @@ import {DeleteGameCommand} from "./application/command/delete-game.command";
 import {GetGameByIdResponseDto} from "./dto/response/get-game-by-id-response.dto";
 import {GetGameByIdRequestDto} from "./dto/request/get-game-by-id-request.dto";
 import {GetGameByIdQuery} from "./application/query/get-game-by-id.query";
+import {GetGamesByNameRequestDto} from "./dto/request/get-games-by-name-request.dto";
+import {GetGamesByNameQuery} from "./application/query/get-games-by-name.query";
+import {GetGamesByNameResponseDto} from "./dto/response/get-games-by-name-response.dto";
 
 @ApiTags('Game')
 @Controller('game')
@@ -58,6 +61,19 @@ export class GameController {
                 console.error(error);
                 throw new BadRequestException();
             }
+        }
+    }
+
+    @Get('/getByName')
+    async getGameByName(@Query() getGameByNameRequest: GetGamesByNameRequestDto) {
+        try {
+            return await this.queryBus.execute<
+                GetGamesByNameQuery,
+                GetGamesByNameResponseDto
+            >(GetGamesByNameQuery.of(getGameByNameRequest));
+        } catch (error) {
+            console.error(error);
+            throw new BadRequestException();
         }
     }
 

@@ -26,6 +26,19 @@ export class GameEntityRepository extends Repository<Game> implements GameReposi
         return this.findOneBy({id: gameId});
     }
 
+    findByName(name: string): Promise<Game[]> {
+        return this.manager
+            .createQueryBuilder(Game, 'game')
+            .select('*')
+            .where(
+                'UPPER(game.name) LIKE UPPER(:name)',
+                {
+                    name: `%${name}%`,
+                },
+            )
+            .getRawMany();
+    }
+
     async saveOrUpdate(game: Game): Promise<void> {
         await this.save(game);
     }
