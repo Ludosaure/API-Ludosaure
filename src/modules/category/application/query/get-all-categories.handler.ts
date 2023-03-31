@@ -8,7 +8,7 @@ export class GetAllCategoriesHandler {
     constructor(private readonly categoryRepository: CategoryEntityRepository) {
     }
 
-    async execute(query: GetAllCategoriesQuery): Promise<GetAllCategoriesResponseDto> {
+    async execute(): Promise<GetAllCategoriesResponseDto> {
         const categories = await this.categoryRepository.findAll();
         return new GetAllCategoriesResponseDto(categories);
     }
