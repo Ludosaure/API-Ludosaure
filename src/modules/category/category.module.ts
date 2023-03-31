@@ -7,13 +7,14 @@ import {CreateCategoryHandler} from "./application/command/create-category.handl
 import {UpdateCategoryHandler} from "./application/command/update-category.handler";
 import {DeleteCategoryHandler} from "./application/command/delete-category.handler";
 import {GetAllCategoriesHandler} from "./application/query/get-all-categories.handler";
+import {CategoryController} from "./category.controller";
 
 @Module({
     imports: [
         CqrsModule,
         TypeOrmModule.forFeature([Category]),
     ],
-    // controllers: [CategoryController],
+    controllers: [CategoryController],
     providers: [
         CategoryEntityRepository,
         CreateCategoryHandler,
