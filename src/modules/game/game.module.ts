@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import {CqrsModule} from "@nestjs/cqrs";
 import {TypeOrmModule} from "@nestjs/typeorm";
-import {Game} from "../../infrastructure/model/game.entity";
+import {Game} from "../../domain/model/game.entity";
 import {GameController} from "./game.controller";
 import {GameEntityRepository} from "./game-entity.repository";
 import {GetAllGamesHandler} from "./application/query/get-all-games.handler";
-import {Category} from "../../infrastructure/model/category.entity";
+import {Category} from "../../domain/model/category.entity";
 import {CreateGameHandler} from "./application/command/create-game.handler";
 import {CategoryEntityRepository} from "../category/category-entity.repository";
 import {UpdateGameHandler} from "./application/command/update-game.handler";

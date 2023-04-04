@@ -1,4 +1,4 @@
-import {Category} from "../../../../infrastructure/model/category.entity";
+import {Category} from "../../../../domain/model/category.entity";
 
 export class GetAllCategoriesResponseDto {
     readonly categories: Category[];

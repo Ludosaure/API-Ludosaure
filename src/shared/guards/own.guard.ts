@@ -1,6 +1,6 @@
 import {CanActivate, ExecutionContext, Injectable} from "@nestjs/common";
-import {Role} from "../../infrastructure/model/enum/role";
-import {User} from "../../infrastructure/model/user.entity";
+import {Role} from "../../domain/model/enum/role";
+import {User} from "../../domain/model/user.entity";
 
 @Injectable()
 export class OwnGuard implements CanActivate {

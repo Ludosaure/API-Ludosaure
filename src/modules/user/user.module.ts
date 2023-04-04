@@ -3,7 +3,7 @@ import {UserController} from './user.controller';
 import {CqrsModule} from '@nestjs/cqrs';
 import {GetAllUsersHandler} from './application/query/get-all-users.handler';
 import {TypeOrmModule} from '@nestjs/typeorm';
-import {User} from '../../infrastructure/model/user.entity';
+import {User} from '../../domain/model/user.entity';
 import {CloseAccountHandler} from "./application/command/close-account.handler";
 import {UpdateUserHandler} from "./application/command/update-user.handler";
 import {PasswordValidator} from "../../shared/password-validator.service";

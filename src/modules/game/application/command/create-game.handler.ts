@@ -1,7 +1,7 @@
 import {CommandHandler} from "@nestjs/cqrs";
 import {CreateGameCommand} from "./create-game.command";
 import {GameEntityRepository} from "../../game-entity.repository";
-import {Game} from "../../../../infrastructure/model/game.entity";
+import {Game} from "../../../../domain/model/game.entity";
 import {CategoryEntityRepository} from "../../../category/category-entity.repository";
 import {CategoryNotFoundException} from "../../../../shared/exceptions/category-not-found.exception";
 

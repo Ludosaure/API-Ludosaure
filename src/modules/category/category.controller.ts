@@ -3,7 +3,7 @@ import {BadRequestException, Body, Controller, Get, Post, UseGuards} from "@nest
 import {CommandBus, QueryBus} from "@nestjs/cqrs";
 import {JwtAuthGuard} from "../../shared/guards/jwt-auth.guard";
 import {RolesGuard} from "../../shared/guards/roles.guard";
-import {Role} from "../../infrastructure/model/enum/role";
+import {Role} from "../../domain/model/enum/role";
 import {Roles} from "../../shared/roles.decorator";
 import {CategoryNotFoundException} from "../../shared/exceptions/category-not-found.exception";
 import {CreateCategoryRequestDto} from "./dto/request/create-category-request.dto";

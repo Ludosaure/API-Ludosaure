@@ -1,7 +1,7 @@
 import {CommandHandler} from "@nestjs/cqrs";
 import {CreateCategoryCommand} from "./create-category.command";
 import {CategoryEntityRepository} from "../../category-entity.repository";
-import {Category} from "../../../../infrastructure/model/category.entity";
+import {Category} from "../../../../domain/model/category.entity";
 
 @CommandHandler(CreateCategoryCommand)
 export class CreateCategoryHandler {

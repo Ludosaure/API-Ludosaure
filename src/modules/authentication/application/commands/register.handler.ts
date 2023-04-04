@@ -2,7 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { RegisterCommand } from './register.command';
 import { MailAlreadyUsedException } from '../../exception/mail-already-used.exception';
-import { User } from '../../../../infrastructure/model/user.entity';
+import { User } from '../../../../domain/model/user.entity';
 import { hash } from 'argon2';
 import { PasswordValidator } from '../../../../shared/password-validator.service';
 import {EmailConfirmationService} from "../email-confirmation.service";

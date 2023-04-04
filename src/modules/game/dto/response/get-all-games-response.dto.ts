@@ -1,4 +1,4 @@
-import {Game} from "../../../../infrastructure/model/game.entity";
+import {Game} from "../../../../domain/model/game.entity";
 
 export class GetAllGamesResponseDto {
     readonly games: Game[];

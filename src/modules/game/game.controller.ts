@@ -4,7 +4,7 @@ import {CommandBus, QueryBus} from "@nestjs/cqrs";
 import {RolesGuard} from "../../shared/guards/roles.guard";
 import {JwtAuthGuard} from "../../shared/guards/jwt-auth.guard";
 import {Roles} from "../../shared/roles.decorator";
-import {Role} from "../../infrastructure/model/enum/role";
+import {Role} from "../../domain/model/enum/role";
 import {GetAllGamesResponseDto} from "./dto/response/get-all-games-response.dto";
 import {GetAllGamesQuery} from "./application/query/get-all-games.query";
 import {CreateGameCommand} from "./application/command/create-game.command";
