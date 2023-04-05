@@ -1,6 +1,5 @@
 import {ApiTags} from '@nestjs/swagger';
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
@@ -10,17 +9,17 @@ import {
   Req,
 } from '@nestjs/common';
 import {CommandBus, QueryBus} from '@nestjs/cqrs';
-import {LoginRequestDTO} from './dto/request/login-request.dto';
+import {LoginRequestDto} from './dto/request/login-request.dto';
 import {LoginCommand} from './application/commands/login.command';
-import {LoginResponseDTO} from './dto/response/login-response.dto';
+import {LoginResponseDto} from './dto/response/login-response.dto';
 import {UserNotFoundException} from '../../shared/exceptions/user-not-found.exception';
 import {PasswordsDoesNotMatchException} from './exception/password-does-not-match.exception';
-import {RegisterRequestDTO} from './dto/request/register-request.dto';
+import {RegisterRequestDto} from './dto/request/register-request.dto';
 import {RegisterCommand} from './application/commands/register.command';
 import {MailAlreadyUsedException} from './exception/mail-already-used.exception';
-import {ConfirmAccountRequestDTO} from "./dto/request/confirm-account-request.dto";
+import {ConfirmAccountRequestDto} from "./dto/request/confirm-account-request.dto";
 import {ConfirmAccountCommand} from "./application/commands/confirm-account.command";
-import {ResendConfirmationMailRequestDTO} from "./dto/request/resend-confirmation-mail-request.dto";
+import {ResendConfirmationMailRequestDto} from "./dto/request/resend-confirmation-mail-request.dto";
 import {ResendConfirmationMailCommand} from "./application/commands/resend-confirmation-mail.command";
 import {AccountNotVerifiedException} from "./exception/account-not-verified.exception";
 import {AccountClosedException} from "./exception/account-closed.exception";
@@ -38,9 +37,9 @@ export class AuthenticationController {
   }
 
   @Post('/login')
-  async login(@Body() loginRequest: LoginRequestDTO, @Req() request) {
+  async login(@Body() loginRequest: LoginRequestDto, @Req() request) {
     try {
-      return await this.commandBus.execute<LoginCommand, LoginResponseDTO>(
+      return await this.commandBus.execute<LoginCommand, LoginResponseDto>(
         LoginCommand.of(loginRequest),
       );
     } catch (error) {
@@ -60,7 +59,7 @@ export class AuthenticationController {
   }
 
   @Post('/register')
-  async register(@Body() registerRequest: RegisterRequestDTO) {
+  async register(@Body() registerRequest: RegisterRequestDto) {
     try {
       await this.commandBus.execute<RegisterCommand, void>(
         RegisterCommand.of(registerRequest),
@@ -70,13 +69,13 @@ export class AuthenticationController {
         throw new MailAlreadyUsedException();
       } else {
         console.error(error);
-        throw new BadRequestException();
+        throw new InternalServerErrorException();
       }
     }
   }
 
   @Get('/confirm-account')
-  async confirmAccount(@Query() confirmAccountRequest: ConfirmAccountRequestDTO) {
+  async confirmAccount(@Query() confirmAccountRequest: ConfirmAccountRequestDto) {
     try {
       await this.commandBus.execute<ConfirmAccountCommand, void>(
         ConfirmAccountCommand.of(confirmAccountRequest),
@@ -86,13 +85,13 @@ export class AuthenticationController {
         throw new UserNotFoundException();
       } else {
         console.error(error);
-        throw new BadRequestException();
+        throw new InternalServerErrorException();
       }
     }
   }
 
   @Post('/resend-confirmation-mail')
-  async resendConfirmationMail(@Body() resendConfirmationMailRequest: ResendConfirmationMailRequestDTO) {
+  async resendConfirmationMail(@Body() resendConfirmationMailRequest: ResendConfirmationMailRequestDto) {
     try {
       await this.commandBus.execute<ResendConfirmationMailCommand, void>(
           ResendConfirmationMailCommand.of(resendConfirmationMailRequest),
@@ -104,7 +103,7 @@ export class AuthenticationController {
         throw new AccountAlreadyVerifiedException();
       } else {
         console.error(error);
-        throw new BadRequestException();
+        throw new InternalServerErrorException();
       }
     }
   }

@@ -1,4 +1,4 @@
-import {UnsubscribeRequestDTO} from "../../dto/request/unsubscribe-request.dto";
+import {UnsubscribeRequestDto} from "../../dto/request/unsubscribe-request.dto";
 
 export class UnsubscribeCommand {
     public readonly token: string;
@@ -9,8 +9,8 @@ export class UnsubscribeCommand {
         this.token = token;
     }
 
-    public static of(unsubscribeRequestDTO: UnsubscribeRequestDTO): UnsubscribeCommand {
-        const {token} = unsubscribeRequestDTO;
+    public static of(unsubscribeRequestDto: UnsubscribeRequestDto): UnsubscribeCommand {
+        const {token} = unsubscribeRequestDto;
         return new UnsubscribeCommand(
             token
         );

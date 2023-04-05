@@ -1,8 +1,8 @@
 import {CommandHandler, ICommandHandler} from '@nestjs/cqrs';
-import {UserEntityRepository} from '../../../user/db/user-entity-repository.service';
 import {EmailConfirmationService} from "../email-confirmation.service";
 import {ConfirmAccountCommand} from "./confirm-account.command";
 import {UserNotFoundException} from "../../../../shared/exceptions/user-not-found.exception";
+import {UserEntityRepository} from "../../../user/user-entity.repository";
 
 @CommandHandler(ConfirmAccountCommand)
 export class ConfirmAccountHandler implements ICommandHandler<ConfirmAccountCommand> {
@@ -19,7 +19,7 @@ export class ConfirmAccountHandler implements ICommandHandler<ConfirmAccountComm
       throw new UserNotFoundException();
     }
 
-    foundUser.is_account_verified = true;
-    await this.userRepository.saveOrUpdateUser(foundUser);
+    foundUser.isAccountVerified = true;
+    await this.userRepository.saveOrUpdate(foundUser);
   }
 }

@@ -1,4 +1,4 @@
-import {CloseAccountRequestDTO} from "../../dto/request/close-account-request.dto";
+import {CloseAccountRequestDto} from "../../dto/request/close-account-request.dto";
 
 export class CloseAccountCommand {
     public readonly userId: string;
@@ -9,8 +9,8 @@ export class CloseAccountCommand {
         this.userId = userId;
     }
 
-    public static of(closeAccountRequestDTO: CloseAccountRequestDTO): CloseAccountCommand {
-        const {userId} = closeAccountRequestDTO;
+    public static of(closeAccountRequestDto: CloseAccountRequestDto): CloseAccountCommand {
+        const {userId} = closeAccountRequestDto;
         return new CloseAccountCommand(userId);
     }
 }

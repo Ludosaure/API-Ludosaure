@@ -1,4 +1,4 @@
-import {UpdateUserRequestDTO} from "../../dto/request/update-user-request.dto";
+import {UpdateUserRequestDto} from "../../dto/request/update-user-request.dto";
 
 export class UpdateUserCommand {
     public readonly userId: string;
@@ -31,7 +31,7 @@ export class UpdateUserCommand {
         this.hasEnabledPhoneNotifications = hasEnabledPhoneNotifications;
     }
 
-    public static of(updateUserRequestDTO: UpdateUserRequestDTO): UpdateUserCommand {
+    public static of(updateUserRequestDto: UpdateUserRequestDto): UpdateUserCommand {
         const {
             userId,
             password,
@@ -41,7 +41,7 @@ export class UpdateUserCommand {
             profilePicture,
             hasEnabledMailNotifications,
             hasEnabledPhoneNotifications
-        } = updateUserRequestDTO;
+        } = updateUserRequestDto;
         return new UpdateUserCommand(
             userId,
             password,

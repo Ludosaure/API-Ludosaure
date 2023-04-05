@@ -1,10 +1,10 @@
-import { User } from '../../../../infrastructure/model/user.entity';
+import { User } from '../../../../domain/model/user.entity';
 
-export class LoginResponseDTO {
+export class LoginResponseDto {
+  readonly accessToken: string;
+  readonly user: User;
   constructor(accessToken: string, user: User) {
     this.accessToken = accessToken;
     this.user = user;
   }
-  readonly accessToken: string;
-  readonly user: User;
 }

@@ -7,6 +7,8 @@ import {environmentConfig} from './config/environment.config';
 import {AuthenticationModule} from './modules/authentication/authentication.module';
 import {EmailModule} from './modules/email/email.module';
 import {CoreModule} from "./core.module";
+import {GameModule} from "./modules/game/game.module";
+import {CategoryModule} from "./modules/category/category.module";
 
 @Module({
   controllers: [AppController],
@@ -29,6 +31,8 @@ import {CoreModule} from "./core.module";
     UserModule,
     AuthenticationModule,
     EmailModule,
+    GameModule,
+    CategoryModule,
   ],
 })
 export class AppModule {}

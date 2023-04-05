@@ -1,14 +1,11 @@
-import { User } from '../../../infrastructure/model/user.entity';
+import { User } from '../../domain/model/user.entity';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserRepository } from '../../../domain/user.repository';
+import { UserRepository } from '../../infrastructure/user.repository';
 
 @Injectable()
-export class UserEntityRepository
-  extends Repository<User>
-  implements UserRepository
-{
+export class UserEntityRepository extends Repository<User> implements UserRepository {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
@@ -28,7 +25,7 @@ export class UserEntityRepository
     return this.findOneBy({ email: email });
   }
 
-  async saveOrUpdateUser(user: User): Promise<void> {
+  async saveOrUpdate(user: User): Promise<void> {
     await this.save(user);
   }
 }

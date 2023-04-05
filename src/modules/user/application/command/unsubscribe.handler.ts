@@ -2,7 +2,7 @@ import {CommandHandler, ICommandHandler} from '@nestjs/cqrs';
 import {UserNotFoundException} from "../../../../shared/exceptions/user-not-found.exception";
 import {UnsubscribeCommand} from "./unsubscribe.command";
 import {EmailConfirmationService} from "../../../authentication/application/email-confirmation.service";
-import {UserEntityRepository} from "../../db/user-entity-repository.service";
+import {UserEntityRepository} from "../../user-entity.repository";
 
 @CommandHandler(UnsubscribeCommand)
 export class UnsubscribeHandler implements ICommandHandler<UnsubscribeCommand> {
@@ -19,7 +19,7 @@ export class UnsubscribeHandler implements ICommandHandler<UnsubscribeCommand> {
       throw new UserNotFoundException();
     }
 
-    foundUser.has_enabled_mail_notifications = false;
-    await this.userRepository.saveOrUpdateUser(foundUser);
+    foundUser.hasEnabledMailNotifications = false;
+    await this.userRepository.saveOrUpdate(foundUser);
   }
 }

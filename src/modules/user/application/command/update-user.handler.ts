@@ -1,9 +1,9 @@
 import {CommandHandler, ICommandHandler} from '@nestjs/cqrs';
-import {UserEntityRepository} from '../../db/user-entity-repository.service';
 import {UserNotFoundException} from "../../../../shared/exceptions/user-not-found.exception";
 import {UpdateUserCommand} from "./update-user.command";
 import {PasswordValidator} from "../../../../shared/password-validator.service";
 import {hash} from "argon2";
+import {UserEntityRepository} from "../../user-entity.repository";
 
 @CommandHandler(UpdateUserCommand)
 export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
@@ -29,11 +29,11 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
         if (command.pseudo != null)
             foundUser.pseudo = command.pseudo;
         if (command.profilePicture != null)
-            foundUser.profile_picture_path = command.profilePicture;
+            foundUser.profilePicturePath = command.profilePicture;
         if (command.hasEnabledMailNotifications != null)
-            foundUser.has_enabled_mail_notifications = command.hasEnabledMailNotifications;
+            foundUser.hasEnabledMailNotifications = command.hasEnabledMailNotifications;
         if (command.hasEnabledPhoneNotifications != null)
-            foundUser.has_enabled_phone_notifications = command.hasEnabledPhoneNotifications;
-        await this.userRepository.saveOrUpdateUser(foundUser);
+            foundUser.hasEnabledPhoneNotifications = command.hasEnabledPhoneNotifications;
+        await this.userRepository.saveOrUpdate(foundUser);
     }
 }
