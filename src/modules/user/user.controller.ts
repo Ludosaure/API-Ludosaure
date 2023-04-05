@@ -1,5 +1,5 @@
 import {
-  BadRequestException,
+  InternalServerErrorException,
   Body,
   Controller,
   Get,
@@ -49,7 +49,7 @@ export class UserController {
         throw new UserNotFoundException();
       } else {
         console.error(error);
-        throw new BadRequestException();
+        throw new InternalServerErrorException();
       }
     }
   }
@@ -83,7 +83,7 @@ export class UserController {
         throw new UserNotFoundException();
       } else {
         console.error(error);
-        throw new BadRequestException();
+        throw new InternalServerErrorException();
       }
     }
   }
@@ -99,7 +99,7 @@ export class UserController {
         throw new UserNotFoundException();
       } else {
         console.error(error);
-        throw new BadRequestException();
+        throw new InternalServerErrorException();
       }
     }
   }

@@ -1,5 +1,5 @@
 import {ApiBearerAuth, ApiTags} from "@nestjs/swagger";
-import {BadRequestException, Body, Controller, Get, Post, UseGuards} from "@nestjs/common";
+import {InternalServerErrorException, Body, Controller, Get, Post, UseGuards} from "@nestjs/common";
 import {CommandBus, QueryBus} from "@nestjs/cqrs";
 import {JwtAuthGuard} from "../../shared/guards/jwt-auth.guard";
 import {RolesGuard} from "../../shared/guards/roles.guard";
@@ -14,6 +14,7 @@ import {DeleteCategoryRequestDto} from "./dto/request/delete-category-request.dt
 import {UpdateCategoryCommand} from "./application/command/update-category.command";
 import {DeleteCategoryCommand} from "./application/command/delete-category.command";
 import {GetAllCategoriesQuery} from "./application/query/get-all-categories.query";
+import {CategoryAlreadyExistsException} from "./exceptions/category-already-exists.exception";
 
 @ApiTags('Category')
 @Controller('category')
@@ -32,7 +33,7 @@ export class CategoryController {
             return await this.queryBus.execute<GetAllCategoriesQuery, GetAllCategoriesResponseDto>(GetAllCategoriesQuery.of());
         } catch (error) {
             console.error(error);
-            throw new BadRequestException();
+            throw new InternalServerErrorException();
         }
     }
 
@@ -44,8 +45,12 @@ export class CategoryController {
         try {
             return await this.commandBus.execute<CreateCategoryCommand, void>(CreateCategoryCommand.of(createCategoryRequest));
         } catch (error) {
-            console.error(error);
-            throw new BadRequestException();
+            if (error instanceof CategoryAlreadyExistsException) {
+                throw new CategoryAlreadyExistsException();
+            } else {
+                console.error(error);
+                throw new InternalServerErrorException();
+            }
         }
     }
 
@@ -61,7 +66,7 @@ export class CategoryController {
                 throw new CategoryNotFoundException();
             } else {
                 console.error(error);
-                throw new BadRequestException();
+                throw new InternalServerErrorException();
             }
         }
     }
@@ -78,7 +83,7 @@ export class CategoryController {
                 throw new CategoryNotFoundException();
             } else {
                 console.error(error);
-                throw new BadRequestException();
+                throw new InternalServerErrorException();
             }
         }
     }

@@ -15,6 +15,7 @@ export class DeleteGameHandler {
         if (foundGame == null) {
             throw new GameNotFoundException();
         }
+        //TODO : check if game is not used in a reservation
         await this.gameRepository.deleteGame(foundGame);
     }
 }

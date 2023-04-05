@@ -1,6 +1,5 @@
 import {ApiTags} from '@nestjs/swagger';
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
@@ -70,7 +69,7 @@ export class AuthenticationController {
         throw new MailAlreadyUsedException();
       } else {
         console.error(error);
-        throw new BadRequestException();
+        throw new InternalServerErrorException();
       }
     }
   }
@@ -86,7 +85,7 @@ export class AuthenticationController {
         throw new UserNotFoundException();
       } else {
         console.error(error);
-        throw new BadRequestException();
+        throw new InternalServerErrorException();
       }
     }
   }
@@ -104,7 +103,7 @@ export class AuthenticationController {
         throw new AccountAlreadyVerifiedException();
       } else {
         console.error(error);
-        throw new BadRequestException();
+        throw new InternalServerErrorException();
       }
     }
   }

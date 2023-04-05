@@ -1,5 +1,5 @@
 import {ApiBearerAuth, ApiTags} from "@nestjs/swagger";
-import {BadRequestException, Body, Controller, Get, Param, Post, Query, UseGuards} from "@nestjs/common";
+import {InternalServerErrorException, Body, Controller, Get, Post, Query, UseGuards} from "@nestjs/common";
 import {CommandBus, QueryBus} from "@nestjs/cqrs";
 import {RolesGuard} from "../../shared/guards/roles.guard";
 import {JwtAuthGuard} from "../../shared/guards/jwt-auth.guard";
@@ -9,7 +9,6 @@ import {GetAllGamesResponseDto} from "./dto/response/get-all-games-response.dto"
 import {GetAllGamesQuery} from "./application/query/get-all-games.query";
 import {CreateGameCommand} from "./application/command/create-game.command";
 import {CreateGameRequestDto} from "./dto/request/create-game-request.dto";
-import {UserNotFoundException} from "../../shared/exceptions/user-not-found.exception";
 import {CategoryNotFoundException} from "../../shared/exceptions/category-not-found.exception";
 import {UpdateGameRequestDto} from "./dto/request/update-game-request.dto";
 import {UpdateGameCommand} from "./application/command/update-game.command";
@@ -43,7 +42,7 @@ export class GameController {
             >(GetAllGamesQuery.of());
         } catch (error) {
             console.error(error);
-            throw new BadRequestException();
+            throw new InternalServerErrorException();
         }
     }
 
@@ -59,7 +58,7 @@ export class GameController {
                 throw new GameNotFoundException();
             } else {
                 console.error(error);
-                throw new BadRequestException();
+                throw new InternalServerErrorException();
             }
         }
     }
@@ -73,7 +72,7 @@ export class GameController {
             >(GetGamesByNameQuery.of(getGameByNameRequest));
         } catch (error) {
             console.error(error);
-            throw new BadRequestException();
+            throw new InternalServerErrorException();
         }
     }
 
@@ -91,7 +90,7 @@ export class GameController {
                 throw new CategoryNotFoundException();
             } else {
                 console.error(error);
-                throw new BadRequestException();
+                throw new InternalServerErrorException();
             }
         }
     }
@@ -112,7 +111,7 @@ export class GameController {
                 throw new GameNotFoundException();
             } else {
                 console.error(error);
-                throw new BadRequestException();
+                throw new InternalServerErrorException();
             }
         }
     }
@@ -131,7 +130,7 @@ export class GameController {
                 throw new GameNotFoundException();
             } else {
                 console.error(error);
-                throw new BadRequestException();
+                throw new InternalServerErrorException();
             }
         }
     }
