@@ -11,5 +11,5 @@ export class Unavailability {
 
     @ManyToOne(() => Game, (game) => game.id)
     @JoinColumn({name: 'game_id'})
-    gameId: string;
+    game: Game;
 }

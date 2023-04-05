@@ -1,5 +1,5 @@
 import {ApiBearerAuth, ApiTags} from "@nestjs/swagger";
-import {InternalServerErrorException, Body, Controller, Get, Post, Query, UseGuards} from "@nestjs/common";
+import {InternalServerErrorException, Body, Controller, Get, Post, Query, UseGuards, Put} from "@nestjs/common";
 import {CommandBus, QueryBus} from "@nestjs/cqrs";
 import {RolesGuard} from "../../shared/guards/roles.guard";
 import {JwtAuthGuard} from "../../shared/guards/jwt-auth.guard";
@@ -33,7 +33,7 @@ export class GameController {
         this.queryBus = queryBus;
     }
 
-    @Get('/all')
+    @Get()
     async getAllGames(): Promise<GetAllGamesResponseDto> {
         try {
             return await this.queryBus.execute<
@@ -82,7 +82,7 @@ export class GameController {
     @Post('/create')
     async createGame(@Body() createGameRequest: CreateGameRequestDto) {
         try {
-            return await this.commandBus.execute<CreateGameCommand, void>(
+            return await this.commandBus.execute<CreateGameCommand>(
                 CreateGameCommand.of(createGameRequest),
             );
         } catch (error) {
@@ -98,10 +98,10 @@ export class GameController {
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
-    @Post('/update')
+    @Put('/update')
     async updateGame(@Body() updateGameRequest: UpdateGameRequestDto) {
         try {
-            return await this.commandBus.execute<UpdateGameCommand, void>(
+            return await this.commandBus.execute<UpdateGameCommand>(
                 UpdateGameCommand.of(updateGameRequest),
             );
         } catch (error) {
@@ -122,7 +122,7 @@ export class GameController {
     @Post('/delete')
     async deleteGame(@Body() deleteGameRequest: DeleteGameRequestDto) {
         try {
-            return await this.commandBus.execute<DeleteGameCommand, void>(
+            return await this.commandBus.execute<DeleteGameCommand>(
                 DeleteGameCommand.of(deleteGameRequest),
             );
         } catch (error) {

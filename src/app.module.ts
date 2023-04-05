@@ -9,6 +9,7 @@ import {EmailModule} from './modules/email/email.module';
 import {CoreModule} from "./core.module";
 import {GameModule} from "./modules/game/game.module";
 import {CategoryModule} from "./modules/category/category.module";
+import {UnavailabilityModule} from "./modules/unavailability/unavailability.module";
 
 @Module({
   controllers: [AppController],
@@ -33,6 +34,7 @@ import {CategoryModule} from "./modules/category/category.module";
     EmailModule,
     GameModule,
     CategoryModule,
+    UnavailabilityModule,
   ],
 })
 export class AppModule {}

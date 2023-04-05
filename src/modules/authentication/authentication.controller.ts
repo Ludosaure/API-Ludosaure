@@ -61,7 +61,7 @@ export class AuthenticationController {
   @Post('/register')
   async register(@Body() registerRequest: RegisterRequestDto) {
     try {
-      await this.commandBus.execute<RegisterCommand, void>(
+      await this.commandBus.execute<RegisterCommand>(
         RegisterCommand.of(registerRequest),
       );
     } catch (error) {
@@ -77,7 +77,7 @@ export class AuthenticationController {
   @Get('/confirm-account')
   async confirmAccount(@Query() confirmAccountRequest: ConfirmAccountRequestDto) {
     try {
-      await this.commandBus.execute<ConfirmAccountCommand, void>(
+      await this.commandBus.execute<ConfirmAccountCommand>(
         ConfirmAccountCommand.of(confirmAccountRequest),
       );
     } catch (error) {
@@ -93,7 +93,7 @@ export class AuthenticationController {
   @Post('/resend-confirmation-mail')
   async resendConfirmationMail(@Body() resendConfirmationMailRequest: ResendConfirmationMailRequestDto) {
     try {
-      await this.commandBus.execute<ResendConfirmationMailCommand, void>(
+      await this.commandBus.execute<ResendConfirmationMailCommand>(
           ResendConfirmationMailCommand.of(resendConfirmationMailRequest),
       );
     } catch (error) {
