@@ -14,7 +14,7 @@ import {GetAllUsersResponseDto} from './dto/response/get-all-users-response.dto'
 import {GetAllUsersQuery} from './application/query/get-all-users.query';
 import {JwtAuthGuard} from "../../shared/guards/jwt-auth.guard";
 import {RolesGuard} from "../../shared/guards/roles.guard";
-import {Role} from "../../infrastructure/model/enum/role";
+import {Role} from "../../domain/model/enum/role";
 import {Roles} from "../../shared/roles.decorator";
 import {CloseAccountRequestDto} from "./dto/request/close-account-request.dto";
 import {CloseAccountCommand} from "./application/command/close-account.command";
