@@ -19,11 +19,15 @@ export class UnavailabilityEntityRepository extends Repository<Unavailability> i
 
     findByGameId(gameId: string): Promise<Unavailability[]> {
         return this.find({
-                where: {
+                relations: {game: true,},
+                select: {
+                    id: true,
+                    date: true,
                     game: {
-                        id: gameId,
-                    },
+                        id: true,
+                    }
                 },
+                where: {game: {id: gameId,},},
             }
         );
     }

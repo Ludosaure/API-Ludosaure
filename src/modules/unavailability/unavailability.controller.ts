@@ -14,12 +14,14 @@ import {CreateUnavailabilityRequestDto} from "./dto/request/create-unavailabilit
 import {CreateUnavailabilityCommand} from "./application/command/create-unavailability.command";
 import {DeleteUnavailabilityRequestDto} from "./dto/request/delete-unavailability-request.dto";
 import {DeleteUnavailabilityCommand} from "./application/command/delete-unavailability.command";
+import {
+    GameAlreadyUnavailableForThisDateException
+} from "./exceptions/game-already-unavailable-for-this-date.exception";
 
 @ApiTags('Unavailability')
 @Controller('unavailability')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(Role.ADMIN)
 export class UnavailabilityController {
     private readonly commandBus: CommandBus;
     private readonly queryBus: QueryBus;
@@ -29,14 +31,12 @@ export class UnavailabilityController {
         this.queryBus = queryBus;
     }
 
-    @Roles(Role.CLIENT)
+    @Roles(Role.ADMIN, Role.CLIENT)
     @Get('/getByGameId')
     async getUnavailabilitiesByGameId(@Query() getUnavailabilitiesByGameIdRequestDto: GetUnavailabilitiesByGameIdRequestDto) {
         try {
-            return await this.queryBus.execute<
-                GetUnavailabilitiesByGameIdQuery,
-                GetUnavailabilitiesByGameIdResponseDto
-            >(GetUnavailabilitiesByGameIdQuery.of(getUnavailabilitiesByGameIdRequestDto));
+            return await this.queryBus.execute<GetUnavailabilitiesByGameIdQuery, GetUnavailabilitiesByGameIdResponseDto>
+            (GetUnavailabilitiesByGameIdQuery.of(getUnavailabilitiesByGameIdRequestDto));
         } catch (error) {
             if (error instanceof GameNotFoundException) {
                 throw new GameNotFoundException();
@@ -47,6 +47,7 @@ export class UnavailabilityController {
         }
     }
 
+    @Roles(Role.ADMIN)
     @Post('/create')
     async createUnavailability(@Body() createUnavailabilityRequest: CreateUnavailabilityRequestDto) {
         try {
@@ -56,6 +57,8 @@ export class UnavailabilityController {
         } catch (error) {
             if (error instanceof GameNotFoundException) {
                 throw new GameNotFoundException();
+            } else if (error instanceof GameAlreadyUnavailableForThisDateException) {
+                throw new GameAlreadyUnavailableForThisDateException();
             } else {
                 console.error(error);
                 throw new InternalServerErrorException();
@@ -63,6 +66,7 @@ export class UnavailabilityController {
         }
     }
 
+    @Roles(Role.ADMIN)
     @Post('/delete')
     async deleteUnavailability(@Body() deleteUnavailabilityRequest: DeleteUnavailabilityRequestDto) {
         try {
