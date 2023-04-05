@@ -29,7 +29,6 @@ export class CreateGameHandler {
         game.nbPlayersMax = command.nbPlayersMax;
         game.averageDuration = command.averageDuration;
         game.ageMin = command.ageMin;
-        game.ageMax = command.ageMax;
         game.weeklyAmount = command.weeklyAmount;
         game.category = foundCategory;
         await this.gameRepository.saveOrUpdate(game);

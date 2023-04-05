@@ -24,9 +24,6 @@ export class Game {
     @Column({nullable: false, name: 'age_min'})
     ageMin: number;
 
-    @Column({nullable: false, name: 'age_max'})
-    ageMax: number;
-
     @Column({nullable: false, name: 'weekly_amount'})
     weeklyAmount: number;
 

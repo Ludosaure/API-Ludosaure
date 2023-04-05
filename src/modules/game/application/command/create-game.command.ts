@@ -7,19 +7,17 @@ export class CreateGameCommand {
     public readonly nbPlayersMax: number;
     public readonly averageDuration: number;
     public readonly ageMin: number;
-    public readonly ageMax: number;
     public readonly weeklyAmount: number;
     public readonly categoryId: string;
 
     constructor(name: string, description: string, nbPlayersMin: number, nbPlayersMax: number,
-                averageDuration: number, ageMin: number, ageMax: number, weeklyAmount: number, categoryId: string) {
+                averageDuration: number, ageMin: number, weeklyAmount: number, categoryId: string) {
         this.name = name;
         this.description = description;
         this.nbPlayersMin = nbPlayersMin;
         this.nbPlayersMax = nbPlayersMax;
         this.averageDuration = averageDuration;
         this.ageMin = ageMin;
-        this.ageMax = ageMax;
         this.weeklyAmount = weeklyAmount;
         this.categoryId = categoryId;
     }
@@ -32,11 +30,10 @@ export class CreateGameCommand {
             nbPlayersMax,
             averageDuration,
             ageMin,
-            ageMax,
             weeklyAmount,
             categoryId
         } = createGameRequest;
         return new CreateGameCommand(name, description, nbPlayersMin, nbPlayersMax,
-            averageDuration, ageMin, ageMax, weeklyAmount, categoryId);
+            averageDuration, ageMin, weeklyAmount, categoryId);
     }
 }

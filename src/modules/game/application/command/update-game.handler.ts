@@ -32,8 +32,6 @@ export class UpdateGameHandler {
             foundGame.averageDuration = command.averageDuration;
         if (command.ageMin != null)
             foundGame.ageMin = command.ageMin;
-        if (command.ageMax != null)
-            foundGame.ageMax = command.ageMax;
         if (command.weeklyAmount != null)
             foundGame.weeklyAmount = command.weeklyAmount;
 

@@ -24,9 +24,6 @@ export class UpdateGameRequestDto {
     @ApiProperty({default: 8})
     ageMin: number;
 
-    @ApiProperty({default: 99})
-    ageMax: number;
-
     @ApiProperty({default: 10})
     weeklyAmount: number;
 

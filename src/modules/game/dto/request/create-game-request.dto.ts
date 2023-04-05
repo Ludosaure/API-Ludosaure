@@ -26,10 +26,6 @@ export class CreateGameRequestDto {
     ageMin: number;
 
     @IsNotEmpty()
-    @ApiProperty({default: 99})
-    ageMax: number;
-
-    @IsNotEmpty()
     @ApiProperty({default: 10})
     weeklyAmount: number;
 
