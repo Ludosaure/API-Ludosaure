@@ -1,5 +1,7 @@
-import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Category} from "./category.entity";
+import {User} from "./user.entity";
+import {FavoriteGame} from "./favorite-game.entity";
 
 @Entity()
 export class Game {
@@ -30,4 +32,7 @@ export class Game {
     @ManyToOne(() => Category, (category) => category.id, {nullable: false})
     @JoinColumn({name: 'category_id'})
     category: Category;
+
+    @OneToMany(() => FavoriteGame, (favoriteGame) => favoriteGame.game)
+    favoriteGames: FavoriteGame[];
 }

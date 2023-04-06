@@ -1,6 +1,8 @@
-import {Column, Entity, PrimaryGeneratedColumn, Unique} from 'typeorm';
+import {Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, Unique} from 'typeorm';
 import {IsEmail, IsPhoneNumber} from 'class-validator';
 import {Role} from "./enum/role";
+import {Game} from "./game.entity";
+import {FavoriteGame} from "./favorite-game.entity";
 
 @Entity()
 @Unique(['email'])
@@ -53,6 +55,9 @@ export class User {
 
     @Column({nullable: false, default: false, name: 'is_account_closed'})
     isAccountClosed: boolean;
+
+    @OneToMany(() => FavoriteGame, (favoriteGame) => favoriteGame.user)
+    favoriteGames: FavoriteGame[];
 
     isAccountActive(): boolean {
         return this.isAccountVerified && !this.isAccountClosed;
