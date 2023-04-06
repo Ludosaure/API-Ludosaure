@@ -9,7 +9,7 @@ export class Unavailability {
     @Column({nullable: false})
     date: Date;
 
-    @ManyToOne(() => Game, (game) => game.id)
+    @ManyToOne(() => Game, (game) => game.id, {nullable: false})
     @JoinColumn({name: 'game_id'})
     game: Game;
 }

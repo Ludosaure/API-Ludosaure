@@ -10,9 +10,9 @@ export class Media {
     @Column({nullable: false})
     name: string;
 
-    @ManyToOne(() => Game, game => game.id)
+    @ManyToOne(() => Game, game => game.id, {nullable: true})
     game: Game;
 
-    @ManyToOne(() => News, news => news.id)
+    @ManyToOne(() => News, news => news.id, {nullable: true})
     news: News;
 }
