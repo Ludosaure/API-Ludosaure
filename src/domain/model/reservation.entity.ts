@@ -40,6 +40,14 @@ export class Reservation {
     @ManyToMany(() => Game, (game) => game.id)
     @JoinTable({
         name: 'reservation_game',
+        joinColumn: {
+            name: 'reservation_id',
+            referencedColumnName: 'id'
+        },
+        inverseJoinColumn: {
+            name: 'game_id',
+            referencedColumnName: 'id'
+        }
     })
     games: Game[];
 }
