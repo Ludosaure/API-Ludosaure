@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import {CqrsModule} from "@nestjs/cqrs";
 import {TypeOrmModule} from "@nestjs/typeorm";
-import {Package} from "../../domain/model/package.entity";
+import {Plan} from "../../domain/model/plan.entity";
 
 @Module({
     imports: [
         CqrsModule,
-        TypeOrmModule.forFeature([Package]),
+        TypeOrmModule.forFeature([Plan]),
     ],
 })
-export class PackageModule {}
+export class PlanModule {}

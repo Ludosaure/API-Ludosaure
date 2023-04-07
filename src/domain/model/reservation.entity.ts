@@ -1,7 +1,7 @@
 import {Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {User} from "./user.entity";
-import {Package} from "./package.entity";
 import {Game} from "./game.entity";
+import {Plan} from "./plan.entity";
 
 @Entity()
 export class Reservation {
@@ -33,9 +33,9 @@ export class Reservation {
     @JoinColumn({name: 'user_id'})
     user: User;
 
-    @ManyToOne(() => Package, (appliedPackage) => appliedPackage.id, {nullable: true})
-    @JoinColumn({name: 'applied_package_id'})
-    appliedPackage: Package;
+    @ManyToOne(() => Plan, (appliedPlan) => appliedPlan.id, {nullable: true})
+    @JoinColumn({name: 'applied_plan_id'})
+    appliedPlan: Plan;
 
     @ManyToMany(() => Game, (game) => game.id)
     @JoinTable({

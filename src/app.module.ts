@@ -10,7 +10,7 @@ import {CoreModule} from "./core.module";
 import {GameModule} from "./modules/game/game.module";
 import {CategoryModule} from "./modules/category/category.module";
 import {UnavailabilityModule} from "./modules/unavailability/unavailability.module";
-import {PackageModule} from "./modules/package/package.module";
+import {PlanModule} from "./modules/plan/planModule";
 import {FaqModule} from "./modules/faq/faq.module";
 import {FavoriteModule} from "./modules/favorite/favorite.module";
 import {InvoiceModule} from "./modules/invoice/invoice.module";
@@ -53,7 +53,7 @@ import {UserGameReviewModule} from "./modules/user-game-review/user-game-review.
         GameModule,
         CategoryModule,
         UnavailabilityModule,
-        PackageModule,
+        PlanModule,
         FaqModule,
         FavoriteModule,
         InvoiceModule,
