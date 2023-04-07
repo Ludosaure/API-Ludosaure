@@ -24,6 +24,8 @@ import {ResendConfirmationMailCommand} from "./application/commands/resend-confi
 import {AccountNotVerifiedException} from "./exception/account-not-verified.exception";
 import {AccountClosedException} from "./exception/account-closed.exception";
 import {AccountAlreadyVerifiedException} from "./exception/account-already-verified.exception";
+import {PasswordAndConfirmPasswordNotMatchException} from "./exception/password-and-confirm-not-match.exception";
+import {BadPasswordFormatException} from "./exception/bad-password-format.exception";
 
 @ApiTags('Authentication')
 @Controller('authentication')
@@ -66,10 +68,14 @@ export class AuthenticationController {
       );
     } catch (error) {
       if (error instanceof MailAlreadyUsedException) {
-        throw new MailAlreadyUsedException();
+          throw new MailAlreadyUsedException();
+      } else if (error instanceof PasswordAndConfirmPasswordNotMatchException) {
+          throw new PasswordAndConfirmPasswordNotMatchException();
+      } else if( error instanceof BadPasswordFormatException) {
+          throw new BadPasswordFormatException();
       } else {
-        console.error(error);
-        throw new InternalServerErrorException();
+          console.error(error);
+          throw new InternalServerErrorException();
       }
     }
   }
