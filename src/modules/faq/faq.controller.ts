@@ -1,5 +1,5 @@
 import {ApiBearerAuth, ApiTags} from "@nestjs/swagger";
-import {Body, Controller, Get, InternalServerErrorException, Post, UseGuards} from "@nestjs/common";
+import {Body, Controller, Delete, Get, InternalServerErrorException, Post, UseGuards} from "@nestjs/common";
 import {RolesGuard} from "../../shared/guards/roles.guard";
 import {JwtAuthGuard} from "../../shared/guards/jwt-auth.guard";
 import {CommandBus, QueryBus} from "@nestjs/cqrs";
@@ -66,7 +66,7 @@ export class FaqController {
     }
 
     @Roles(Role.ADMIN)
-    @Post('/delete')
+    @Delete('/delete')
     async deleteFaq(@Body() deleteFaqRequest: DeleteFaqRequestDto) {
         try {
             return await this.commandBus.execute<DeleteFaqCommand>(DeleteFaqCommand.of(deleteFaqRequest));

@@ -1,5 +1,5 @@
 import {ApiBearerAuth, ApiTags} from "@nestjs/swagger";
-import {InternalServerErrorException, Body, Controller, Get, Post, Query, UseGuards, Put} from "@nestjs/common";
+import {InternalServerErrorException, Body, Controller, Get, Post, Query, UseGuards, Put, Delete} from "@nestjs/common";
 import {CommandBus, QueryBus} from "@nestjs/cqrs";
 import {RolesGuard} from "../../shared/guards/roles.guard";
 import {JwtAuthGuard} from "../../shared/guards/jwt-auth.guard";
@@ -119,7 +119,7 @@ export class GameController {
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
-    @Post('/delete')
+    @Delete('/delete')
     async deleteGame(@Body() deleteGameRequest: DeleteGameRequestDto) {
         try {
             return await this.commandBus.execute<DeleteGameCommand>(

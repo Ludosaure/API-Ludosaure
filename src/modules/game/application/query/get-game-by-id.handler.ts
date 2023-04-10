@@ -9,8 +9,8 @@ export class GetGameByIdHandler implements ICommandHandler<GetGameByIdQuery> {
 
     constructor(private readonly gameRepository: GameEntityRepository) {
     }
-    async execute(command: GetGameByIdQuery): Promise<GetGameByIdResponseDto> {
-        const game = await this.gameRepository.findById(command.id);
+    async execute(query: GetGameByIdQuery): Promise<GetGameByIdResponseDto> {
+        const game = await this.gameRepository.findById(query.id);
         if (game == null) {
             throw new GameNotFoundException();
         }

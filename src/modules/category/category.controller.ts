@@ -1,5 +1,5 @@
 import {ApiBearerAuth, ApiTags} from "@nestjs/swagger";
-import {InternalServerErrorException, Body, Controller, Get, Post, UseGuards, Put} from "@nestjs/common";
+import {InternalServerErrorException, Body, Controller, Get, Post, UseGuards, Put, Delete} from "@nestjs/common";
 import {CommandBus, QueryBus} from "@nestjs/cqrs";
 import {JwtAuthGuard} from "../../shared/guards/jwt-auth.guard";
 import {RolesGuard} from "../../shared/guards/roles.guard";
@@ -74,7 +74,7 @@ export class CategoryController {
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
-    @Post('/delete')
+    @Delete('/delete')
     async deleteCategory(@Body() deleteCategoryRequest: DeleteCategoryRequestDto) {
         try {
             return await this.commandBus.execute<DeleteCategoryCommand>(DeleteCategoryCommand.of(deleteCategoryRequest));

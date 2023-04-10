@@ -1,5 +1,5 @@
 import {ApiBearerAuth, ApiTags} from "@nestjs/swagger";
-import {Body, Controller, Get, InternalServerErrorException, Post, Query, UseGuards} from "@nestjs/common";
+import {Body, Controller, Delete, Get, InternalServerErrorException, Post, Query, UseGuards} from "@nestjs/common";
 import {CommandBus, QueryBus} from "@nestjs/cqrs";
 import {JwtAuthGuard} from "../../shared/guards/jwt-auth.guard";
 import {RolesGuard} from "../../shared/guards/roles.guard";
@@ -67,7 +67,7 @@ export class UnavailabilityController {
     }
 
     @Roles(Role.ADMIN)
-    @Post('/delete')
+    @Delete('/delete')
     async deleteUnavailability(@Body() deleteUnavailabilityRequest: DeleteUnavailabilityRequestDto) {
         try {
             return await this.commandBus.execute<DeleteUnavailabilityCommand>(
