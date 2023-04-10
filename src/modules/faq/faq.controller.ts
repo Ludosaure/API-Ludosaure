@@ -18,7 +18,6 @@ import {DeleteFaqCommand} from "./application/command/delete-faq.command";
 @ApiTags('Faq')
 @Controller('faq')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard, RolesGuard)
 export class FaqController {
     private readonly commandBus: CommandBus;
     private readonly queryBus: QueryBus;
@@ -28,7 +27,6 @@ export class FaqController {
         this.queryBus = queryBus;
     }
 
-    @Roles(Role.ADMIN, Role.CLIENT)
     @Get()
     async getAll() {
         try {
@@ -39,6 +37,7 @@ export class FaqController {
         }
     }
 
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
     @Post('/create')
     async createFaq(@Body() createFaqRequest: CreateFaqRequestDto) {
@@ -50,6 +49,7 @@ export class FaqController {
         }
     }
 
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
     @Post('/update')
     async updateFaq(@Body() updateFaqRequest: UpdateFaqRequestDto) {
@@ -65,6 +65,7 @@ export class FaqController {
         }
     }
 
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
     @Delete('/delete')
     async deleteFaq(@Body() deleteFaqRequest: DeleteFaqRequestDto) {

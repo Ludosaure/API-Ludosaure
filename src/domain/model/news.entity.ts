@@ -5,6 +5,8 @@ export class News {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
+    //TODO définir champs avec les gars
+
     @Column({nullable: false, name: 'start_date'})
     startDate: Date;
 

@@ -9,6 +9,9 @@ export class Message {
     @Column({nullable: false})
     content: string;
 
+    @Column({nullable: false, name: 'send_date'})
+    sendDate: Date;
+
     @ManyToOne(() => User, (user) => user.id, {nullable: false})
     @JoinColumn({name: 'sender_id'})
     sender: User;

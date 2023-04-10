@@ -6,7 +6,7 @@ export class Review {
     id: string;
 
     @Column({nullable: false})
-    note: number;
+    rating: number;
 
     @Column({nullable: false})
     title: string;
