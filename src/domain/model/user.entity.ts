@@ -1,9 +1,9 @@
-import {Column, Entity, PrimaryGeneratedColumn, Unique} from 'typeorm';
+import {Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique} from 'typeorm';
 import {IsEmail, IsPhoneNumber} from 'class-validator';
 import {Role} from "./enum/role";
+import {FavoriteGame} from "./favorite-game.entity";
 
 @Entity()
-@Unique(['email'])
 export class User {
     @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -31,12 +31,7 @@ export class User {
     @Column({nullable: true, name: 'profile_picture_path'})
     profilePicturePath: string;
 
-    @Column({
-        nullable: false,
-        type: 'enum',
-        enum: Role,
-        default: Role.CLIENT,
-    })
+    @Column({nullable: false, type: 'enum', enum: Role, default: Role.CLIENT})
     role: Role;
 
     @Column({nullable: false, default: false, name: 'is_account_verified'})
@@ -53,6 +48,9 @@ export class User {
 
     @Column({nullable: false, default: false, name: 'is_account_closed'})
     isAccountClosed: boolean;
+
+    @OneToMany(() => FavoriteGame, (favoriteGame) => favoriteGame.user)
+    favoriteGames: FavoriteGame[];
 
     isAccountActive(): boolean {
         return this.isAccountVerified && !this.isAccountClosed;

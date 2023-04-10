@@ -5,7 +5,7 @@ import {
   Get,
   Post,
   Query,
-  UseGuards,
+  UseGuards, Put,
 } from '@nestjs/common';
 import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
 import {CommandBus, QueryBus} from '@nestjs/cqrs';
@@ -40,7 +40,7 @@ export class UserController {
   @Post('/close-account')
   async closeAccount(@Body() closeAccountRequest: CloseAccountRequestDto) {
     try {
-      await this.commandBus.execute<CloseAccountCommand, void>(
+      await this.commandBus.execute<CloseAccountCommand>(
           CloseAccountCommand.of(closeAccountRequest),
       );
     } catch (error) {
@@ -56,7 +56,7 @@ export class UserController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
-  @Get('/all')
+  @Get()
   async getAll(): Promise<GetAllUsersResponseDto> {
     try {
       return await this.queryBus.execute<
@@ -71,10 +71,10 @@ export class UserController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, OwnGuard)
-  @Post('/update')
+  @Put('/update')
   async update(@Body() updateUserRequest: UpdateUserRequestDto) {
     try {
-      await this.commandBus.execute<UpdateUserCommand, void>(
+      await this.commandBus.execute<UpdateUserCommand>(
           UpdateUserCommand.of(updateUserRequest),
       );
     } catch (error) {
@@ -90,7 +90,7 @@ export class UserController {
   @Get('/unsubscribe')
   async unsubscribe(@Query() unsubscribeRequest: UnsubscribeRequestDto) {
     try {
-      await this.commandBus.execute<UnsubscribeCommand, void>(
+      await this.commandBus.execute<UnsubscribeCommand>(
           UnsubscribeCommand.of(unsubscribeRequest),
       );
     } catch (error) {

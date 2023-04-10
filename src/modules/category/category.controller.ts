@@ -1,5 +1,5 @@
 import {ApiBearerAuth, ApiTags} from "@nestjs/swagger";
-import {InternalServerErrorException, Body, Controller, Get, Post, UseGuards} from "@nestjs/common";
+import {InternalServerErrorException, Body, Controller, Get, Post, UseGuards, Put, Delete} from "@nestjs/common";
 import {CommandBus, QueryBus} from "@nestjs/cqrs";
 import {JwtAuthGuard} from "../../shared/guards/jwt-auth.guard";
 import {RolesGuard} from "../../shared/guards/roles.guard";
@@ -27,7 +27,7 @@ export class CategoryController {
         this.queryBus = queryBus;
     }
 
-    @Get('/all')
+    @Get()
     async getAllCategories() {
         try {
             return await this.queryBus.execute<GetAllCategoriesQuery, GetAllCategoriesResponseDto>(GetAllCategoriesQuery.of());
@@ -43,7 +43,7 @@ export class CategoryController {
     @Post('/create')
     async createCategory(@Body() createCategoryRequest: CreateCategoryRequestDto) {
         try {
-            return await this.commandBus.execute<CreateCategoryCommand, void>(CreateCategoryCommand.of(createCategoryRequest));
+            return await this.commandBus.execute<CreateCategoryCommand>(CreateCategoryCommand.of(createCategoryRequest));
         } catch (error) {
             if (error instanceof CategoryAlreadyExistsException) {
                 throw new CategoryAlreadyExistsException();
@@ -57,10 +57,10 @@ export class CategoryController {
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
-    @Post('/update')
+    @Put('/update')
     async updateCategory(@Body() updateCategoryRequest: UpdateCategoryRequestDto) {
         try {
-            return await this.commandBus.execute<UpdateCategoryCommand, void>(UpdateCategoryCommand.of(updateCategoryRequest));
+            return await this.commandBus.execute<UpdateCategoryCommand>(UpdateCategoryCommand.of(updateCategoryRequest));
         } catch (error) {
             if (error instanceof CategoryNotFoundException) {
                 throw new CategoryNotFoundException();
@@ -74,10 +74,10 @@ export class CategoryController {
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
-    @Post('/delete')
+    @Delete('/delete')
     async deleteCategory(@Body() deleteCategoryRequest: DeleteCategoryRequestDto) {
         try {
-            return await this.commandBus.execute<DeleteCategoryCommand, void>(DeleteCategoryCommand.of(deleteCategoryRequest));
+            return await this.commandBus.execute<DeleteCategoryCommand>(DeleteCategoryCommand.of(deleteCategoryRequest));
         } catch (error) {
             if (error instanceof CategoryNotFoundException) {
                 throw new CategoryNotFoundException();

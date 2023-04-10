@@ -24,6 +24,8 @@ import {ResendConfirmationMailCommand} from "./application/commands/resend-confi
 import {AccountNotVerifiedException} from "./exception/account-not-verified.exception";
 import {AccountClosedException} from "./exception/account-closed.exception";
 import {AccountAlreadyVerifiedException} from "./exception/account-already-verified.exception";
+import {PasswordAndConfirmPasswordNotMatchException} from "./exception/password-and-confirm-not-match.exception";
+import {BadPasswordFormatException} from "./exception/bad-password-format.exception";
 
 @ApiTags('Authentication')
 @Controller('authentication')
@@ -61,15 +63,19 @@ export class AuthenticationController {
   @Post('/register')
   async register(@Body() registerRequest: RegisterRequestDto) {
     try {
-      await this.commandBus.execute<RegisterCommand, void>(
+      await this.commandBus.execute<RegisterCommand>(
         RegisterCommand.of(registerRequest),
       );
     } catch (error) {
       if (error instanceof MailAlreadyUsedException) {
-        throw new MailAlreadyUsedException();
+          throw new MailAlreadyUsedException();
+      } else if (error instanceof PasswordAndConfirmPasswordNotMatchException) {
+          throw new PasswordAndConfirmPasswordNotMatchException();
+      } else if( error instanceof BadPasswordFormatException) {
+          throw new BadPasswordFormatException();
       } else {
-        console.error(error);
-        throw new InternalServerErrorException();
+          console.error(error);
+          throw new InternalServerErrorException();
       }
     }
   }
@@ -77,7 +83,7 @@ export class AuthenticationController {
   @Get('/confirm-account')
   async confirmAccount(@Query() confirmAccountRequest: ConfirmAccountRequestDto) {
     try {
-      await this.commandBus.execute<ConfirmAccountCommand, void>(
+      await this.commandBus.execute<ConfirmAccountCommand>(
         ConfirmAccountCommand.of(confirmAccountRequest),
       );
     } catch (error) {
@@ -93,7 +99,7 @@ export class AuthenticationController {
   @Post('/resend-confirmation-mail')
   async resendConfirmationMail(@Body() resendConfirmationMailRequest: ResendConfirmationMailRequestDto) {
     try {
-      await this.commandBus.execute<ResendConfirmationMailCommand, void>(
+      await this.commandBus.execute<ResendConfirmationMailCommand>(
           ResendConfirmationMailCommand.of(resendConfirmationMailRequest),
       );
     } catch (error) {

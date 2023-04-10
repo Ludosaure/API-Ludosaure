@@ -12,11 +12,12 @@ import {UpdateGameHandler} from "./application/command/update-game.handler";
 import {DeleteGameHandler} from "./application/command/delete-game.handler";
 import {GetGameByIdHandler} from "./application/query/get-game-by-id.handler";
 import {GetGamesByNameHandler} from "./application/query/get-games-by-name.handler";
+import {FavoriteGame} from "../../domain/model/favorite-game.entity";
 
 @Module({
     imports: [
         CqrsModule,
-        TypeOrmModule.forFeature([Game, Category]),
+        TypeOrmModule.forFeature([Game, Category, FavoriteGame]),
     ],
     controllers: [GameController],
     providers: [

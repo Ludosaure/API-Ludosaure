@@ -8,8 +8,9 @@ export class Unavailability {
 
     @Column({nullable: false})
     date: Date;
+    // TODO voir avec les gars si un seul jour ça leur va
 
-    @ManyToOne(() => Game, (game) => game.id)
+    @ManyToOne(() => Game, (game) => game.id, {nullable: false})
     @JoinColumn({name: 'game_id'})
-    gameId: string;
+    game: Game;
 }

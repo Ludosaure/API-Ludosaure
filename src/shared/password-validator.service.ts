@@ -13,11 +13,10 @@ export class PasswordValidator {
     }
     const strength = passwordStrength(password);
     if (
-      strength.id === 0 &&
-      strength.length < 8 &&
-      !strength.contains.includes('uppercase') &&
-      !strength.contains.includes('lowercase') &&
-      !strength.contains.includes('number') &&
+      strength.id < 2 || strength.length < 8 ||
+      !strength.contains.includes('uppercase') ||
+      !strength.contains.includes('lowercase') ||
+      !strength.contains.includes('number') ||
       !strength.contains.includes('symbol')
     ) {
       throw new BadPasswordFormatException();
