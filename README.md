@@ -68,10 +68,6 @@ $ nest g module <nom_du_module>
 ### Pour ajouter une commande ou une query à un module
 Ne pas oublier d'ajouter le handler dans le fichier <nom_du_module>.module.ts dans les providers et les exports
 
-## Relever des exceptions
-Lorsqu'une exception est relevée dans un handler, il faut penser à l'ajouter dans le catch de la route correspondante 
-dans le controller.
-
 ## Utilisation des guards
 Différents guards sont utilisables dans l'application.
 - JwtAuthGuard : permet de vérifier que l'utilisateur est authentifié via un token jwt. Ce guard doit être accompagné
