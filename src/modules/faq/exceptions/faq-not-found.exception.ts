@@ -1,8 +1,7 @@
-import {HttpException} from "@nestjs/common";
-import {ErrorCode} from "../../../shared/enums/error-code.enum";
+import {HttpException, HttpStatus} from "@nestjs/common";
 
 export class FaqNotFoundException extends HttpException {
     constructor() {
-        super('Faq not found', ErrorCode.NOT_FOUND);
+        super('Faq not found', HttpStatus.NOT_FOUND);
     }
 }

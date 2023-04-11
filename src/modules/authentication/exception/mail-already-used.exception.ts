@@ -1,8 +1,7 @@
-import { HttpException } from '@nestjs/common';
-import { ErrorCode } from '../../../shared/enums/error-code.enum';
+import {HttpException, HttpStatus} from '@nestjs/common';
 
 export class MailAlreadyUsedException extends HttpException {
   constructor() {
-    super('Mail already exists', ErrorCode.CONFLICT);
+    super('Mail already exists', HttpStatus.CONFLICT);
   }
 }

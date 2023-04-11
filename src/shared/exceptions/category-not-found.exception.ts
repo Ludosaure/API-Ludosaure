@@ -1,8 +1,7 @@
-import { HttpException } from '@nestjs/common';
-import { ErrorCode } from '../enums/error-code.enum';
+import {HttpException, HttpStatus} from '@nestjs/common';
 
 export class CategoryNotFoundException extends HttpException {
   constructor() {
-    super('Category not found', ErrorCode.NOT_FOUND);
+    super('Category not found', HttpStatus.NOT_FOUND);
   }
 }

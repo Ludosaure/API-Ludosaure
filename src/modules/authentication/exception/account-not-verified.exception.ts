@@ -1,8 +1,7 @@
-import { HttpException } from '@nestjs/common';
-import { ErrorCode } from '../../../shared/enums/error-code.enum';
+import {HttpException, HttpStatus} from '@nestjs/common';
 
 export class AccountNotVerifiedException extends HttpException {
   constructor() {
-    super('The account is not verified', ErrorCode.FORBIDDEN);
+    super('The account is not verified', HttpStatus.FORBIDDEN);
   }
 }

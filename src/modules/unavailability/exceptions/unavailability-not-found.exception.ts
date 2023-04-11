@@ -1,8 +1,7 @@
-import {HttpException} from "@nestjs/common";
-import {ErrorCode} from "../../../shared/enums/error-code.enum";
+import {HttpException, HttpStatus} from "@nestjs/common";
 
 export class UnavailabilityNotFoundException extends HttpException {
     constructor() {
-        super('Unavailability not found', ErrorCode.NOT_FOUND);
+        super('Unavailability not found', HttpStatus.NOT_FOUND);
     }
 }

@@ -1,8 +1,7 @@
-import { HttpException } from '@nestjs/common';
-import { ErrorCode } from '../enums/error-code.enum';
+import {HttpException, HttpStatus} from '@nestjs/common';
 
 export class GameNotFoundException extends HttpException {
   constructor() {
-    super('Game not found', ErrorCode.NOT_FOUND);
+    super('Game not found', HttpStatus.NOT_FOUND);
   }
 }

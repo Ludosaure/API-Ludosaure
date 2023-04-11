@@ -1,8 +1,7 @@
-import { HttpException } from '@nestjs/common';
-import { ErrorCode } from '../../../shared/enums/error-code.enum';
+import {HttpException, HttpStatus} from '@nestjs/common';
 
 export class AccountClosedException extends HttpException {
   constructor() {
-    super('The account is closed', ErrorCode.BAD_REQUEST);
+    super('The account is closed', HttpStatus.BAD_REQUEST);
   }
 }

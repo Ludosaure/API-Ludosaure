@@ -1,8 +1,7 @@
-import {HttpException} from "@nestjs/common";
-import {ErrorCode} from "../../../shared/enums/error-code.enum";
+import {HttpException, HttpStatus} from "@nestjs/common";
 
 export class CategoryAlreadyExistsException extends HttpException {
     constructor() {
-        super('Category already exists', ErrorCode.CONFLICT);
+        super('Category already exists', HttpStatus.CONFLICT);
     }
 }
