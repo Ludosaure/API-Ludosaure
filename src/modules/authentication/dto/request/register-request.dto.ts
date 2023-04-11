@@ -21,6 +21,6 @@ export class RegisterRequestDto {
   public readonly firstname: string;
 
   @IsPhoneNumber()
-  @ApiProperty({ default: '0666666666' })
+  @ApiProperty({ default: '+33666666666' })
   public readonly phone: string;
 }

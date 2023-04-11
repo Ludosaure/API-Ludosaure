@@ -12,7 +12,7 @@ export class UpdateUserRequestDto {
     public readonly confirmPassword: string;
 
     @IsPhoneNumber()
-    @ApiProperty({default: '0666666666'})
+    @ApiProperty({default: '+33666666666'})
     public readonly phoneNumber: string;
 
     @ApiProperty({default: 'mr-john-doe'})
