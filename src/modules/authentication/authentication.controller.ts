@@ -1,5 +1,5 @@
 import {ApiTags} from '@nestjs/swagger';
-import {Body, Controller, Get, Post, Query, Req,} from '@nestjs/common';
+import {Body, Controller, Get, HttpCode, HttpStatus, Post, Query, Req,} from '@nestjs/common';
 import {CommandBus, QueryBus} from '@nestjs/cqrs';
 import {LoginRequestDto} from './dto/request/login-request.dto';
 import {LoginCommand} from './application/commands/login.command';
@@ -22,6 +22,7 @@ export class AuthenticationController {
         this.queryBus = queryBus;
     }
 
+    @HttpCode(HttpStatus.OK)
     @Post('/login')
     async login(@Body() loginRequest: LoginRequestDto, @Req() request) {
         return await this.commandBus.execute<LoginCommand, LoginResponseDto>(
