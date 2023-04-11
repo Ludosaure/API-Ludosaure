@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 config();
-import { Logger } from '@nestjs/common';
+import {Logger, ValidationPipe} from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -18,6 +18,7 @@ function setupSwagger(app: NestFastifyApplication): void {
     .addTag('api')
     .addBearerAuth()
     .build();
+  app.useGlobalPipes(new ValidationPipe());
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 }
