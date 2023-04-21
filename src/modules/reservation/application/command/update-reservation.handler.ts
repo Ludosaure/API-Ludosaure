@@ -1,11 +1,11 @@
 import {CommandHandler} from "@nestjs/cqrs";
 import {UpdateReservationCommand} from "./update-reservation.command";
-import {ReservationRepository} from "../../../../infrastructure/reservation.repository";
 import {ReservationNotFoundException} from "../../exceptions/reservation-not-found.exception";
+import {ReservationEntityRepository} from "../../reservation-entity.repository";
 
 @CommandHandler(UpdateReservationCommand)
 export class UpdateReservationHandler {
-    constructor(private readonly repository: ReservationRepository) {
+    constructor(private readonly repository: ReservationEntityRepository) {
     }
 
     async execute(command: UpdateReservationCommand): Promise<void> {
