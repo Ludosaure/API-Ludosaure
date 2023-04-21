@@ -5,11 +5,31 @@ import {Reservation} from "../../domain/model/reservation.entity";
 import {User} from "../../domain/model/user.entity";
 import {Game} from "../../domain/model/game.entity";
 import {Plan} from "../../domain/model/plan.entity";
+import {ReservationController} from "./reservation.controller";
+import {ReservationEntityRepository} from "./reservation-entity.repository";
+import {UserEntityRepository} from "../user/user-entity.repository";
+import {GameEntityRepository} from "../game/game-entity.repository";
+import {GetAllGamesHandler} from "../game/application/query/get-all-games.handler";
+import {GetReservationByIdHandler} from "./application/query/get-reservation-by-id.handler";
+import {GetReservationByUserIdHandler} from "./application/query/get-reservation-by-user-id.handler";
+import {CreateReservationHandler} from "./application/command/create-reservation.handler";
+import {UpdateReservationHandler} from "./application/command/update-reservation.handler";
 
 @Module({
     imports: [
         CqrsModule,
         TypeOrmModule.forFeature([Reservation, User, Plan, Game]),
+    ],
+    controllers: [ReservationController],
+    providers: [
+        ReservationEntityRepository,
+        UserEntityRepository,
+        GameEntityRepository,
+        GetAllGamesHandler,
+        GetReservationByIdHandler,
+        GetReservationByUserIdHandler,
+        CreateReservationHandler,
+        UpdateReservationHandler,
     ],
 })
 export class ReservationModule {}

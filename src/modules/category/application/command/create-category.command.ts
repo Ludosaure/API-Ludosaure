@@ -3,7 +3,7 @@ import {CreateCategoryRequestDto} from "../../dto/request/create-category-reques
 export class CreateCategoryCommand {
     public readonly name: string;
 
-    constructor(name: string) {
+    private constructor(name: string) {
         this.name = name;
     }
 

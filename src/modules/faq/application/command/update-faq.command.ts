@@ -5,7 +5,7 @@ export class UpdateFaqCommand {
     public readonly question: string;
     public readonly answer: string;
 
-    constructor(id: string, question: string, answer: string) {
+    private constructor(id: string, question: string, answer: string) {
         this.id = id;
         this.question = question;
         this.answer = answer;
