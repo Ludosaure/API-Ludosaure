@@ -14,6 +14,7 @@ import {GetReservationByIdHandler} from "./application/query/get-reservation-by-
 import {GetReservationByUserIdHandler} from "./application/query/get-reservation-by-user-id.handler";
 import {CreateReservationHandler} from "./application/command/create-reservation.handler";
 import {UpdateReservationHandler} from "./application/command/update-reservation.handler";
+import {PlanEntityRepository} from "../plan/plan-entity.repository";
 
 @Module({
     imports: [
@@ -25,6 +26,7 @@ import {UpdateReservationHandler} from "./application/command/update-reservation
         ReservationEntityRepository,
         UserEntityRepository,
         GameEntityRepository,
+        PlanEntityRepository,
         GetAllGamesHandler,
         GetReservationByIdHandler,
         GetReservationByUserIdHandler,

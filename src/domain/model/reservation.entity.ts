@@ -2,6 +2,11 @@ import {Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGen
 import {User} from "./user.entity";
 import {Game} from "./game.entity";
 import {Plan} from "./plan.entity";
+import {DateUtils} from "../../shared/date.utils";
+import {ReservationTooShortException} from "../../modules/reservation/exceptions/reservation-too-short.exception";
+import {
+    ReservationNotInitializedProperlyException
+} from "../../modules/reservation/exceptions/reservation-not-initialized-properly.exception";
 
 @Entity()
 export class Reservation {
@@ -37,7 +42,7 @@ export class Reservation {
     @JoinColumn({name: 'applied_plan_id'})
     appliedPlan: Plan;
 
-    @ManyToMany(() => Game, (game) => game.id)
+    @ManyToMany(() => Game, (game) => game.id, {nullable: false})
     @JoinTable({
         name: 'reservation_game',
         joinColumn: {
@@ -50,4 +55,19 @@ export class Reservation {
         }
     })
     games: Game[];
+
+    public calculateTotalAmount(): number {
+        if(this.startDate == null || this.endDate == null || this.games == null) {
+            throw new ReservationNotInitializedProperlyException();
+        }
+        let totalAmount = 0;
+        const weeks = DateUtils.getWeeksBetween(this.startDate, this.endDate);
+        if (weeks < 1) {
+            throw new ReservationTooShortException();
+        }
+        for (const game of this.games) {
+            totalAmount += game.weeklyAmount * weeks;
+        }
+        return totalAmount;
+    }
 }

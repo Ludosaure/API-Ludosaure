@@ -1,4 +1,4 @@
-import {IsDate, IsNotEmpty} from "class-validator";
+import {IsDateString, IsNotEmpty} from "class-validator";
 import {ApiProperty} from "@nestjs/swagger";
 
 export class CreateUnavailabilityRequestDto {
@@ -7,7 +7,7 @@ export class CreateUnavailabilityRequestDto {
   public readonly gameId: string;
 
   @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   @ApiProperty({default: "2023-01-01"})
   public readonly date: Date;
 }
