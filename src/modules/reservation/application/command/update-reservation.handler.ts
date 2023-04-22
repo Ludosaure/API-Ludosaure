@@ -8,12 +8,14 @@ import {InvalidModificationDateException} from "../../exceptions/invalid-modific
 import {ReservationAlreadyEndedException} from "../../exceptions/reservation-already-ended.exception";
 import {DateUtils} from "../../../../shared/date.utils";
 import {IncoherentAmountException} from "../../exceptions/incoherent-amount.exception";
+import {EmailReservationConfirmationService} from "../../../email/email-reservation-confirmation.service";
 
 @CommandHandler(UpdateReservationCommand)
 export class UpdateReservationHandler {
     constructor(private readonly repository: ReservationEntityRepository,
                 private readonly planRepository: PlanEntityRepository,
-                private readonly invoiceService: InvoiceService) {
+                private readonly invoiceService: InvoiceService,
+                private readonly emailReservationConfirmationService: EmailReservationConfirmationService) {
     }
 
     async execute(command: UpdateReservationCommand): Promise<void> {
@@ -41,8 +43,7 @@ export class UpdateReservationHandler {
             throw new IncoherentAmountException(restToPay);
         }
         await this.invoiceService.createInvoice(restToPay, foundReservation);
-
-        // TODO - Envoyer un email à l'utilisateur
+        await this.emailReservationConfirmationService.sendConfirmationMail(foundReservation, false);
     }
 
     private checkDates(newEndDate: Date, currentStartDate: Date, currentEndDate: Date) {

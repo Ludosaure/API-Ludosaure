@@ -1,12 +1,12 @@
 import {BadRequestException, Injectable} from '@nestjs/common';
 import {JwtService} from '@nestjs/jwt';
-import EmailService from "../../email/email.service";
-import {emailConfig} from "../../../config/email.config";
-import {urlConfig} from "../../../config/url.config";
-import {jwtConfig} from "../../../config/jwt.config";
+import EmailService from "./email.service";
+import {emailConfig} from "../../config/email.config";
+import {urlConfig} from "../../config/url.config";
+import {jwtConfig} from "../../config/jwt.config";
 
 @Injectable()
-export class EmailConfirmationService {
+export class EmailAccountConfirmationService {
     constructor(
         private readonly jwtService: JwtService,
         private readonly emailService: EmailService,
@@ -15,7 +15,7 @@ export class EmailConfirmationService {
     public sendVerificationLink(email: string) {
         const token = this.jwtService.sign({ email: email });
 
-        const confirmationAccountUrl = `${urlConfig.emailConfirmationUrl}?token=${token}`;
+        const confirmationAccountUrl = `${urlConfig.emailConfirmationAccountUrl}?token=${token}`;
         const unsubscribeUrl = `${urlConfig.unsubscribeUrl}?token=${token}`;
 
         return this.emailService.sendMail({

@@ -17,6 +17,9 @@ import {UpdateReservationHandler} from "./application/command/update-reservation
 import {PlanEntityRepository} from "../plan/plan-entity.repository";
 import InvoiceService from "../invoice/invoice.service";
 import {InvoiceEntityRepository} from "../invoice/invoice-entity.repository";
+import {EmailReservationConfirmationService} from "../email/email-reservation-confirmation.service";
+import {JwtService} from "@nestjs/jwt";
+import EmailService from "../email/email.service";
 
 @Module({
     imports: [
@@ -25,6 +28,9 @@ import {InvoiceEntityRepository} from "../invoice/invoice-entity.repository";
     ],
     controllers: [ReservationController],
     providers: [
+        EmailReservationConfirmationService,
+        EmailService,
+        JwtService,
         InvoiceService,
         InvoiceEntityRepository,
         ReservationEntityRepository,

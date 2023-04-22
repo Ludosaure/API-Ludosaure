@@ -5,7 +5,7 @@ import { MailAlreadyUsedException } from '../../exception/mail-already-used.exce
 import { User } from '../../../../domain/model/user.entity';
 import { hash } from 'argon2';
 import { PasswordValidator } from '../../../../shared/password-validator.service';
-import {EmailConfirmationService} from "../email-confirmation.service";
+import {EmailAccountConfirmationService} from "../../../email/email-account-confirmation.service";
 import {UserEntityRepository} from "../../../user/user-entity.repository";
 
 @CommandHandler(RegisterCommand)
@@ -13,7 +13,7 @@ export class RegisterHandler implements ICommandHandler<RegisterCommand> {
   constructor(
     private readonly userRepository: UserEntityRepository,
     private readonly passwordValidator: PasswordValidator,
-    private readonly emailConfirmationService: EmailConfirmationService
+    private readonly emailAccountConfirmationService: EmailAccountConfirmationService
   ) {}
 
   async execute(command: RegisterCommand): Promise<void> {
@@ -31,6 +31,6 @@ export class RegisterHandler implements ICommandHandler<RegisterCommand> {
     user.password = await hash(command.password);
     await this.userRepository.saveOrUpdate(user);
 
-    await this.emailConfirmationService.sendVerificationLink(user.email);
+    await this.emailAccountConfirmationService.sendVerificationLink(user.email);
   }
 }

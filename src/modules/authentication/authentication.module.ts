@@ -8,7 +8,7 @@ import {RegisterHandler} from './application/commands/register.handler';
 import {LoginHandler} from './application/commands/login.handler';
 import {PassportModule} from '@nestjs/passport';
 import {JwtStrategy} from "./strategy/jwt.strategy";
-import {EmailConfirmationService} from "./application/email-confirmation.service";
+import {EmailAccountConfirmationService} from "../email/email-account-confirmation.service";
 import {ConfirmAccountHandler} from "./application/commands/confirm-account.handler";
 import {ResendConfirmationMailHandler} from "./application/commands/resend-confirmation-mail.handler";
 import EmailService from "../email/email.service";
@@ -23,7 +23,7 @@ import {UserEntityRepository} from "../user/user-entity.repository";
     controllers: [AuthenticationController],
     providers: [
         JwtStrategy,
-        EmailConfirmationService,
+        EmailAccountConfirmationService,
         EmailService,
         PasswordValidator,
         UserEntityRepository,

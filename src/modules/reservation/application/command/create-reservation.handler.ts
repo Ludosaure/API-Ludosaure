@@ -13,6 +13,7 @@ import {PlanEntityRepository} from "../../../plan/plan-entity.repository";
 import InvoiceService from "../../../invoice/invoice.service";
 import {DateUtils} from "../../../../shared/date.utils";
 import {Game} from "../../../../domain/model/game.entity";
+import {EmailReservationConfirmationService} from "../../../email/email-reservation-confirmation.service";
 
 @CommandHandler(CreateReservationCommand)
 export class CreateReservationHandler {
@@ -20,7 +21,8 @@ export class CreateReservationHandler {
                 private readonly userRepository: UserEntityRepository,
                 private readonly gameRepository: GameEntityRepository,
                 private readonly planRepository: PlanEntityRepository,
-                private readonly invoiceService: InvoiceService) {
+                private readonly invoiceService: InvoiceService,
+                private readonly emailReservationConfirmationService: EmailReservationConfirmationService) {
     }
 
     async execute(command: CreateReservationCommand): Promise<void> {
@@ -44,7 +46,7 @@ export class CreateReservationHandler {
 
         await this.reservationRepository.saveOrUpdate(reservation);
         await this.invoiceService.createInvoice(reservation.totalAmount, reservation);
-        // TODO - Send email to user
+        await this.emailReservationConfirmationService.sendConfirmationMail(reservation, false);
     }
 
     private async initGames(gamesId: string[]): Promise<Game[]> {

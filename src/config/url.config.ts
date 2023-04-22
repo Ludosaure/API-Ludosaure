@@ -1,17 +1,17 @@
 import * as process from 'process';
 
 export interface IUrlConfig {
-    emailConfirmationUrl: string;
+    emailConfirmationAccountUrl: string;
     unsubscribeUrl: string;
 
 }
 
 export class UrlConfig implements IUrlConfig {
-    emailConfirmationUrl: string;
+    emailConfirmationAccountUrl: string;
     unsubscribeUrl: string;
 
     constructor() {
-        this.emailConfirmationUrl = process.env.EMAIL_CONFIRMATION_URL;
+        this.emailConfirmationAccountUrl = process.env.EMAIL_CONFIRMATION_ACCOUNT_URL;
         this.unsubscribeUrl = process.env.UNSUBSCRIBE_URL;
     }
 }
