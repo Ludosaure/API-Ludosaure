@@ -40,7 +40,6 @@ export class CreateReservationHandler {
         reservation.games = games;
         reservation.appliedPlan = await this.planRepository.findByDuration(startDate, endDate);
         reservation.totalAmount = reservation.calculateTotalAmount();
-        console.log(reservation.totalAmount)
 
         await this.reservationRepository.saveOrUpdate(reservation);
         await this.invoiceService.createInvoice(reservation.totalAmount, reservation);

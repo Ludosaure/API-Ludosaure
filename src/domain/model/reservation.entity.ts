@@ -31,7 +31,7 @@ export class Reservation {
     @Column({nullable: true, name: 'cancelled_date'})
     cancelledDate: Date;
 
-    @Column({nullable: false, name: 'total_amount'})
+    @Column('decimal', {nullable: false, name: 'total_amount', precision: 10, scale: 2})
     totalAmount: number;
 
     @ManyToOne(() => User, (user) => user.id, {nullable: false})
@@ -57,7 +57,7 @@ export class Reservation {
     games: Game[];
 
     public calculateTotalAmount(): number {
-        if(this.startDate == null || this.endDate == null || this.games == null) {
+        if (this.startDate == null || this.endDate == null || this.games == null) {
             throw new ReservationNotInitializedProperlyException();
         }
         let totalAmount = 0;
@@ -67,8 +67,8 @@ export class Reservation {
         }
         for (const game of this.games) {
             totalAmount += game.weeklyAmount * weeks;
-            if(this.appliedPlan != null) {
-                totalAmount = totalAmount * (this.appliedPlan.reduction / 100);
+            if (this.appliedPlan != null) {
+                totalAmount = totalAmount * (1 - this.appliedPlan.reduction / 100);
             }
         }
         return totalAmount;
