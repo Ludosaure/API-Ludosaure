@@ -6,9 +6,6 @@ import {UserNotFoundException} from "../../../../shared/exceptions/user-not-foun
 import {GameNotFoundException} from "../../../../shared/exceptions/game-not-found.exception";
 import {UserEntityRepository} from "../../../user/user-entity.repository";
 import {GameEntityRepository} from "../../../game/game-entity.repository";
-import {
-    EndDateBiggerThanStartDateException
-} from "../../../../shared/exceptions/end-date-bigger-than-start-date.exception";
 import {PlanEntityRepository} from "../../../plan/plan-entity.repository";
 import InvoiceService from "../../../invoice/invoice.service";
 import {DateUtils} from "../../../../shared/date.utils";
@@ -43,6 +40,7 @@ export class CreateReservationHandler {
         reservation.games = games;
         reservation.appliedPlan = await this.planRepository.findByDuration(startDate, endDate);
         reservation.totalAmount = reservation.calculateTotalAmount();
+        console.log(reservation.totalAmount)
 
         await this.reservationRepository.saveOrUpdate(reservation);
         await this.invoiceService.createInvoice(reservation.totalAmount, reservation);

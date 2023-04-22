@@ -1,4 +1,4 @@
-import {IsNotEmpty} from "class-validator";
+import {IsDateString, IsNotEmpty} from "class-validator";
 import {ApiProperty} from "@nestjs/swagger";
 
 export class UpdateReservationRequestDto {
@@ -6,7 +6,8 @@ export class UpdateReservationRequestDto {
     @IsNotEmpty()
     id: string;
 
-    @ApiProperty({default: "2021-01-15T00:00:00.000Z"})
+    @ApiProperty({default: "2021-01-15"})
+    @IsDateString()
     endDate: Date;
 
     @ApiProperty({default: true})

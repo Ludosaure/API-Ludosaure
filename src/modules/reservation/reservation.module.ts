@@ -9,7 +9,6 @@ import {ReservationController} from "./reservation.controller";
 import {ReservationEntityRepository} from "./reservation-entity.repository";
 import {UserEntityRepository} from "../user/user-entity.repository";
 import {GameEntityRepository} from "../game/game-entity.repository";
-import {GetAllGamesHandler} from "../game/application/query/get-all-games.handler";
 import {GetReservationByIdHandler} from "./application/query/get-reservation-by-id.handler";
 import {GetReservationByUserIdHandler} from "./application/query/get-reservation-by-user-id.handler";
 import {CreateReservationHandler} from "./application/command/create-reservation.handler";
@@ -20,24 +19,27 @@ import {InvoiceEntityRepository} from "../invoice/invoice-entity.repository";
 import {EmailReservationConfirmationService} from "../email/email-reservation-confirmation.service";
 import {JwtService} from "@nestjs/jwt";
 import EmailService from "../email/email.service";
+import {GetAllReservationsHandler} from "./application/query/get-all-reservations.handler";
+import {Invoice} from "../../domain/model/invoice.entity";
+import {JwtStrategy} from "../authentication/strategy/jwt.strategy";
 
 @Module({
     imports: [
         CqrsModule,
-        TypeOrmModule.forFeature([Reservation, User, Plan, Game]),
+        TypeOrmModule.forFeature([Reservation, User, Plan, Game, Invoice]),
     ],
     controllers: [ReservationController],
     providers: [
+        JwtStrategy,
         EmailReservationConfirmationService,
         EmailService,
-        JwtService,
         InvoiceService,
         InvoiceEntityRepository,
         ReservationEntityRepository,
         UserEntityRepository,
         GameEntityRepository,
         PlanEntityRepository,
-        GetAllGamesHandler,
+        GetAllReservationsHandler,
         GetReservationByIdHandler,
         GetReservationByUserIdHandler,
         CreateReservationHandler,

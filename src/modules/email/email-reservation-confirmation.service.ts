@@ -161,16 +161,43 @@ export class EmailReservationConfirmationService {
                               <!-- start copy -->
                               <tr>
                                 <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-                                  <h2>Merci ${reservation.user.firstname} pour ${isUpdate ? 'la modification de ' : ''}votre commande !</h2>
+                                    <h2>Merci ${reservation.user.firstname} pour ${isUpdate ? 'la modification de ' : ''}votre commande !</h2>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td align="left" bgcolor="#ffffff" style="padding-left: 24px; padding-right: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
                                     <h3>Voici le résumé de votre commande :</h3>
-                                    <p style="margin: 0;"><u><b>Date de début :</b></u> ${reservation.startDate}. 
+                                </td>
+                              </tr>
+                              <tr>
+                                <td align="left" bgcolor="#ffffff" style="padding-left: 24px; padding-right: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+                                    <u><b>Date de début :</b></u> ${reservation.startDate}. 
                                     Vous pourrez venir récupérer vos jeux directement à notre boutique le jour du début de votre commande : <b>2 bis Bd Cahours, 35150 Janzé</b></br>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td align="left" bgcolor="#ffffff" style="padding-left: 24px; padding-right: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
                                     <u><b>Date de fin :</b></u> ${reservation.endDate}</br>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td align="left" bgcolor="#ffffff" style="padding-left: 24px; padding-right: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
                                     <u><b>Jeux réservés :</b></u> ${reservation.games.map(game => game.name).join(', ')}</br>
-                                    ${reservation.appliedPlan != null ? `La durée de votre réservation vous a permis de bénéficier d\'une réduction de ${reservation.appliedPlan.reduction}€</br>` : ''}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td align="left" bgcolor="#ffffff" style="padding-left: 24px; padding-right: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+                                    ${reservation.appliedPlan != null ? `La durée de votre réservation vous a permis de bénéficier d\'une réduction de ${reservation.appliedPlan.reduction}%</br>` : ''}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td align="left" bgcolor="#ffffff" style="padding-left: 24px; padding-right: 24px; padding-bottom: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
                                     <u><b>Prix total :</b></u> ${reservation.totalAmount}€</br>
-                                    </br>
-                                    Vous pourrez retrouver votre facture dans votre espace personnel sur notre application ou notre site web.</p>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td align="left" bgcolor="#ffffff" style="padding-left: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+                                    Vous pourrez retrouver votre facture dans votre espace personnel sur notre application ou notre site web.
                                 </td>
                               </tr>
                               <!-- end copy -->

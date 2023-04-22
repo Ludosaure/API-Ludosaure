@@ -67,6 +67,9 @@ export class Reservation {
         }
         for (const game of this.games) {
             totalAmount += game.weeklyAmount * weeks;
+            if(this.appliedPlan != null) {
+                totalAmount = totalAmount * (this.appliedPlan.reduction / 100);
+            }
         }
         return totalAmount;
     }
