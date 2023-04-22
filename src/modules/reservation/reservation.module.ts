@@ -15,6 +15,8 @@ import {GetReservationByUserIdHandler} from "./application/query/get-reservation
 import {CreateReservationHandler} from "./application/command/create-reservation.handler";
 import {UpdateReservationHandler} from "./application/command/update-reservation.handler";
 import {PlanEntityRepository} from "../plan/plan-entity.repository";
+import InvoiceService from "../invoice/invoice.service";
+import {InvoiceEntityRepository} from "../invoice/invoice-entity.repository";
 
 @Module({
     imports: [
@@ -23,6 +25,8 @@ import {PlanEntityRepository} from "../plan/plan-entity.repository";
     ],
     controllers: [ReservationController],
     providers: [
+        InvoiceService,
+        InvoiceEntityRepository,
         ReservationEntityRepository,
         UserEntityRepository,
         GameEntityRepository,

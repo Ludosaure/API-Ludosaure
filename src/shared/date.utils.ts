@@ -1,3 +1,5 @@
+import {EndDateBiggerThanStartDateException} from "./exceptions/end-date-bigger-than-start-date.exception";
+
 export class DateUtils {
     /**
      * Get the number of weeks between two dates
@@ -10,5 +12,12 @@ export class DateUtils {
         const millisecondsBetween = endDate.getTime() - startDate.getTime();
         const weeksBetween = millisecondsBetween / millisecondsPerWeek;
         return Math.ceil(weeksBetween);
+    }
+
+    public static checkIfStartDateIsBeforeEndDate(startDate: Date, endDate: Date): boolean {
+        if (startDate > endDate) {
+            throw new EndDateBiggerThanStartDateException();
+        }
+        return true;
     }
 }

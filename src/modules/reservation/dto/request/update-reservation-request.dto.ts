@@ -6,9 +6,6 @@ export class UpdateReservationRequestDto {
     @IsNotEmpty()
     id: string;
 
-    @ApiProperty({default: "2021-01-01T00:00:00.000Z"})
-    startDate: Date;
-
     @ApiProperty({default: "2021-01-15T00:00:00.000Z"})
     endDate: Date;
 

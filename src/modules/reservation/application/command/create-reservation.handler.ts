@@ -6,20 +6,21 @@ import {UserNotFoundException} from "../../../../shared/exceptions/user-not-foun
 import {GameNotFoundException} from "../../../../shared/exceptions/game-not-found.exception";
 import {UserEntityRepository} from "../../../user/user-entity.repository";
 import {GameEntityRepository} from "../../../game/game-entity.repository";
-import {Game} from "../../../../domain/model/game.entity";
-import {DateUtils} from "../../../../shared/date.utils";
-import {ReservationTooShortException} from "../../exceptions/reservation-too-short.exception";
 import {
     EndDateBiggerThanStartDateException
 } from "../../../../shared/exceptions/end-date-bigger-than-start-date.exception";
 import {PlanEntityRepository} from "../../../plan/plan-entity.repository";
+import InvoiceService from "../../../invoice/invoice.service";
+import {DateUtils} from "../../../../shared/date.utils";
+import {Game} from "../../../../domain/model/game.entity";
 
 @CommandHandler(CreateReservationCommand)
 export class CreateReservationHandler {
     constructor(private readonly reservationRepository: ReservationEntityRepository,
                 private readonly userRepository: UserEntityRepository,
                 private readonly gameRepository: GameEntityRepository,
-                private readonly planRepository: PlanEntityRepository) {
+                private readonly planRepository: PlanEntityRepository,
+                private readonly invoiceService: InvoiceService) {
     }
 
     async execute(command: CreateReservationCommand): Promise<void> {
@@ -27,18 +28,11 @@ export class CreateReservationHandler {
         if (foundUser == null) {
             throw new UserNotFoundException();
         }
-        const games = [];
-        for (const gameId of command.games) {
-            const foundGame = await this.gameRepository.findById(gameId);
-            if (foundGame == null) {
-                throw new GameNotFoundException();
-            }
-            games.push(foundGame);
-        }
+        const games = await this.initGames(command.games);
+
         const {startDate, endDate} = command;
-        if (startDate > endDate) {
-            throw new EndDateBiggerThanStartDateException();
-        }
+        DateUtils.checkIfStartDateIsBeforeEndDate(startDate, endDate);
+
         const reservation = new Reservation();
         reservation.createdAt = new Date();
         reservation.startDate = startDate;
@@ -49,8 +43,19 @@ export class CreateReservationHandler {
         reservation.totalAmount = reservation.calculateTotalAmount();
 
         await this.reservationRepository.saveOrUpdate(reservation);
-
-        // TODO - Generate invoice
+        await this.invoiceService.createInvoice(reservation.totalAmount, reservation);
         // TODO - Send email to user
+    }
+
+    private async initGames(gamesId: string[]): Promise<Game[]> {
+        const games = [];
+        for (const gameId of gamesId) {
+            const foundGame = await this.gameRepository.findById(gameId);
+            if (foundGame == null) {
+                throw new GameNotFoundException();
+            }
+            games.push(foundGame);
+        }
+        return games;
     }
 }

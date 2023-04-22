@@ -1,4 +1,5 @@
 import {DateUtils} from "./date.utils";
+import {EndDateBiggerThanStartDateException} from "./exceptions/end-date-bigger-than-start-date.exception";
 
 describe('DateUtils', () => {
 
@@ -43,6 +44,20 @@ describe('DateUtils', () => {
             const startDate = new Date('2020-01-01');
             const endDate = new Date('2020-04-15');
             expect(DateUtils.getWeeksBetween(startDate, endDate)).toBe(15);
+        });
+    });
+
+    describe('checkIfStartDateIsBeforeEndDate', () => {
+        it('should return true', () => {
+            const startDate = new Date('2020-01-01');
+            const endDate = new Date('2020-01-08');
+            expect(DateUtils.checkIfStartDateIsBeforeEndDate(startDate, endDate)).toBe(true);
+        });
+
+        it('should throw an error', () => {
+            const startDate = new Date('2020-01-08');
+            const endDate = new Date('2020-01-01');
+            expect(() => DateUtils.checkIfStartDateIsBeforeEndDate(startDate, endDate)).toThrow(EndDateBiggerThanStartDateException);
         });
     });
 });
