@@ -21,7 +21,12 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
     }
 
     findById(reservationId: string): Promise<Reservation> {
-        return this.findOneBy({id: reservationId});
+        return this.findOne({
+            where: {
+                id: reservationId
+            },
+            relations: ["user", "games", "appliedPlan"]
+        });
     }
 
     findByUserId(userId: string): Promise<Reservation[]> {

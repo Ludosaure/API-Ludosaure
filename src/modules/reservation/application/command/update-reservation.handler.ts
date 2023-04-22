@@ -43,7 +43,7 @@ export class UpdateReservationHandler {
             throw new IncoherentAmountException(restToPay);
         }
         await this.invoiceService.createInvoice(restToPay, foundReservation);
-        await this.emailReservationConfirmationService.sendConfirmationMail(foundReservation, false);
+        await this.emailReservationConfirmationService.sendConfirmationMail(foundReservation, true);
     }
 
     private checkDates(newEndDate: Date, currentStartDate: Date, currentEndDate: Date) {
@@ -53,6 +53,7 @@ export class UpdateReservationHandler {
 
         DateUtils.checkIfStartDateIsBeforeEndDate(currentStartDate, newEndDate);
 
+        // TODO vérifier si ça c'est bon
         if (newEndDate < currentEndDate) {
             throw new InvalidModificationDateException('Reservation can only be extended');
         }

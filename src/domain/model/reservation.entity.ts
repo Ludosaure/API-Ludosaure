@@ -60,7 +60,7 @@ export class Reservation {
     public calculateTotalAmount(): number {
         if (this.startDate == null || this.endDate == null || this.games == null) {
             console.log(this.startDate, this.endDate, this.games)
-            // TODO game is undefined, il faut les créer lors de la création de la réservation
+            // TODO game is undefined pour l'update, il faut récupérer la relation
             throw new ReservationNotInitializedProperlyException();
         }
         let totalAmount = 0;
