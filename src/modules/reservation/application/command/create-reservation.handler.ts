@@ -11,6 +11,7 @@ import InvoiceService from "../../../invoice/invoice.service";
 import {DateUtils} from "../../../../shared/date.utils";
 import {Game} from "../../../../domain/model/game.entity";
 import {EmailReservationConfirmationService} from "../../../email/email-reservation-confirmation.service";
+import {InvalidDateException} from "../../exceptions/invalid-date.exception";
 
 @CommandHandler(CreateReservationCommand)
 export class CreateReservationHandler {
@@ -31,6 +32,9 @@ export class CreateReservationHandler {
 
         const {startDate, endDate} = command;
         DateUtils.checkIfStartDateIsBeforeEndDate(startDate, endDate);
+        if(startDate < new Date()) {
+            throw new InvalidDateException('Reservation start date can not be in the past');
+        }
 
         const reservation = new Reservation();
         reservation.createdAt = new Date();

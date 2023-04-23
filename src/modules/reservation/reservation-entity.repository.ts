@@ -1,7 +1,7 @@
 import {Injectable} from "@nestjs/common";
 import {ReservationRepository} from "../../infrastructure/reservation.repository";
 import {Reservation} from "../../domain/model/reservation.entity";
-import {Repository} from "typeorm";
+import {LessThan, MoreThan, Repository} from "typeorm";
 import {InjectRepository} from "@nestjs/typeorm";
 
 @Injectable()
@@ -31,6 +31,16 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
 
     findByUserId(userId: string): Promise<Reservation[]> {
         return this.findBy({user: {id: userId}});
+    }
+
+    findCurrentReservationsByGameId(gameId: string): Promise<Reservation[]> {
+        return this.find({
+            where: {
+                games: {id: gameId},
+                startDate: LessThan(new Date()),
+                endDate: MoreThan(new Date())
+            }
+        });
     }
 
     async saveOrUpdate(reservation: Reservation): Promise<void> {

@@ -4,7 +4,7 @@ import {ReservationNotFoundException} from "../../exceptions/reservation-not-fou
 import {ReservationEntityRepository} from "../../reservation-entity.repository";
 import {PlanEntityRepository} from "../../../plan/plan-entity.repository";
 import InvoiceService from "../../../invoice/invoice.service";
-import {InvalidModificationDateException} from "../../exceptions/invalid-modification-date.exception";
+import {InvalidDateException} from "../../exceptions/invalid-date.exception";
 import {ReservationAlreadyEndedException} from "../../exceptions/reservation-already-ended.exception";
 import {DateUtils} from "../../../../shared/date.utils";
 import {IncoherentAmountException} from "../../exceptions/incoherent-amount.exception";
@@ -24,8 +24,9 @@ export class UpdateReservationHandler {
             throw new ReservationNotFoundException();
         }
         if (command.endDate != null) {
-            this.checkDates(command.endDate, foundReservation.startDate, foundReservation.endDate);
-            foundReservation.endDate = command.endDate;
+            const newEndDate = new Date(command.endDate);
+            this.checkDates(newEndDate, foundReservation.startDate, foundReservation.endDate);
+            foundReservation.endDate = newEndDate;
             foundReservation.appliedPlan = await this.planRepository.findByDuration(foundReservation.startDate, foundReservation.endDate);
             foundReservation.totalAmount = foundReservation.calculateTotalAmount();
         }
@@ -53,9 +54,8 @@ export class UpdateReservationHandler {
 
         DateUtils.checkIfStartDateIsBeforeEndDate(currentStartDate, newEndDate);
 
-        // TODO vérifier si ça c'est bon
         if (newEndDate < currentEndDate) {
-            throw new InvalidModificationDateException('Reservation can only be extended');
+            throw new InvalidDateException('Reservation can only be extended');
         }
     }
 }

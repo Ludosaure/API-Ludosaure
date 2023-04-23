@@ -32,7 +32,6 @@ export class Reservation {
     cancelledDate: Date;
 
     @Column('decimal', {nullable: false, name: 'total_amount', precision: 10, scale: 2})
-    //TODO il y a 3 décimales qui s'affichent dans le front
     totalAmount: number;
 
     @ManyToOne(() => User, (user) => user.id, {nullable: false})
@@ -59,8 +58,6 @@ export class Reservation {
 
     public calculateTotalAmount(): number {
         if (this.startDate == null || this.endDate == null || this.games == null) {
-            console.log(this.startDate, this.endDate, this.games)
-            // TODO game is undefined pour l'update, il faut récupérer la relation
             throw new ReservationNotInitializedProperlyException();
         }
         let totalAmount = 0;
@@ -70,10 +67,10 @@ export class Reservation {
         }
         for (const game of this.games) {
             totalAmount += game.weeklyAmount * weeks;
-            if (this.appliedPlan != null) {
-                totalAmount = totalAmount * (1 - this.appliedPlan.reduction / 100);
-            }
         }
-        return totalAmount;
+        if (this.appliedPlan != null) {
+            totalAmount = totalAmount * (1 - this.appliedPlan.reduction / 100);
+        }
+        return Number(totalAmount.toFixed(2));
     }
 }
