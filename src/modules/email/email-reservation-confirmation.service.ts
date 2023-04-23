@@ -171,13 +171,13 @@ export class EmailReservationConfirmationService {
                               </tr>
                               <tr>
                                 <td align="left" bgcolor="#ffffff" style="padding-left: 24px; padding-right: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-                                    <u><b>Date de début :</b></u> ${reservation.startDate}. 
+                                    <u><b>Date de début :</b></u> ${reservation.startDate.toLocaleString()}. 
                                     Vous pourrez venir récupérer vos jeux directement à notre boutique le jour du début de votre commande : <b>2 bis Bd Cahours, 35150 Janzé</b></br>
                                 </td>
                               </tr>
                               <tr>
                                 <td align="left" bgcolor="#ffffff" style="padding-left: 24px; padding-right: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-                                    <u><b>Date de fin :</b></u> ${reservation.endDate}</br>
+                                    <u><b>Date de fin :</b></u> ${reservation.endDate.toLocaleString()}</br>
                                 </td>
                               </tr>
                               <tr>
