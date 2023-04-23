@@ -8,6 +8,6 @@ export class CreateUnavailabilityRequestDto {
 
   @IsNotEmpty()
   @IsDateString()
-  @ApiProperty({default: "2023-01-01"})
+  @ApiProperty({default: "2023-06-01"})
   public readonly date: Date;
 }

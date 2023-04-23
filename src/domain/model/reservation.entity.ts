@@ -7,6 +7,10 @@ import {ReservationTooShortException} from "../../modules/reservation/exceptions
 import {
     ReservationNotInitializedProperlyException
 } from "../../modules/reservation/exceptions/reservation-not-initialized-properly.exception";
+import {
+    ReservationAlreadyEndedException
+} from "../../modules/reservation/exceptions/reservation-already-ended.exception";
+import {InvalidDateException} from "../../modules/reservation/exceptions/invalid-date.exception";
 
 @Entity()
 export class Reservation {
@@ -72,5 +76,17 @@ export class Reservation {
             totalAmount = totalAmount * (1 - this.appliedPlan.reduction / 100);
         }
         return Number(totalAmount.toFixed(2));
+    }
+
+    public checkNewDates(newEndDate: Date) {
+        if (this.endDate < new Date()) {
+            throw new ReservationAlreadyEndedException();
+        }
+
+        DateUtils.checkIfStartDateIsBeforeEndDate(this.startDate, newEndDate);
+
+        if (newEndDate < this.endDate) {
+            throw new InvalidDateException('Reservation can only be extended');
+        }
     }
 }

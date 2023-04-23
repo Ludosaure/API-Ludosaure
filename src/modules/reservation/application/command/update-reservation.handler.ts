@@ -25,7 +25,7 @@ export class UpdateReservationHandler {
         }
         if (command.endDate != null) {
             const newEndDate = new Date(command.endDate);
-            this.checkDates(newEndDate, foundReservation.startDate, foundReservation.endDate);
+            foundReservation.checkNewDates(newEndDate);
             foundReservation.endDate = newEndDate;
             foundReservation.appliedPlan = await this.planRepository.findByDuration(foundReservation.startDate, foundReservation.endDate);
             foundReservation.totalAmount = foundReservation.calculateTotalAmount();
@@ -45,17 +45,5 @@ export class UpdateReservationHandler {
         }
         await this.invoiceService.createInvoice(restToPay, foundReservation);
         await this.emailReservationConfirmationService.sendConfirmationMail(foundReservation, true);
-    }
-
-    private checkDates(newEndDate: Date, currentStartDate: Date, currentEndDate: Date) {
-        if (currentEndDate < new Date()) {
-            throw new ReservationAlreadyEndedException();
-        }
-
-        DateUtils.checkIfStartDateIsBeforeEndDate(currentStartDate, newEndDate);
-
-        if (newEndDate < currentEndDate) {
-            throw new InvalidDateException('Reservation can only be extended');
-        }
     }
 }

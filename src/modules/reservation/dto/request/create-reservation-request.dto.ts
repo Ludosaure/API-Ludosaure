@@ -2,12 +2,12 @@ import {IsDateString, IsNotEmpty} from "class-validator";
 import {ApiProperty} from "@nestjs/swagger";
 
 export class CreateReservationRequestDto {
-    @ApiProperty({default: "2023-01-01"})
+    @ApiProperty({default: "2023-06-01"})
     @IsNotEmpty()
     @IsDateString()
     startDate: Date;
 
-    @ApiProperty({default: "2023-01-15"})
+    @ApiProperty({default: "2023-06-15"})
     @IsNotEmpty()
     @IsDateString()
     endDate: Date;
