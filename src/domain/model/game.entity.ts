@@ -1,6 +1,6 @@
-import {Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
-import {Category} from "./category.entity";
-import {FavoriteGame} from "./favorite-game.entity";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Category } from "./category.entity";
+import { Unavailability } from "./unavailability.entity";
 
 @Entity()
 export class Game {
@@ -31,4 +31,7 @@ export class Game {
     @ManyToOne(() => Category, (category) => category.id, {nullable: false})
     @JoinColumn({name: 'category_id'})
     category: Category;
+
+    @OneToMany(() => Unavailability, (unavailability) => unavailability.game)
+    unavailabilities: Unavailability[];
 }

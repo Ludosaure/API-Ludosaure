@@ -20,7 +20,7 @@ export class GameEntityRepository extends Repository<Game> implements GameReposi
 
     findAll(): Promise<Game[]> {
         return this.find({
-            relations: ['category'],
+            relations: ['category', 'unavailabilities'],
         });
     }
 
