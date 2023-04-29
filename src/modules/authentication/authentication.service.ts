@@ -31,7 +31,10 @@ export class AuthenticationService {
       throw new PasswordsDoesNotMatchException();
     }
 
-    const token = this.jwtService.sign({userId: user.id});
-    return new LoginResponseDto(token, user);
+    return user;
+  }
+
+  public getJwtToken(userId: string) {
+    return this.jwtService.sign({userId: userId});
   }
 }
