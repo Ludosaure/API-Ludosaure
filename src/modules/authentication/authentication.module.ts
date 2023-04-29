@@ -13,6 +13,7 @@ import {ConfirmAccountHandler} from "./application/commands/confirm-account.hand
 import {ResendConfirmationMailHandler} from "./application/commands/resend-confirmation-mail.handler";
 import EmailService from "../email/email.service";
 import {UserEntityRepository} from "../user/user-entity.repository";
+import { AuthenticationService } from "./authentication.service";
 
 @Module({
     imports: [
@@ -24,6 +25,7 @@ import {UserEntityRepository} from "../user/user-entity.repository";
     providers: [
         JwtStrategy,
         EmailAccountConfirmationService,
+        AuthenticationService,
         EmailService,
         PasswordValidator,
         UserEntityRepository,

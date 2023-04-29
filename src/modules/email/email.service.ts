@@ -1,9 +1,10 @@
-import {Injectable, Logger} from '@nestjs/common';
-import {createTransport} from 'nodemailer';
-import * as Mail from 'nodemailer/lib/mailer';
-import {emailConfig} from "../../config/email.config";
+import { Injectable, Logger } from "@nestjs/common";
+import { createTransport } from "nodemailer";
+import * as Mail from "nodemailer/lib/mailer";
+import { emailConfig } from "../../config/email.config";
 
 const logger = new Logger('bootstrap');
+
 @Injectable()
 export default class EmailService {
     private nodemailerTransport: Mail;
