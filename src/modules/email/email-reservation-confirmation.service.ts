@@ -93,7 +93,7 @@ export class EmailReservationConfirmationService {
                           <b>Date de fin :</b> ${reservation.endDate.toLocaleString()}<br>
                           <b>Jeux réservés :</b> ${reservation.games.map(game => game.name).join(', ')}<br>
                           ${reservation.appliedPlan != null ? `La durée de votre réservation vous a permis de bénéficier d\'une réduction de ${reservation.appliedPlan.reduction}%` : ''}<br>
-                          <b>Prix total :</b> ${reservation.totalAmount}€<br>
+                          <b>Prix total :</b> ${reservation.totalAmount}€<br><br>
                           <b>Vous pourrez retrouver votre facture dans votre espace personnel sur notre application ou notre site web.</b>
                         </p>
                         <div style="padding: 24px"></div>
