@@ -3,7 +3,7 @@ import {GameEntityRepository} from "../../game-entity.repository";
 import {GameNotFoundException} from "../../../../shared/exceptions/game-not-found.exception";
 import {DeleteGameCommand} from "./delete-game.command";
 import {ReservationEntityRepository} from "../../../reservation/reservation-entity.repository";
-import {GameIsInReservationsExceptions} from "../../exceptions/game-is-in-reservations.exceptions";
+import {GameCurrentlyBookedExceptions} from "../../exceptions/game-currently-booked.exceptions";
 
 @CommandHandler(DeleteGameCommand)
 export class DeleteGameHandler {
@@ -17,12 +17,10 @@ export class DeleteGameHandler {
         if (foundGame == null) {
             throw new GameNotFoundException();
         }
-        const reservations = await this.reservationRepository.findCurrentReservationsByGameId(foundGame.id);
+        const reservations = await this.reservationRepository.findCurrentOrFutureReservationsByGameId(foundGame.id);
         if (reservations.length > 0) {
-            throw new GameIsInReservationsExceptions();
+            throw new GameCurrentlyBookedExceptions();
         }
-        // TODO : actuellement ça perd la trace des réservations qui ont été faites sur ce jeu,
-        //  à voir avec les gars pour juste le passer en "archivé" ou "désactivé"
         await this.gameRepository.deleteGame(foundGame);
     }
 }

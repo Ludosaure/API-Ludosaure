@@ -78,7 +78,7 @@ export class Reservation {
         return Number(totalAmount.toFixed(2));
     }
 
-    public checkNewDates(newEndDate: Date) {
+    public areDatesValid(newEndDate: Date): boolean {
         if (this.endDate < new Date()) {
             throw new ReservationAlreadyEndedException();
         }
@@ -88,5 +88,7 @@ export class Reservation {
         if (newEndDate < this.endDate) {
             throw new InvalidDateException('Reservation can only be extended');
         }
+
+        return true;
     }
 }

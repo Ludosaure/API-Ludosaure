@@ -1,5 +1,5 @@
 import {ApiBearerAuth, ApiTags} from "@nestjs/swagger";
-import {Body, Controller, Delete, Get, Post, UseGuards} from "@nestjs/common";
+import { Body, Controller, Delete, Get, Post, Put, UseGuards } from "@nestjs/common";
 import {RolesGuard} from "../../shared/guards/roles.guard";
 import {JwtAuthGuard} from "../../shared/guards/jwt-auth.guard";
 import {CommandBus, QueryBus} from "@nestjs/cqrs";
@@ -33,21 +33,21 @@ export class FaqController {
 
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
-    @Post('/create')
+    @Post()
     async createFaq(@Body() createFaqRequest: CreateFaqRequestDto) {
         return await this.commandBus.execute<CreateFaqCommand>(CreateFaqCommand.of(createFaqRequest));
     }
 
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
-    @Post('/update')
+    @Put()
     async updateFaq(@Body() updateFaqRequest: UpdateFaqRequestDto) {
         return await this.commandBus.execute<UpdateFaqCommand>(UpdateFaqCommand.of(updateFaqRequest));
     }
 
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
-    @Delete('/delete')
+    @Delete()
     async deleteFaq(@Body() deleteFaqRequest: DeleteFaqRequestDto) {
         return await this.commandBus.execute<DeleteFaqCommand>(DeleteFaqCommand.of(deleteFaqRequest));
     }

@@ -9,7 +9,7 @@ import {EndDateBiggerThanStartDateException} from "../../shared/exceptions/end-d
 
 describe('ReservationEntity', () => {
     describe('CalculateTotalAmount', () => {
-        it('should return 5 for one week and one games', () => {
+        it('should return 5 for one week and one game', () => {
             const game1 = new Game();
             game1.weeklyAmount = 5;
             const reservation = new Reservation();
@@ -52,28 +52,28 @@ describe('ReservationEntity', () => {
             const reservation = new Reservation();
             reservation.startDate = new Date('2023-01-01');
             reservation.endDate = new Date('2023-01-08');
-            expect(() => reservation.checkNewDates(new Date('2023-01-09'))).toThrowError(ReservationAlreadyEndedException);
+            expect(() => reservation.areDatesValid(new Date('2023-01-09'))).toThrowError(ReservationAlreadyEndedException);
         });
 
         it('should throw an error if the start date is after the end date', () => {
             const reservation = new Reservation();
             reservation.startDate = new Date('2028-01-10');
             reservation.endDate = new Date('2028-01-08');
-            expect(() => reservation.checkNewDates(new Date('2028-01-08'))).toThrowError(EndDateBiggerThanStartDateException);
+            expect(() => reservation.areDatesValid(new Date('2028-01-08'))).toThrowError(EndDateBiggerThanStartDateException);
         });
 
         it('should throw an error if the new end date is before the current end date', () => {
             const reservation = new Reservation();
             reservation.startDate = new Date('2028-01-01');
             reservation.endDate = new Date('2028-01-15');
-            expect(() => reservation.checkNewDates(new Date('2028-01-08'))).toThrowError(InvalidDateException);
+            expect(() => reservation.areDatesValid(new Date('2028-01-08'))).toThrowError(InvalidDateException);
         });
 
-        it('should not throw an error if the dates are valid', () => {
+        it('should return true if the dates are valid', () => {
             const reservation = new Reservation();
             reservation.startDate = new Date('2028-01-01');
             reservation.endDate = new Date('2028-01-15');
-            expect(() => reservation.checkNewDates(new Date('2028-01-22'))).not.toThrowError();
+            expect(reservation.areDatesValid(new Date('2028-01-22'))).toBe(true);
         });
     });
 });

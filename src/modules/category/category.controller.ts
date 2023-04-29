@@ -33,7 +33,7 @@ export class CategoryController {
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
-    @Post('/create')
+    @Post()
     async createCategory(@Body() createCategoryRequest: CreateCategoryRequestDto) {
         return await this.commandBus.execute<CreateCategoryCommand>(CreateCategoryCommand.of(createCategoryRequest));
     }
@@ -41,7 +41,7 @@ export class CategoryController {
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
-    @Put('/update')
+    @Put()
     async updateCategory(@Body() updateCategoryRequest: UpdateCategoryRequestDto) {
         return await this.commandBus.execute<UpdateCategoryCommand>(UpdateCategoryCommand.of(updateCategoryRequest));
     }
@@ -49,7 +49,7 @@ export class CategoryController {
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
-    @Delete('/delete')
+    @Delete()
     async deleteCategory(@Body() deleteCategoryRequest: DeleteCategoryRequestDto) {
         return await this.commandBus.execute<DeleteCategoryCommand>(DeleteCategoryCommand.of(deleteCategoryRequest));
     }

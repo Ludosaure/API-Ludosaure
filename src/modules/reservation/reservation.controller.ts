@@ -21,7 +21,7 @@ import {UpdateReservationCommand} from "./application/command/update-reservation
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
-@ApiTags('reservation')
+@ApiTags('Reservation')
 @Controller('reservation')
 export class ReservationController {
     private readonly commandBus: CommandBus;
@@ -57,13 +57,13 @@ export class ReservationController {
 
     @UseGuards(RolesGuard)
     @Roles(Role.ADMIN, Role.CLIENT)
-    @Post('/create')
+    @Post()
     async createReservation(@Body() createReservationRequest: CreateReservationRequestDto) {
         return await this.commandBus.execute<CreateReservationCommand>(CreateReservationCommand.of(createReservationRequest));
     }
 
     @UseGuards(OwnGuard)
-    @Put('/update')
+    @Put()
     async updateReservation(@Body() updateReservationRequest: UpdateReservationRequestDto) {
         return await this.commandBus.execute<UpdateReservationCommand>(UpdateReservationCommand.of(updateReservationRequest));
     }

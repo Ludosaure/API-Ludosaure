@@ -33,11 +33,10 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
         return this.findBy({user: {id: userId}});
     }
 
-    findCurrentReservationsByGameId(gameId: string): Promise<Reservation[]> {
+    findCurrentOrFutureReservationsByGameId(gameId: string): Promise<Reservation[]> {
         return this.find({
             where: {
                 games: {id: gameId},
-                startDate: LessThan(new Date()),
                 endDate: MoreThan(new Date())
             }
         });
