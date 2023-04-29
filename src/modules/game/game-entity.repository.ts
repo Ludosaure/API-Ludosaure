@@ -19,7 +19,9 @@ export class GameEntityRepository extends Repository<Game> implements GameReposi
     }
 
     findAll(): Promise<Game[]> {
-        return this.find();
+        return this.find({
+            relations: ['category'],
+        });
     }
 
     findById(gameId: string): Promise<Game> {
