@@ -1,12 +1,12 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {IsDate} from "class-validator";
+import {IsDateString} from "class-validator";
 
 export class GetPlanByDurationRequestDto {
     @ApiProperty({default: '2023-04-01'})
-    @IsDate()
+    @IsDateString()
     start: Date;
 
     @ApiProperty({default: '2023-04-15'})
-    @IsDate()
+    @IsDateString()
     end: Date;
 }

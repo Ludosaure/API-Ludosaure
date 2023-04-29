@@ -44,6 +44,7 @@ export class AuthenticationController {
         );
     }
 
+    @HttpCode(HttpStatus.OK)
     @Post('/resend-confirmation-mail')
     async resendConfirmationMail(@Body() resendConfirmationMailRequest: ResendConfirmationMailRequestDto) {
         await this.commandBus.execute<ResendConfirmationMailCommand>(

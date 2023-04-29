@@ -2,6 +2,15 @@ import {Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGen
 import {User} from "./user.entity";
 import {Game} from "./game.entity";
 import {Plan} from "./plan.entity";
+import {DateUtils} from "../../shared/date.utils";
+import {ReservationTooShortException} from "../../modules/reservation/exceptions/reservation-too-short.exception";
+import {
+    ReservationNotInitializedProperlyException
+} from "../../modules/reservation/exceptions/reservation-not-initialized-properly.exception";
+import {
+    ReservationAlreadyEndedException
+} from "../../modules/reservation/exceptions/reservation-already-ended.exception";
+import {InvalidDateException} from "../../modules/reservation/exceptions/invalid-date.exception";
 
 @Entity()
 export class Reservation {
@@ -26,7 +35,7 @@ export class Reservation {
     @Column({nullable: true, name: 'cancelled_date'})
     cancelledDate: Date;
 
-    @Column({nullable: false, name: 'total_amount'})
+    @Column('decimal', {nullable: false, name: 'total_amount', precision: 10, scale: 2})
     totalAmount: number;
 
     @ManyToOne(() => User, (user) => user.id, {nullable: false})
@@ -37,7 +46,7 @@ export class Reservation {
     @JoinColumn({name: 'applied_plan_id'})
     appliedPlan: Plan;
 
-    @ManyToMany(() => Game, (game) => game.id)
+    @ManyToMany(() => Game, (game) => game.id, {nullable: false})
     @JoinTable({
         name: 'reservation_game',
         joinColumn: {
@@ -50,4 +59,36 @@ export class Reservation {
         }
     })
     games: Game[];
+
+    public calculateTotalAmount(): number {
+        if (this.startDate == null || this.endDate == null || this.games == null) {
+            throw new ReservationNotInitializedProperlyException();
+        }
+        let totalAmount = 0;
+        const weeks = DateUtils.getWeeksBetween(this.startDate, this.endDate);
+        if (weeks < 1) {
+            throw new ReservationTooShortException();
+        }
+        for (const game of this.games) {
+            totalAmount += game.weeklyAmount * weeks;
+        }
+        if (this.appliedPlan != null) {
+            totalAmount = totalAmount * (1 - this.appliedPlan.reduction / 100);
+        }
+        return Number(totalAmount.toFixed(2));
+    }
+
+    public areDatesValid(newEndDate: Date): boolean {
+        if (this.endDate < new Date()) {
+            throw new ReservationAlreadyEndedException();
+        }
+
+        DateUtils.checkIfStartDateIsBeforeEndDate(this.startDate, newEndDate);
+
+        if (newEndDate < this.endDate) {
+            throw new InvalidDateException('Reservation can only be extended');
+        }
+
+        return true;
+    }
 }

@@ -8,7 +8,7 @@ import {CloseAccountHandler} from "./application/command/close-account.handler";
 import {UpdateUserHandler} from "./application/command/update-user.handler";
 import {PasswordValidator} from "../../shared/password-validator.service";
 import {UnsubscribeHandler} from "./application/command/unsubscribe.handler";
-import {EmailConfirmationService} from "../authentication/application/email-confirmation.service";
+import {EmailAccountConfirmationService} from "../email/email-account-confirmation.service";
 import {JwtStrategy} from "../authentication/strategy/jwt.strategy";
 import EmailService from "../email/email.service";
 import {UserEntityRepository} from "./user-entity.repository";
@@ -21,7 +21,7 @@ import {UserEntityRepository} from "./user-entity.repository";
     controllers: [UserController],
     providers: [
         JwtStrategy,
-        EmailConfirmationService,
+        EmailAccountConfirmationService,
         EmailService,
         UserEntityRepository,
         GetAllUsersHandler,

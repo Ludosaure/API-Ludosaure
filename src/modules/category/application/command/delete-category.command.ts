@@ -3,7 +3,7 @@ import {DeleteCategoryRequestDto} from "../../dto/request/delete-category-reques
 export class DeleteCategoryCommand {
     public readonly id: string;
 
-    constructor(id: string) {
+    private constructor(id: string) {
         this.id = id;
     }
 

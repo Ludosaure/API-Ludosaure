@@ -9,7 +9,7 @@ export class Invoice {
     @Column({nullable: false, name: 'created_at'})
     createdAt: Date;
 
-    @Column({nullable: false})
+    @Column('decimal', {nullable: false, precision: 10, scale: 2})
     amount: number;
 
     @ManyToOne(() => Reservation, (reservation) => reservation.id, {nullable: false})

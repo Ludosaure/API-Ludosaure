@@ -10,7 +10,7 @@ export class CreateGameCommand {
     public readonly weeklyAmount: number;
     public readonly categoryId: string;
 
-    constructor(name: string, description: string, nbPlayersMin: number, nbPlayersMax: number,
+    private constructor(name: string, description: string, nbPlayersMin: number, nbPlayersMax: number,
                 averageDuration: number, ageMin: number, weeklyAmount: number, categoryId: string) {
         this.name = name;
         this.description = description;

@@ -1,5 +1,5 @@
 import {CommandHandler, ICommandHandler} from '@nestjs/cqrs';
-import {EmailConfirmationService} from "../email-confirmation.service";
+import {EmailAccountConfirmationService} from "../../../email/email-account-confirmation.service";
 import {ConfirmAccountCommand} from "./confirm-account.command";
 import {UserNotFoundException} from "../../../../shared/exceptions/user-not-found.exception";
 import {UserEntityRepository} from "../../../user/user-entity.repository";
@@ -8,11 +8,11 @@ import {UserEntityRepository} from "../../../user/user-entity.repository";
 export class ConfirmAccountHandler implements ICommandHandler<ConfirmAccountCommand> {
   constructor(
     private readonly userRepository: UserEntityRepository,
-    private readonly emailConfirmationService: EmailConfirmationService,
+    private readonly emailAccountConfirmationService: EmailAccountConfirmationService,
   ) {}
 
   async execute(command: ConfirmAccountCommand): Promise<void> {
-    const email = await this.emailConfirmationService.decodeConfirmationToken(command.token);
+    const email = await this.emailAccountConfirmationService.decodeConfirmationToken(command.token);
 
     const foundUser = await this.userRepository.findByEmail(email);
     if (foundUser == null) {

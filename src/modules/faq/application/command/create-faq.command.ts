@@ -4,7 +4,7 @@ export class CreateFaqCommand {
     public readonly question: string;
     public readonly answer: string;
 
-    constructor(question: string, answer: string) {
+    private constructor(question: string, answer: string) {
         this.question = question;
         this.answer = answer;
     }

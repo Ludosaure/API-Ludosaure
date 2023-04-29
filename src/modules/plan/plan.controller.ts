@@ -52,19 +52,19 @@ export class PlanController {
     }
 
     @Roles(Role.ADMIN)
-    @Post('/create')
+    @Post()
     async createPlan(@Body() createPlanRequest: CreatePlanRequestDto) {
         return await this.commandBus.execute<CreatePlanCommand>(CreatePlanCommand.of(createPlanRequest));
     }
 
     @Roles(Role.ADMIN)
-    @Put('/update')
+    @Put()
     async updatePlan(@Body() updatePlanRequest: UpdatePlanRequestDto) {
         return await this.commandBus.execute<UpdatePlanCommand>(UpdatePlanCommand.of(updatePlanRequest));
     }
 
     @Roles(Role.ADMIN)
-    @Delete('/delete')
+    @Delete()
     async deletePlan(@Body() deletePlanRequest: DeletePlanRequestDto) {
         return await this.commandBus.execute<DeletePlanCommand>(DeletePlanCommand.of(deletePlanRequest));
     }

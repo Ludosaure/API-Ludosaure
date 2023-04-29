@@ -1,3 +1,4 @@
+import {jwtConfig} from "../../../config/jwt.config";
 import {ExtractJwt, Strategy} from 'passport-jwt';
 import {PassportStrategy} from '@nestjs/passport';
 import {Injectable} from '@nestjs/common';
@@ -5,7 +6,6 @@ import {JwtPayload} from "./jwt.payload";
 import {UserNotFoundException} from "../../../shared/exceptions/user-not-found.exception";
 import {AccountNotVerifiedException} from "../exception/account-not-verified.exception";
 import {AccountClosedException} from "../exception/account-closed.exception";
-import {jwtConfig} from "../../../config/jwt.config";
 import {UserEntityRepository} from "../../user/user-entity.repository";
 
 @Injectable()

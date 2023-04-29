@@ -3,7 +3,7 @@ import {DeleteGameRequestDto} from "../../dto/request/delete-game-request.dto";
 export class DeleteGameCommand {
     public readonly id: string;
 
-    constructor(id: string) {
+    private constructor(id: string) {
         this.id = id;
     }
 

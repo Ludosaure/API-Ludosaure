@@ -11,7 +11,7 @@ export class UpdateGameCommand {
     public readonly weeklyAmount: number;
     public readonly categoryId: string;
 
-    constructor(id: string, name: string, description: string, nbPlayersMin: number, nbPlayersMax: number,
+    private constructor(id: string, name: string, description: string, nbPlayersMin: number, nbPlayersMax: number,
                 averageDuration: number, ageMin: number, weeklyAmount: number, categoryId: string) {
         this.id = id;
         this.name = name;

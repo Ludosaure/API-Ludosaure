@@ -49,7 +49,7 @@ export class GameController {
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
-    @Post('/create')
+    @Post()
     async createGame(@Body() createGameRequest: CreateGameRequestDto) {
         return await this.commandBus.execute<CreateGameCommand>(CreateGameCommand.of(createGameRequest));
     }
@@ -57,7 +57,7 @@ export class GameController {
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
-    @Put('/update')
+    @Put()
     async updateGame(@Body() updateGameRequest: UpdateGameRequestDto) {
         return await this.commandBus.execute<UpdateGameCommand>(UpdateGameCommand.of(updateGameRequest));
     }
@@ -65,7 +65,7 @@ export class GameController {
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)
-    @Delete('/delete')
+    @Delete()
     async deleteGame(@Body() deleteGameRequest: DeleteGameRequestDto) {
         return await this.commandBus.execute<DeleteGameCommand>(DeleteGameCommand.of(deleteGameRequest));
     }

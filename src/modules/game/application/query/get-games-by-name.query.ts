@@ -2,7 +2,8 @@ import {GetGamesByNameRequestDto} from "../../dto/request/get-games-by-name-requ
 
 export class GetGamesByNameQuery {
   public readonly name: string;
-    constructor(name: string) {
+
+    private constructor(name: string) {
         this.name = name;
     }
 

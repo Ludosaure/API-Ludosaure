@@ -2,12 +2,14 @@ import {CommandHandler} from "@nestjs/cqrs";
 import {GameEntityRepository} from "../../game-entity.repository";
 import {GameNotFoundException} from "../../../../shared/exceptions/game-not-found.exception";
 import {DeleteGameCommand} from "./delete-game.command";
+import {ReservationEntityRepository} from "../../../reservation/reservation-entity.repository";
+import {GameCurrentlyBookedExceptions} from "../../exceptions/game-currently-booked.exceptions";
 
 @CommandHandler(DeleteGameCommand)
 export class DeleteGameHandler {
 
-    constructor(private readonly gameRepository: GameEntityRepository
-    ) {
+    constructor(private readonly gameRepository: GameEntityRepository,
+                private readonly reservationRepository: ReservationEntityRepository) {
     }
 
     async execute(command: DeleteGameCommand): Promise<void> {
@@ -15,7 +17,10 @@ export class DeleteGameHandler {
         if (foundGame == null) {
             throw new GameNotFoundException();
         }
-        //TODO : check if game is not used in a reservation
+        const reservations = await this.reservationRepository.findCurrentOrFutureReservationsByGameId(foundGame.id);
+        if (reservations.length > 0) {
+            throw new GameCurrentlyBookedExceptions();
+        }
         await this.gameRepository.deleteGame(foundGame);
     }
 }

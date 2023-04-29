@@ -43,7 +43,7 @@ export class UserController {
 
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, OwnGuard)
-    @Put('/update')
+    @Put()
     async update(@Body() updateUserRequest: UpdateUserRequestDto) {
         await this.commandBus.execute<UpdateUserCommand>(UpdateUserCommand.of(updateUserRequest));
     }

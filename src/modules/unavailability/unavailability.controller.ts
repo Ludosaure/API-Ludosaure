@@ -34,13 +34,13 @@ export class UnavailabilityController {
     }
 
     @Roles(Role.ADMIN)
-    @Post('/create')
+    @Post()
     async createUnavailability(@Body() createUnavailabilityRequest: CreateUnavailabilityRequestDto) {
         return await this.commandBus.execute<CreateUnavailabilityCommand>(CreateUnavailabilityCommand.of(createUnavailabilityRequest));
     }
 
     @Roles(Role.ADMIN)
-    @Delete('/delete')
+    @Delete()
     async deleteUnavailability(@Body() deleteUnavailabilityRequest: DeleteUnavailabilityRequestDto) {
         return await this.commandBus.execute<DeleteUnavailabilityCommand>(DeleteUnavailabilityCommand.of(deleteUnavailabilityRequest));
     }

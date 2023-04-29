@@ -13,14 +13,17 @@ import {DeleteGameHandler} from "./application/command/delete-game.handler";
 import {GetGameByIdHandler} from "./application/query/get-game-by-id.handler";
 import {GetGamesByNameHandler} from "./application/query/get-games-by-name.handler";
 import {FavoriteGame} from "../../domain/model/favorite-game.entity";
+import {ReservationEntityRepository} from "../reservation/reservation-entity.repository";
+import {Reservation} from "../../domain/model/reservation.entity";
 
 @Module({
     imports: [
         CqrsModule,
-        TypeOrmModule.forFeature([Game, Category, FavoriteGame]),
+        TypeOrmModule.forFeature([Game, Category, FavoriteGame, Reservation]),
     ],
     controllers: [GameController],
     providers: [
+        ReservationEntityRepository,
         CategoryEntityRepository,
         GameEntityRepository,
         GetAllGamesHandler,
