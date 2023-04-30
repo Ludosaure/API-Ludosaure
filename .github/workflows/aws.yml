@@ -33,7 +33,7 @@ on:
 env:
   AWS_REGION: eu-west-1                  
   ECR_REPOSITORY: api-ludosaure          
-  ECS_SERVICE: api-ludosaure-launch-service  
+  ECS_SERVICE: api-ludosaure-cluster-service
   ECS_CLUSTER: Ludo-cluster               
   ECS_TASK_DEFINITION: task-definition.json
                                               
