@@ -1,4 +1,13 @@
-import {Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {
+    Column,
+    Entity,
+    Generated,
+    JoinColumn,
+    JoinTable,
+    ManyToMany,
+    ManyToOne,
+    PrimaryGeneratedColumn
+} from "typeorm";
 import {User} from "./user.entity";
 import {Game} from "./game.entity";
 import {Plan} from "./plan.entity";
@@ -16,6 +25,10 @@ import {InvalidDateException} from "../../modules/reservation/exceptions/invalid
 export class Reservation {
     @PrimaryGeneratedColumn('uuid')
     id: string;
+
+    @Column({nullable: false, unique: true, name: 'reservation_number'})
+    @Generated('increment')
+    reservationNumber: number;
 
     @Column({nullable: false, name: 'created_at'})
     createdAt: Date;

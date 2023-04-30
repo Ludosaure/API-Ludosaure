@@ -21,13 +21,13 @@ export class EmailReservationReturnedService {
         return this.emailService.sendMail({
             from: emailConfig.emailUser,
             to: reservation.user.email,
-            subject: `La Ludosaure - Votre réservation a été retournée`,
+            subject: `La Ludosaure - Réservation N°${reservation.reservationNumber} retournée`,
             html: `<!DOCTYPE html>
                     <html lang="">
                     <head>
                     
                       <meta charset="utf-8">
-                      <title>Votre réservation a été retournée</title>
+                      <title>Votre réservation N°${reservation.reservationNumber} a été retournée</title>
                       <style>
                           @media screen {
                               @font-face {
@@ -78,11 +78,11 @@ export class EmailReservationReturnedService {
                       <div style="background-color:#ffffff; margin: auto; display: block; max-width: 600px; padding: 36px 24px 0;
                             font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;">
                         <h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">
-                          Votre réservation du ${reservation.startDate.toLocaleString()} au ${reservation.endDate.toLocaleString()} a été retournée
+                          Votre réservation N°${reservation.reservationNumber} a été retournée
                         </h1>
                         <p class="text">
                             Bonjour ${reservation.user.firstname} ${reservation.user.lastname},<br><br>
-                            Les jeux de la réservation du ${reservation.startDate.toLocaleString()} au ${reservation.endDate.toLocaleString()} ont bien été retournés.<br>
+                            Les jeux de la réservation N°${reservation.reservationNumber} du ${reservation.startDate.toLocaleString()} au ${reservation.endDate.toLocaleString()} ont bien été retournés.<br>
                             Merci encore pour votre confiance et nous espérant vous revoir bientôt.<br><br>
                             Si vous avez des questions, n'hésitez pas à nous contacter par mail à l'adresse suivante : <b>laludosaure@gmail.com</b>
                         <div style="padding: 24px"></div>

@@ -28,7 +28,7 @@ export class EmailReservationConfirmationService {
                     <head>
                     
                       <meta charset="utf-8">
-                      <title>Confirmation de commande</title>
+                      <title>Confirmation de commande #${reservation.reservationNumber}</title>
                       <style>
                           @media screen {
                               @font-face {
@@ -79,7 +79,7 @@ export class EmailReservationConfirmationService {
                       <div style="background-color:#ffffff; margin: auto; display: block; max-width: 600px; padding: 36px 24px 0;
                             font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;">
                         <h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">
-                          Confirmation de ${isUpdate ? 'modification de ' : ''}commande
+                          Confirmation de ${isUpdate ? 'modification de ' : ''}commande #${reservation.reservationNumber}
                         </h1>
                         <h2 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">
                         Merci ${reservation.user.firstname} pour ${isUpdate ? 'la modification de ' : ''}votre commande !
@@ -88,10 +88,11 @@ export class EmailReservationConfirmationService {
                           Voici le résumé de votre commande :
                         </h3>
                         <p class="text">
+                          Commande n°<b>${reservation.reservationNumber}</b><br>
                           <b>Date de début :</b> ${reservation.startDate.toLocaleString()}.<br>
                           Vous pourrez venir récupérer vos jeux directement à notre boutique le jour du début de votre commande : <b>2 bis Bd Cahours, 35150 Janzé</b><br>
                           <b>Date de fin :</b> ${reservation.endDate.toLocaleString()}<br>
-                          <b>Jeux réservés :</b> ${reservation.games.map(game => game.name).join(', ')}<br>
+                          <b>Jeux réservés :</b> ${reservation.games.map(game => game.name).join(', ')}<br> <!-- TODO add pictures of games -->
                           ${reservation.appliedPlan != null ? `La durée de votre réservation vous a permis de bénéficier d\'une réduction de ${reservation.appliedPlan.reduction}%` : ''}<br>
                           <b>Prix total :</b> ${reservation.totalAmount}€<br><br>
                           <b>Vous pourrez retrouver votre facture dans votre espace personnel sur notre application ou notre site web.</b>
