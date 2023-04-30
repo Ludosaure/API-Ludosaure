@@ -60,12 +60,4 @@ export class GameController {
     async updateGame(@Body() updateGameRequest: UpdateGameRequestDto) {
         return await this.commandBus.execute<UpdateGameCommand>(UpdateGameCommand.of(updateGameRequest));
     }
-
-    @ApiBearerAuth()
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.ADMIN)
-    @Delete()
-    async deleteGame(@Body() deleteGameRequest: DeleteGameRequestDto) {
-        return await this.commandBus.execute<DeleteGameCommand>(DeleteGameCommand.of(deleteGameRequest));
-    }
 }
