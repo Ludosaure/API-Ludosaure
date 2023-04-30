@@ -88,7 +88,7 @@ export class EmailReservationConfirmationService {
                           Voici le résumé de votre commande :
                         </h3>
                         <p class="text">
-                          <b>Commande n°${reservation.reservationNumber}</b><br><br>
+                          <b>Commande #${reservation.reservationNumber}</b><br><br>
                           <b>Date de début :</b> ${reservation.startDate.toLocaleString()}.<br>
                           Vous pourrez venir récupérer vos jeux directement à notre boutique le jour du début de votre commande : <b>2 bis Bd Cahours, 35150 Janzé</b><br>
                           <b>Date de fin :</b> ${reservation.endDate.toLocaleString()}<br>

@@ -20,13 +20,13 @@ export class EmailReservationCanceledService {
         return this.emailService.sendMail({
             from: emailConfig.emailUser,
             to: reservation.user.email,
-            subject: `La Ludosaure - Réservation N°${reservation.reservationNumber} annulée`,
+            subject: `La Ludosaure - Réservation #${reservation.reservationNumber} annulée`,
             html: `<!DOCTYPE html>
                     <html lang="">
                     <head>
                     
                       <meta charset="utf-8">
-                      <title>Votre réservation N°${reservation.reservationNumber} a été annulée</title>
+                      <title>Votre réservation #${reservation.reservationNumber} a été annulée</title>
                       <style>
                           @media screen {
                               @font-face {
@@ -77,11 +77,11 @@ export class EmailReservationCanceledService {
                       <div style="background-color:#ffffff; margin: auto; display: block; max-width: 600px; padding: 36px 24px 0;
                             font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;">
                         <h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">
-                          Votre réservation N°${reservation.reservationNumber} a été annulée
+                          Votre réservation #${reservation.reservationNumber} a été annulée
                         </h1>
                         <p class="text">
                             Bonjour ${reservation.user.firstname} ${reservation.user.lastname},<br><br>
-                            Nous vous informons que votre réservation N°${reservation.reservationNumber} censée débuter le ${reservation.startDate.toLocaleString()} et se terminer le ${reservation.endDate.toLocaleString()} a été annulée.<br>
+                            Nous vous informons que votre réservation #${reservation.reservationNumber} censée débuter le ${reservation.startDate.toLocaleString()} et se terminer le ${reservation.endDate.toLocaleString()} a été annulée.<br>
                             Cette annulation a été effectuée par un de nos administrateurs.<br>
                             Si vous avez des questions, n'hésitez pas à nous contacter par mail à l'adresse suivante : <b>laludosaure@gmail.com</b>
                         <div style="padding: 24px"></div>
