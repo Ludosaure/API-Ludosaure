@@ -9,10 +9,4 @@ export class UpdateReservationRequestDto {
     @ApiProperty({default: "2023-06-15"})
     @IsDateString()
     endDate: Date;
-
-    @ApiProperty({default: true})
-    isReturned: boolean;
-
-    @ApiProperty({default: true})
-    isCancelled: boolean;
 }
