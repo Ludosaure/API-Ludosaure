@@ -18,6 +18,8 @@ import {GetGameByIdQuery} from "./application/query/get-game-by-id.query";
 import {GetGamesByNameRequestDto} from "./dto/request/get-games-by-name-request.dto";
 import {GetGamesByNameQuery} from "./application/query/get-games-by-name.query";
 import {GetGamesByNameResponseDto} from "./dto/response/get-games-by-name-response.dto";
+import { GetAvailableGamesResponseDto } from "./dto/response/get-available-games-response.dto";
+import { GetAvailableGamesQuery } from "./application/query/get-available-games.query";
 
 @ApiTags('Game')
 @Controller('game')
@@ -33,6 +35,11 @@ export class GameController {
     @Get()
     async getAllGames(): Promise<GetAllGamesResponseDto> {
         return await this.queryBus.execute<GetAllGamesQuery, GetAllGamesResponseDto>(GetAllGamesQuery.of());
+    }
+
+    @Get('/getAvailableGames')
+    async getAvailableGames(): Promise<GetAvailableGamesResponseDto> {
+        return await this.queryBus.execute<GetAvailableGamesQuery, GetAvailableGamesResponseDto>(GetAvailableGamesQuery.of());
     }
 
     @Get('/getById')

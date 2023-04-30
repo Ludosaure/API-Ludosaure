@@ -51,6 +51,9 @@ export class Reservation {
     @Column('decimal', {nullable: false, name: 'total_amount', precision: 10, scale: 2})
     totalAmount: number;
 
+    @Column({nullable: false, default: false, name: 'is_paid'})
+    isPaid: boolean;
+
     @ManyToOne(() => User, (user) => user.id, {nullable: false})
     @JoinColumn({name: 'user_id'})
     user: User;
@@ -59,7 +62,7 @@ export class Reservation {
     @JoinColumn({name: 'applied_plan_id'})
     appliedPlan: Plan;
 
-    @ManyToMany(() => Game, (game) => game.id, {nullable: false})
+    @ManyToMany(() => Game, (game) => game.reservations, {nullable: false})
     @JoinTable({
         name: 'reservation_game',
         joinColumn: {

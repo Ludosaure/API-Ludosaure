@@ -25,7 +25,11 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
             where: {
                 id: reservationId
             },
-            relations: ["user", "games", "appliedPlan"]
+            relations: {
+                user: true,
+                games: true,
+                appliedPlan: true
+            }
         });
     }
 

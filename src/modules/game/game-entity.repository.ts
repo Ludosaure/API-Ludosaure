@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Repository } from "typeorm";
+import { LessThan, Repository } from "typeorm";
 import { Game } from "../../domain/model/game.entity";
 import { GameRepository } from "../../infrastructure/game.repository";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -23,7 +23,21 @@ export class GameEntityRepository extends Repository<Game> implements GameReposi
       where: {
         isArchived: false
       },
-      relations: ["category", "unavailabilities"]
+      relations: {
+        category: true,
+        unavailabilities: true
+      }
+    });
+  }
+
+  findAllWithReservations(): Promise<Game[]> {
+    return this.find({
+      where: {
+        isArchived: false
+      },
+      relations: {
+        reservations: true
+      }
     });
   }
 

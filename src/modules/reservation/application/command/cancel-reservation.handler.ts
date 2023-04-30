@@ -20,6 +20,7 @@ export class CancelReservationHandler {
       throw new ReservationCantBeModifiedException();
     }
     foundReservation.isCancelled = true;
+    foundReservation.cancelledDate = new Date();
 
     await this.repository.saveOrUpdate(foundReservation);
 
