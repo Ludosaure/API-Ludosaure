@@ -9,7 +9,6 @@ import {Category} from "../../domain/model/category.entity";
 import {CreateGameHandler} from "./application/command/create-game.handler";
 import {CategoryEntityRepository} from "../category/category-entity.repository";
 import {UpdateGameHandler} from "./application/command/update-game.handler";
-import {DeleteGameHandler} from "./application/command/delete-game.handler";
 import {GetGameByIdHandler} from "./application/query/get-game-by-id.handler";
 import {GetGamesByNameHandler} from "./application/query/get-games-by-name.handler";
 import {FavoriteGame} from "../../domain/model/favorite-game.entity";
@@ -31,7 +30,6 @@ import {Reservation} from "../../domain/model/reservation.entity";
         GetGamesByNameHandler,
         CreateGameHandler,
         UpdateGameHandler,
-        DeleteGameHandler,
     ],
 })
 export class GameModule {}

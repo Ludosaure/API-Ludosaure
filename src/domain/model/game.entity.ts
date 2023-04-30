@@ -28,6 +28,9 @@ export class Game {
     @Column({nullable: false, name: 'weekly_amount'})
     weeklyAmount: number;
 
+    @Column({nullable: false, default:false, name: 'is_archived'})
+    isArchived: boolean;
+
     @ManyToOne(() => Category, (category) => category.id, {nullable: false})
     @JoinColumn({name: 'category_id'})
     category: Category;

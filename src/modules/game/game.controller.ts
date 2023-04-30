@@ -12,7 +12,6 @@ import {CreateGameRequestDto} from "./dto/request/create-game-request.dto";
 import {UpdateGameRequestDto} from "./dto/request/update-game-request.dto";
 import {UpdateGameCommand} from "./application/command/update-game.command";
 import {DeleteGameRequestDto} from "./dto/request/delete-game-request.dto";
-import {DeleteGameCommand} from "./application/command/delete-game.command";
 import {GetGameByIdResponseDto} from "./dto/response/get-game-by-id-response.dto";
 import {GetGameByIdRequestDto} from "./dto/request/get-game-by-id-request.dto";
 import {GetGameByIdQuery} from "./application/query/get-game-by-id.query";

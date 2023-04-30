@@ -9,6 +9,4 @@ export interface GameRepository {
     findByName(name: string): Promise<Game[]>;
 
     saveOrUpdate(game: Game): Promise<void>;
-
-    deleteGame(game: Game): Promise<void>;
 }
