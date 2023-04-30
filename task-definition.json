@@ -1,5 +1,5 @@
 {
-  "family": "Ludosaure",
+  "taskDefinitionArn": "arn:aws:ecs:eu-west-1:651891091662:task-definition/Ludosaure:9",
   "containerDefinitions": [
     {
       "name": "api-ludosasure",
@@ -16,23 +16,97 @@
       ],
       "essential": true,
       "environment": [],
-      "environmentFiles": [],
       "mountPoints": [],
       "volumesFrom": [],
-      "ulimits": [],
+      "secrets": [
+        {
+          "name": "EMAIL_CONFIRMATION_ACCOUNT_URL",
+          "valueFrom": "arn:aws:secretsmanager:eu-west-1:651891091662:secret:prod/test/api-ludosaure-3Ktmh2:EMAIL_CONFIRMATION_ACCOUNT_URL::"
+        },
+        {
+          "name": "UNSUBSCRIBE_URL",
+          "valueFrom": "arn:aws:secretsmanager:eu-west-1:651891091662:secret:prod/test/api-ludosaure-3Ktmh2:UNSUBSCRIBE_URL::"
+        },
+        {
+          "name": "JWT_ACCESS_TOKEN_DURATION",
+          "valueFrom": "arn:aws:secretsmanager:eu-west-1:651891091662:secret:prod/test/api-ludosaure-3Ktmh2:JWT_ACCESS_TOKEN_DURATION::"
+        },
+        {
+          "name": "DATABASE_URL",
+          "valueFrom": "arn:aws:secretsmanager:eu-west-1:651891091662:secret:prod/test/api-ludosaure-3Ktmh2:DATABASE_URL::"
+        },
+        {
+          "name": "PORT",
+          "valueFrom": "arn:aws:secretsmanager:eu-west-1:651891091662:secret:prod/test/api-ludosaure-3Ktmh2:PORT::"
+        },
+        {
+          "name": "GENERATED_EMAIL_PASSWORD",
+          "valueFrom": "arn:aws:secretsmanager:eu-west-1:651891091662:secret:prod/test/api-ludosaure-3Ktmh2:GENERATED_EMAIL_PASSWORD::"
+        },
+        {
+          "name": "EMAIL_USER",
+          "valueFrom": "arn:aws:secretsmanager:eu-west-1:651891091662:secret:prod/test/api-ludosaure-3Ktmh2:EMAIL_USER::"
+        },
+        {
+          "name": "JWT_ACCESS_TOKEN_SECRET",
+          "valueFrom": "arn:aws:secretsmanager:eu-west-1:651891091662:secret:prod/test/api-ludosaure-3Ktmh2:JWT_ACCESS_TOKEN_SECRET::"
+        },
+        {
+          "name": "EMAIL_SERVICE",
+          "valueFrom": "arn:aws:secretsmanager:eu-west-1:651891091662:secret:prod/test/api-ludosaure-3Ktmh2:EMAIL_SERVICE::"
+        }
+      ],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "/ecs/Ludosaure",
           "awslogs-create-group": "true",
+          "awslogs-group": "/ecs/Ludosaure",
           "awslogs-region": "eu-west-1",
           "awslogs-stream-prefix": "ecs"
         }
       }
     }
   ],
+  "family": "Ludosaure",
   "executionRoleArn": "arn:aws:iam::651891091662:role/ecsTaskExecutionRole",
   "networkMode": "awsvpc",
+  "revision": 9,
+  "volumes": [],
+  "status": "ACTIVE",
+  "requiresAttributes": [
+    {
+      "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+    },
+    {
+      "name": "ecs.capability.execution-role-awslogs"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.ecr-auth"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+    },
+    {
+      "name": "ecs.capability.secrets.asm.environment-variables"
+    },
+    {
+      "name": "ecs.capability.execution-role-ecr-pull"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+    },
+    {
+      "name": "ecs.capability.task-eni"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+    }
+  ],
+  "placementConstraints": [],
+  "compatibilities": [
+    "EC2",
+    "FARGATE"
+  ],
   "requiresCompatibilities": [
     "FARGATE"
   ],
@@ -41,5 +115,8 @@
   "runtimePlatform": {
     "cpuArchitecture": "X86_64",
     "operatingSystemFamily": "LINUX"
-  }
+  },
+  "registeredAt": "2023-04-30T16:11:02.742Z",
+  "registeredBy": "arn:aws:iam::651891091662:root",
+  "tags": []
 }
