@@ -1,5 +1,5 @@
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
-import { Body, Controller, Get, Post, Put, Query, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Post, Put, Query, Req, UseGuards } from "@nestjs/common";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { JwtAuthGuard } from "../../shared/guards/jwt-auth.guard";
 import { RolesGuard } from "../../shared/guards/roles.guard";
@@ -62,8 +62,8 @@ export class ReservationController {
     @UseGuards(RolesGuard)
     @Roles(Role.ADMIN, Role.CLIENT)
     @Post()
-    async createReservation(@Body() createReservationRequest: CreateReservationRequestDto) {
-        return await this.commandBus.execute<CreateReservationCommand>(CreateReservationCommand.of(createReservationRequest));
+    async createReservation(@Body() createReservationRequest: CreateReservationRequestDto, @Req() request) {
+        return await this.commandBus.execute<CreateReservationCommand>(CreateReservationCommand.of(createReservationRequest, request.user));
     }
 
     @UseGuards(OwnGuard)
