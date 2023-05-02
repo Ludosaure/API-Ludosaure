@@ -27,6 +27,9 @@ export class UpdateGameRequestDto {
     @ApiProperty({default: 10})
     weeklyAmount: number;
 
+    @ApiProperty({default: true})
+    isArchived: boolean;
+
     @ApiProperty({default: "5b2b9c6e-9d6a-464d-b7db-23e70de019c3"})
     categoryId: string;
 }

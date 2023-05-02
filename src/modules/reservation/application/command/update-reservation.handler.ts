@@ -32,12 +32,6 @@ export class UpdateReservationHandler {
         foundReservation.totalAmount = foundReservation.calculateTotalAmount();
       }
     }
-    if (command.isReturned != null) {
-      foundReservation.isReturned = command.isReturned;
-    }
-    if (command.isCancelled != null) {
-      foundReservation.isCancelled = command.isCancelled;
-    }
     await this.repository.saveOrUpdate(foundReservation);
 
     const facturedAmount = await this.invoiceService.getFacturedAmountForReservation(foundReservation.id);

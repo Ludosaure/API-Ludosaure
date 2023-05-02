@@ -1,20 +1,16 @@
-import {UpdateReservationRequestDto} from "../../dto/request/update-reservation-request.dto";
+import { UpdateReservationRequestDto } from "../../dto/request/update-reservation-request.dto";
 
 export class UpdateReservationCommand {
-    public readonly id: string;
-    public readonly endDate: Date;
-    public readonly isReturned: boolean;
-    public readonly isCancelled: boolean;
+  public readonly id: string;
+  public readonly endDate: Date;
 
-    private constructor(id: string, endDate: Date, isReturned: boolean, isCancelled: boolean) {
-        this.id = id;
-        this.endDate = endDate;
-        this.isReturned = isReturned;
-        this.isCancelled = isCancelled;
-    }
+  private constructor(id: string, endDate: Date) {
+    this.id = id;
+    this.endDate = endDate;
+  }
 
-    public static of(updateReservationRequest: UpdateReservationRequestDto): UpdateReservationCommand {
-        const {id, endDate, isReturned, isCancelled} = updateReservationRequest;
-        return new UpdateReservationCommand(id, endDate, isReturned, isCancelled);
-    }
+  public static of(updateReservationRequest: UpdateReservationRequestDto): UpdateReservationCommand {
+    const { id, endDate } = updateReservationRequest;
+    return new UpdateReservationCommand(id, endDate);
+  }
 }

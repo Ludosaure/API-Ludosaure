@@ -1,4 +1,5 @@
 import {CreateReservationRequestDto} from "../../dto/request/create-reservation-request.dto";
+import { User } from "../../../../domain/model/user.entity";
 
 export class CreateReservationCommand {
     public readonly startDate: Date;
@@ -13,8 +14,8 @@ export class CreateReservationCommand {
         this.games = games;
     }
 
-    public static of(createReservationRequestDto: CreateReservationRequestDto): CreateReservationCommand {
-        const {startDate, endDate, userId, games} = createReservationRequestDto;
-        return new CreateReservationCommand(startDate, endDate, userId, games);
+    public static of(createReservationRequestDto: CreateReservationRequestDto, user: User): CreateReservationCommand {
+        const {startDate, endDate, games} = createReservationRequestDto;
+        return new CreateReservationCommand(startDate, endDate, user.id, games);
     }
 }

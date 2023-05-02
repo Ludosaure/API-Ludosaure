@@ -12,13 +12,14 @@ import {CreateGameRequestDto} from "./dto/request/create-game-request.dto";
 import {UpdateGameRequestDto} from "./dto/request/update-game-request.dto";
 import {UpdateGameCommand} from "./application/command/update-game.command";
 import {DeleteGameRequestDto} from "./dto/request/delete-game-request.dto";
-import {DeleteGameCommand} from "./application/command/delete-game.command";
 import {GetGameByIdResponseDto} from "./dto/response/get-game-by-id-response.dto";
 import {GetGameByIdRequestDto} from "./dto/request/get-game-by-id-request.dto";
 import {GetGameByIdQuery} from "./application/query/get-game-by-id.query";
 import {GetGamesByNameRequestDto} from "./dto/request/get-games-by-name-request.dto";
 import {GetGamesByNameQuery} from "./application/query/get-games-by-name.query";
 import {GetGamesByNameResponseDto} from "./dto/response/get-games-by-name-response.dto";
+import { GetAvailableGamesResponseDto } from "./dto/response/get-available-games-response.dto";
+import { GetAvailableGamesQuery } from "./application/query/get-available-games.query";
 
 @ApiTags('Game')
 @Controller('game')
@@ -34,6 +35,11 @@ export class GameController {
     @Get()
     async getAllGames(): Promise<GetAllGamesResponseDto> {
         return await this.queryBus.execute<GetAllGamesQuery, GetAllGamesResponseDto>(GetAllGamesQuery.of());
+    }
+
+    @Get('/getAvailableGames')
+    async getAvailableGames(): Promise<GetAvailableGamesResponseDto> {
+        return await this.queryBus.execute<GetAvailableGamesQuery, GetAvailableGamesResponseDto>(GetAvailableGamesQuery.of());
     }
 
     @Get('/getById')
@@ -60,13 +66,5 @@ export class GameController {
     @Put()
     async updateGame(@Body() updateGameRequest: UpdateGameRequestDto) {
         return await this.commandBus.execute<UpdateGameCommand>(UpdateGameCommand.of(updateGameRequest));
-    }
-
-    @ApiBearerAuth()
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.ADMIN)
-    @Delete()
-    async deleteGame(@Body() deleteGameRequest: DeleteGameRequestDto) {
-        return await this.commandBus.execute<DeleteGameCommand>(DeleteGameCommand.of(deleteGameRequest));
     }
 }

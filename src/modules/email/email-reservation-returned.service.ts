@@ -7,13 +7,13 @@ import {jwtConfig} from "../../config/jwt.config";
 import {Reservation} from "../../domain/model/reservation.entity";
 
 @Injectable()
-export class EmailReservationConfirmationService {
+export class EmailReservationReturnedService {
     constructor(
-        private readonly jwtService: JwtService,
-        private readonly emailService: EmailService,
+      private readonly jwtService: JwtService,
+      private readonly emailService: EmailService,
     ) {}
 
-    public sendConfirmationMail(reservation: Reservation, isUpdate: boolean): void {
+    public sendConfirmationMail(reservation: Reservation): void {
         const token = this.jwtService.sign({ email: reservation.user.email });
 
         const unsubscribeUrl = `${urlConfig.unsubscribeUrl}?token=${token}`;
@@ -21,14 +21,13 @@ export class EmailReservationConfirmationService {
         return this.emailService.sendMail({
             from: emailConfig.emailUser,
             to: reservation.user.email,
-            subject: `La Ludosaure - Confirmation de ${isUpdate ? 'modification de ' : ''}commande`,
-            // TODO file attachment with invoice (https://www.learmoreseekmore.com/2022/05/part-3-nestjs-email-with-file-attachemnt.html)
+            subject: `La Ludosaure - Réservation #${reservation.reservationNumber} retournée`,
             html: `<!DOCTYPE html>
                     <html lang="">
                     <head>
                     
                       <meta charset="utf-8">
-                      <title>Confirmation de commande #${reservation.reservationNumber}</title>
+                      <title>Votre réservation #${reservation.reservationNumber} a été retournée</title>
                       <style>
                           @media screen {
                               @font-face {
@@ -79,31 +78,20 @@ export class EmailReservationConfirmationService {
                       <div style="background-color:#ffffff; margin: auto; display: block; max-width: 600px; padding: 36px 24px 0;
                             font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;">
                         <h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">
-                          Confirmation de ${isUpdate ? 'modification de ' : ''}commande #${reservation.reservationNumber}
+                          Votre réservation #${reservation.reservationNumber} a été retournée
                         </h1>
-                        <h2 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">
-                        Merci ${reservation.user.firstname} pour ${isUpdate ? 'la modification de ' : ''}votre commande !
-                        </h2>
-                        <h3 style="margin: 0; font-size: 18px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">
-                          Voici le résumé de votre commande :
-                        </h3>
                         <p class="text">
-                          <b>Commande #${reservation.reservationNumber}</b><br><br>
-                          <b>Date de début :</b> ${reservation.startDate.toLocaleString()}.<br>
-                          Vous pourrez venir récupérer vos jeux directement à notre boutique le jour du début de votre commande : <b>2 bis Bd Cahours, 35150 Janzé</b><br>
-                          <b>Date de fin :</b> ${reservation.endDate.toLocaleString()}<br>
-                          <b>Jeux réservés :</b> ${reservation.games.map(game => game.name).join(', ')}<br> <!-- TODO add pictures of games -->
-                          ${reservation.appliedPlan != null ? `La durée de votre réservation vous a permis de bénéficier d\'une réduction de ${reservation.appliedPlan.reduction}%` : ''}<br>
-                          <b>Prix total :</b> ${reservation.totalAmount}€<br><br>
-                          <b>Vous pourrez retrouver votre facture dans votre espace personnel sur notre application ou notre site web.</b>
-                        </p>
+                            Bonjour ${reservation.user.firstname} ${reservation.user.lastname},<br><br>
+                            Les jeux de la réservation #${reservation.reservationNumber} du ${reservation.startDate.toLocaleString()} au ${reservation.endDate.toLocaleString()} ont bien été retournés.<br>
+                            Merci encore pour votre confiance et nous espérant vous revoir bientôt.<br><br>
+                            Si vous avez des questions, n'hésitez pas à nous contacter par mail à l'adresse suivante : <b>laludosaure@gmail.com</b>
                         <div style="padding: 24px"></div>
                       </div>
                     
                       <div style="background-color: #e9ecef; margin: auto; display: block; max-width: 600px; padding: 24px;
                             font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf; text-align: center">
                         <p class="footer-text">
-                          Vous avez reçu cet email suite à la validation d'une commande sur notre site ou notre application.
+                          Vous avez reçu cet email suite au retour des jeux de votre réservation.
                         </p>
                         <p class="footer-text">
                           Pour ne plus recevoir d'autres emails de notre part, vous pouvez

@@ -1,51 +1,65 @@
-import {Injectable} from "@nestjs/common";
-import {Repository} from "typeorm";
-import {Game} from "../../domain/model/game.entity";
-import {GameRepository} from "../../infrastructure/game.repository";
-import {InjectRepository} from "@nestjs/typeorm";
+import { Injectable } from "@nestjs/common";
+import { LessThan, Repository } from "typeorm";
+import { Game } from "../../domain/model/game.entity";
+import { GameRepository } from "../../infrastructure/game.repository";
+import { InjectRepository } from "@nestjs/typeorm";
 
 @Injectable()
 export class GameEntityRepository extends Repository<Game> implements GameRepository {
 
-    constructor(
-        @InjectRepository(Game)
-        private gameRepository: Repository<Game>,
-    ) {
-        super(
-            gameRepository.target,
-            gameRepository.manager,
-            gameRepository.queryRunner,
-        );
-    }
+  constructor(
+    @InjectRepository(Game)
+    private gameRepository: Repository<Game>
+  ) {
+    super(
+      gameRepository.target,
+      gameRepository.manager,
+      gameRepository.queryRunner
+    );
+  }
 
-    findAll(): Promise<Game[]> {
-        return this.find({
-            relations: ['category', 'unavailabilities'],
-        });
-    }
+  findAll(): Promise<Game[]> {
+    return this.find({
+      where: {
+        isArchived: false
+      },
+      relations: {
+        category: true,
+        unavailabilities: true
+      }
+    });
+  }
 
-    findById(gameId: string): Promise<Game> {
-        return this.findOneBy({id: gameId});
-    }
+  findAllWithReservations(): Promise<Game[]> {
+    return this.find({
+      where: {
+        isArchived: false
+      },
+      relations: {
+        reservations: true
+      }
+    });
+  }
 
-    findByName(name: string): Promise<Game[]> {
-        return this.manager
-            .createQueryBuilder(Game, 'game')
-            .select('*')
-            .where(
-                'UPPER(game.name) LIKE UPPER(:name)',
-                {
-                    name: `%${name}%`,
-                },
-            )
-            .getRawMany();
-    }
+  findById(gameId: string): Promise<Game> {
+    return this.findOneBy({ id: gameId });
+  }
 
-    async saveOrUpdate(game: Game): Promise<void> {
-        await this.save(game);
-    }
+  findByName(name: string): Promise<Game[]> {
+    return this.manager
+      .createQueryBuilder(Game, "game")
+      .select("*")
+      .where(
+        "UPPER(game.name) LIKE UPPER(:name)",
+        {
+          name: `%${name}%`
+        }
+      )
+      .andWhere("game.isArchived = false")
+      .getRawMany();
+  }
 
-    async deleteGame(game: Game): Promise<void> {
-        await this.remove(game);
-    }
+  async saveOrUpdate(game: Game): Promise<void> {
+    await this.save(game);
+  }
 }
