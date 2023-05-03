@@ -31,6 +31,8 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+    types:
+      - closed
 
 env:
   AWS_REGION: eu-west-1
