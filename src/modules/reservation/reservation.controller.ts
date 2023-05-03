@@ -1,5 +1,5 @@
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
-import { Body, Controller, Get, Post, Put, Query, Req, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put, Query, Req, UseGuards } from "@nestjs/common";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { JwtAuthGuard } from "../../shared/guards/jwt-auth.guard";
 import { RolesGuard } from "../../shared/guards/roles.guard";
@@ -8,7 +8,6 @@ import { Roles } from "../../shared/roles.decorator";
 import { OwnGuard } from "../../shared/guards/own.guard";
 import { GetAllReservationsResponseDto } from "./dto/response/get-all-reservations-response.dto";
 import { GetReservationByIdResponseDto } from "./dto/response/get-reservation-by-id-response.dto";
-import { GetReservationByIdRequestDto } from "./dto/request/get-reservation-by-id-request.dto";
 import { CreateReservationRequestDto } from "./dto/request/create-reservation-request.dto";
 import { UpdateReservationRequestDto } from "./dto/request/update-reservation-request.dto";
 import { GetAllReservationsQuery } from "./application/query/get-all-reservations.query";
@@ -22,6 +21,7 @@ import { CancelReservationRequestDto } from "./dto/request/cancel-reservation-re
 import { ReturnReservationRequestDto } from "./dto/request/return-reservation-request.dto";
 import { CancelReservationCommand } from "./application/command/cancel-reservation.command";
 import { ReturnReservationCommand } from "./application/command/return-reservation.command";
+import { GetReservationByIdRequestDto } from "./dto/request/get-reservation-by-id-request.dto";
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
@@ -46,8 +46,8 @@ export class ReservationController {
 
     @UseGuards(RolesGuard)
     @Roles(Role.ADMIN, Role.CLIENT)
-    @Get('/getById')
-    async getReservationById(@Query() getReservationByIdRequest: GetReservationByIdRequestDto) {
+    @Get('/id/:id')
+    async getReservationById(@Param() getReservationByIdRequest: GetReservationByIdRequestDto) {
         return await this.queryBus.execute<GetReservationByIdQuery, GetReservationByIdResponseDto>
         (GetReservationByIdQuery.of(getReservationByIdRequest));
     }

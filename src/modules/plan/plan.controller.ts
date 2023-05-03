@@ -1,24 +1,24 @@
-import {ApiBearerAuth, ApiTags} from "@nestjs/swagger";
-import {Body, Controller, Delete, Get, Post, Put, Query, UseGuards} from "@nestjs/common";
-import {RolesGuard} from "../../shared/guards/roles.guard";
-import {JwtAuthGuard} from "../../shared/guards/jwt-auth.guard";
-import {CommandBus, QueryBus} from "@nestjs/cqrs";
-import {GetAllPlansResponseDto} from "./dto/response/get-all-plans-response.dto";
-import {GetAllPlansQuery} from "./application/query/get-all-plans.query";
-import {Roles} from "../../shared/roles.decorator";
-import {Role} from "../../domain/model/enum/role";
-import {GetPlanByIdRequestDto} from "./dto/request/get-plan-by-id-request.dto";
-import {GetPlanByIdQuery} from "./application/query/get-plan-by-id.query";
-import {getPlanByIdResponseDto} from "./dto/response/get-plan-by-id-response.dto";
-import {GetPlanByDurationRequestDto} from "./dto/request/get-plan-by-duration-request.dto";
-import {GetPlanByDurationResponseDto} from "./dto/response/get-plan-by-duration-response.dto";
-import {GetPlanByDurationQuery} from "./application/query/get-plan-by-duration.query";
-import {CreatePlanRequestDto} from "./dto/request/create-plan-request.dto";
-import {CreatePlanCommand} from "./application/command/create-plan.command";
-import {UpdatePlanRequestDto} from "./dto/request/update-plan-request.dto";
-import {UpdatePlanCommand} from "./application/command/update-plan.command";
-import {DeletePlanCommand} from "./application/command/delete-plan.command";
-import {DeletePlanRequestDto} from "./dto/request/delete-plan-request.dto";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
+import { RolesGuard } from "../../shared/guards/roles.guard";
+import { JwtAuthGuard } from "../../shared/guards/jwt-auth.guard";
+import { CommandBus, QueryBus } from "@nestjs/cqrs";
+import { GetAllPlansResponseDto } from "./dto/response/get-all-plans-response.dto";
+import { GetAllPlansQuery } from "./application/query/get-all-plans.query";
+import { Roles } from "../../shared/roles.decorator";
+import { Role } from "../../domain/model/enum/role";
+import { GetPlanByIdQuery } from "./application/query/get-plan-by-id.query";
+import { getPlanByIdResponseDto } from "./dto/response/get-plan-by-id-response.dto";
+import { GetPlanByDurationRequestDto } from "./dto/request/get-plan-by-duration-request.dto";
+import { GetPlanByDurationResponseDto } from "./dto/response/get-plan-by-duration-response.dto";
+import { GetPlanByDurationQuery } from "./application/query/get-plan-by-duration.query";
+import { CreatePlanRequestDto } from "./dto/request/create-plan-request.dto";
+import { CreatePlanCommand } from "./application/command/create-plan.command";
+import { UpdatePlanRequestDto } from "./dto/request/update-plan-request.dto";
+import { UpdatePlanCommand } from "./application/command/update-plan.command";
+import { DeletePlanCommand } from "./application/command/delete-plan.command";
+import { DeletePlanRequestDto } from "./dto/request/delete-plan-request.dto";
+import { GetPlanByIdRequestDto } from "./dto/request/get-plan-by-id-request.dto";
 
 @ApiTags('Plan')
 @Controller('plan')
@@ -40,8 +40,8 @@ export class PlanController {
     }
 
     @Roles(Role.ADMIN)
-    @Get('/getById')
-    async getPlanById(@Query() getPlanByIdRequest: GetPlanByIdRequestDto) {
+    @Get('/id/:id')
+    async getPlanById(@Param() getPlanByIdRequest: GetPlanByIdRequestDto) {
         return await this.queryBus.execute<GetPlanByIdQuery, getPlanByIdResponseDto>(GetPlanByIdQuery.of(getPlanByIdRequest));
     }
 
