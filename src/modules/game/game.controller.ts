@@ -1,25 +1,24 @@
-import {ApiBearerAuth, ApiTags} from "@nestjs/swagger";
-import {Body, Controller, Delete, Get, Post, Put, Query, UseGuards} from "@nestjs/common";
-import {CommandBus, QueryBus} from "@nestjs/cqrs";
-import {RolesGuard} from "../../shared/guards/roles.guard";
-import {JwtAuthGuard} from "../../shared/guards/jwt-auth.guard";
-import {Roles} from "../../shared/roles.decorator";
-import {Role} from "../../domain/model/enum/role";
-import {GetAllGamesResponseDto} from "./dto/response/get-all-games-response.dto";
-import {GetAllGamesQuery} from "./application/query/get-all-games.query";
-import {CreateGameCommand} from "./application/command/create-game.command";
-import {CreateGameRequestDto} from "./dto/request/create-game-request.dto";
-import {UpdateGameRequestDto} from "./dto/request/update-game-request.dto";
-import {UpdateGameCommand} from "./application/command/update-game.command";
-import {DeleteGameRequestDto} from "./dto/request/delete-game-request.dto";
-import {GetGameByIdResponseDto} from "./dto/response/get-game-by-id-response.dto";
-import {GetGameByIdRequestDto} from "./dto/request/get-game-by-id-request.dto";
-import {GetGameByIdQuery} from "./application/query/get-game-by-id.query";
-import {GetGamesByNameRequestDto} from "./dto/request/get-games-by-name-request.dto";
-import {GetGamesByNameQuery} from "./application/query/get-games-by-name.query";
-import {GetGamesByNameResponseDto} from "./dto/response/get-games-by-name-response.dto";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { CommandBus, QueryBus } from "@nestjs/cqrs";
+import { RolesGuard } from "../../shared/guards/roles.guard";
+import { JwtAuthGuard } from "../../shared/guards/jwt-auth.guard";
+import { Roles } from "../../shared/roles.decorator";
+import { Role } from "../../domain/model/enum/role";
+import { GetAllGamesResponseDto } from "./dto/response/get-all-games-response.dto";
+import { GetAllGamesQuery } from "./application/query/get-all-games.query";
+import { CreateGameCommand } from "./application/command/create-game.command";
+import { CreateGameRequestDto } from "./dto/request/create-game-request.dto";
+import { UpdateGameRequestDto } from "./dto/request/update-game-request.dto";
+import { UpdateGameCommand } from "./application/command/update-game.command";
+import { GetGameByIdResponseDto } from "./dto/response/get-game-by-id-response.dto";
+import { GetGameByIdQuery } from "./application/query/get-game-by-id.query";
+import { GetGamesByNameQuery } from "./application/query/get-games-by-name.query";
+import { GetGamesByNameResponseDto } from "./dto/response/get-games-by-name-response.dto";
 import { GetAvailableGamesResponseDto } from "./dto/response/get-available-games-response.dto";
 import { GetAvailableGamesQuery } from "./application/query/get-available-games.query";
+import { GetGameByIdRequestDto } from "./dto/request/get-game-by-id-request.dto";
+import { GetGamesByNameRequestDto } from "./dto/request/get-games-by-name-request.dto";
 
 @ApiTags('Game')
 @Controller('game')
@@ -37,18 +36,18 @@ export class GameController {
         return await this.queryBus.execute<GetAllGamesQuery, GetAllGamesResponseDto>(GetAllGamesQuery.of());
     }
 
-    @Get('/getAvailableGames')
+    @Get('/availables')
     async getAvailableGames(): Promise<GetAvailableGamesResponseDto> {
         return await this.queryBus.execute<GetAvailableGamesQuery, GetAvailableGamesResponseDto>(GetAvailableGamesQuery.of());
     }
 
-    @Get('/getById')
-    async getGameById(@Query() getGameByIdRequest: GetGameByIdRequestDto) {
+    @Get('/id/:id')
+    async getGameById(@Param() getGameByIdRequest: GetGameByIdRequestDto) {
         return await this.queryBus.execute<GetGameByIdQuery, GetGameByIdResponseDto>(GetGameByIdQuery.of(getGameByIdRequest));
     }
 
-    @Get('/getByName')
-    async getGameByName(@Query() getGameByNameRequest: GetGamesByNameRequestDto) {
+    @Get('/name/:name')
+    async getGameByName(@Param() getGameByNameRequest: GetGamesByNameRequestDto) {
         return await this.queryBus.execute<GetGamesByNameQuery, GetGamesByNameResponseDto>(GetGamesByNameQuery.of(getGameByNameRequest));
     }
 
