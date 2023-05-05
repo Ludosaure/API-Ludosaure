@@ -8,6 +8,8 @@ export interface UnavailabilityRepository {
 
     findByGameIdAndDate(gameId: string, date: Date): Promise<Unavailability>;
 
+    findBetweenDates(gameId: string, startDate: Date, endDate: Date): Promise<Unavailability[]>;
+
     saveUnavailability(unavailability: Unavailability): Promise<void>;
 
     deleteUnavailability(unavailability: Unavailability): Promise<void>;

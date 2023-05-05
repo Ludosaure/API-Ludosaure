@@ -12,6 +12,8 @@ import {DateUtils} from "../../../../shared/date.utils";
 import {Game} from "../../../../domain/model/game.entity";
 import {EmailReservationConfirmationService} from "../../../email/email-reservation-confirmation.service";
 import {InvalidDateException} from "../../exceptions/invalid-date.exception";
+import { UnavailabilityEntityRepository } from "../../../unavailability/unavailability-entity.repository";
+import { UnavailableGameException } from "../../exceptions/unavailable-game.exception";
 
 @CommandHandler(CreateReservationCommand)
 export class CreateReservationHandler {
@@ -19,6 +21,7 @@ export class CreateReservationHandler {
                 private readonly userRepository: UserEntityRepository,
                 private readonly gameRepository: GameEntityRepository,
                 private readonly planRepository: PlanEntityRepository,
+                private readonly unavailabilityRepository: UnavailabilityEntityRepository,
                 private readonly invoiceService: InvoiceService,
                 private readonly emailReservationConfirmationService: EmailReservationConfirmationService) {
     }
@@ -34,6 +37,13 @@ export class CreateReservationHandler {
         DateUtils.checkIfStartDateIsBeforeEndDate(startDate, endDate);
         if(startDate < new Date()) {
             throw new InvalidDateException('Reservation start date can not be in the past');
+        }
+
+        for(const game of games) {
+            const unavailabilities = await this.unavailabilityRepository.findBetweenDates(game.id, startDate, endDate);
+            if(unavailabilities.length > 0) {
+                throw new UnavailableGameException(game, unavailabilities);
+            }
         }
 
         const reservation = new Reservation();
