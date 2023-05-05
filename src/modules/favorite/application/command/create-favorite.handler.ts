@@ -18,6 +18,7 @@ export class CreateFavoriteHandler {
     const favorite = new FavoriteGame();
     favorite.gameId = gameId;
     favorite.userId = userId;
+    favorite.createdAt = new Date();
     return await this.favoriteRepository.saveOrUpdate(favorite);
   }
 }

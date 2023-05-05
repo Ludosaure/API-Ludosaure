@@ -19,5 +19,5 @@ export class FavoriteGame {
     game: Game;
 
     @Column({nullable: false, name: 'creation_date'})
-    creationDate: Date;
+    createdAt: Date;
 }
