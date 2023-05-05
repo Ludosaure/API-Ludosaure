@@ -9,13 +9,14 @@ import { GetFavoriteByGameHandler } from "./application/query/get-favorite-by-ga
 import { GetFavoriteByUserHandler } from "./application/query/get-favorite-by-user.handler";
 import { CreateFavoriteHandler } from "./application/command/create-favorite.handler";
 import { DeleteFavoriteHandler } from "./application/command/delete-favorite.handler";
+import { FavoriteController } from "./favorite.controller";
 
 @Module({
     imports: [
         CqrsModule,
         TypeOrmModule.forFeature([FavoriteGame, Game, User]),
     ],
-    controllers: [],
+    controllers: [FavoriteController],
     providers: [
       FavoriteEntityRepository,
       GetFavoriteByGameHandler,
