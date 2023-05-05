@@ -13,10 +13,6 @@ export class FavoriteEntityRepository extends Repository<FavoriteGame> implement
       favoriteRepository.queryRunner);
   }
 
-  async findAll(): Promise<FavoriteGame[]> {
-    return await this.find();
-  }
-
   async findByUserId(userId: string): Promise<FavoriteGame[]> {
     return await this.find({
       where: {
@@ -28,6 +24,15 @@ export class FavoriteEntityRepository extends Repository<FavoriteGame> implement
   async findByGameId(gameId: string): Promise<FavoriteGame[]> {
     return await this.find({
       where: {
+        gameId: gameId
+      }
+    });
+  }
+
+  async findByUserIdAndGameId(userId: string, gameId: string): Promise<FavoriteGame> {
+    return await this.findOne({
+      where: {
+        userId: userId,
         gameId: gameId
       }
     });
