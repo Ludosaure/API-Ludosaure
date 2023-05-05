@@ -4,6 +4,7 @@ import {GameEntityRepository} from "../../game-entity.repository";
 import {Game} from "../../../../domain/model/game.entity";
 import {CategoryEntityRepository} from "../../../category/category-entity.repository";
 import {CategoryNotFoundException} from "../../../../shared/exceptions/category-not-found.exception";
+import { GameNameAlreadyExistsExceptions } from "../../exceptions/game-name-already-exists.exceptions";
 
 @CommandHandler(CreateGameCommand)
 export class CreateGameHandler {
@@ -18,6 +19,11 @@ export class CreateGameHandler {
         const foundCategory = await this.categoryRepository.findOneBy({id: command.categoryId});
         if (foundCategory == null) {
             throw new CategoryNotFoundException();
+        }
+
+        const foundGame = await this.gameRepository.findByName(command.name);
+        if (foundGame != null) {
+            throw new GameNameAlreadyExistsExceptions(command.name);
         }
 
         const game = new Game();
