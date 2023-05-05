@@ -1,12 +1,12 @@
 import { QueryHandler } from "@nestjs/cqrs";
-import { FavoriteRepository } from "../../../../infrastructure/favorite.repository";
 import { CreateFavoriteCommand } from "./create-favorite.command";
 import { GameAlreadyInYourFavoritesException } from "../../exceptions/game-already-in-your-favorites.exception";
 import { FavoriteGame } from "../../../../domain/model/favorite-game.entity";
+import { FavoriteEntityRepository } from "../../favorite-entity.repository";
 
 @QueryHandler(CreateFavoriteCommand)
 export class CreateFavoriteHandler {
-  constructor(private readonly favoriteRepository: FavoriteRepository) {
+  constructor(private readonly favoriteRepository: FavoriteEntityRepository) {
   }
 
   async execute(query: CreateFavoriteCommand) {

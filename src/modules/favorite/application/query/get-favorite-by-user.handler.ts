@@ -1,11 +1,11 @@
 import { QueryHandler } from "@nestjs/cqrs";
 import { GetFavoriteByUserQuery } from "./get-favorite-by-user.query";
 import { GetFavoriteByUserResponseDto } from "../../dto/response/get-favorite-by-user-response.dto";
-import { FavoriteRepository } from "../../../../infrastructure/favorite.repository";
+import { FavoriteEntityRepository } from "../../favorite-entity.repository";
 
 @QueryHandler(GetFavoriteByUserQuery)
 export class GetFavoriteByUserHandler {
-  constructor(private readonly favoriteRepository: FavoriteRepository) {
+  constructor(private readonly favoriteRepository: FavoriteEntityRepository) {
   }
 
   async execute(query: GetFavoriteByUserQuery): Promise<GetFavoriteByUserResponseDto> {

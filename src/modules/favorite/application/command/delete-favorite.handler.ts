@@ -1,10 +1,10 @@
 import { QueryHandler } from "@nestjs/cqrs";
-import { FavoriteRepository } from "../../../../infrastructure/favorite.repository";
 import { DeleteFavoriteCommand } from "./delete-favorite.command";
+import { FavoriteEntityRepository } from "../../favorite-entity.repository";
 
 @QueryHandler(DeleteFavoriteCommand)
 export class DeleteFavoriteHandler {
-  constructor(private readonly favoriteRepository: FavoriteRepository) {
+  constructor(private readonly favoriteRepository: FavoriteEntityRepository) {
   }
 
   async execute(query: DeleteFavoriteCommand) {
