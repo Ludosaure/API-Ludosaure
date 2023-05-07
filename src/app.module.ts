@@ -21,6 +21,7 @@ import {ReservationModule} from "./modules/reservation/reservation.module";
 import {ReviewModule} from "./modules/review/review.module";
 import {UserGameReviewModule} from "./modules/user-game-review/user-game-review.module";
 import {PlanModule} from "./modules/plan/plan.module";
+import { CgvModule } from './modules/cgv/cgv.module';
 
 @Module({
     controllers: [AppController],
@@ -64,6 +65,7 @@ import {PlanModule} from "./modules/plan/plan.module";
         ReservationModule,
         ReviewModule,
         UserGameReviewModule,
+        CgvModule,
     ],
 })
 export class AppModule {

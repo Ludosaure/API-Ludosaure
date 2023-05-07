@@ -8,7 +8,7 @@ export interface IEnvironmentConfig {
     dataSourceUsername: string;
     dataSourcePassword: string;
     dataSourcePort: number;
-
+    cgvFilePath: string;
 }
 
 export class EnvironmentConfig implements IEnvironmentConfig {
@@ -19,6 +19,7 @@ export class EnvironmentConfig implements IEnvironmentConfig {
     dataSourceUsername: string;
     dataSourcePassword: string;
     dataSourcePort: number;
+    cgvFilePath: string;
 
     constructor() {
         this.port = Number(process.env.PORT) || 3000;
@@ -28,6 +29,7 @@ export class EnvironmentConfig implements IEnvironmentConfig {
         this.dataSourceUsername = process.env.RDS_USERNAME;
         this.dataSourcePassword = process.env.RDS_PASSWORD;
         this.dataSourcePort = Number(process.env.RDS_PORT);
+        this.cgvFilePath = process.env.CGV_FILE_PATH;
     }
 }
 
