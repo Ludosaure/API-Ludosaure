@@ -22,6 +22,7 @@ import { ReturnReservationRequestDto } from "./dto/request/return-reservation-re
 import { CancelReservationCommand } from "./application/command/cancel-reservation.command";
 import { ReturnReservationCommand } from "./application/command/return-reservation.command";
 import { GetReservationByIdRequestDto } from "./dto/request/get-reservation-by-id-request.dto";
+import { User } from "../../domain/model/user.entity";
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
@@ -63,7 +64,8 @@ export class ReservationController {
     @Roles(Role.ADMIN, Role.CLIENT)
     @Post()
     async createReservation(@Body() createReservationRequest: CreateReservationRequestDto, @Req() request) {
-        return await this.commandBus.execute<CreateReservationCommand>(CreateReservationCommand.of(createReservationRequest, request.user));
+        const user: User = request.user;
+        return await this.commandBus.execute<CreateReservationCommand>(CreateReservationCommand.of(createReservationRequest, user));
     }
 
     @UseGuards(OwnGuard)

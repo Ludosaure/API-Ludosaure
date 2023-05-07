@@ -1,4 +1,3 @@
-import { GetFavoriteByUserRequestDto } from "../../dto/request/get-favorite-by-user-request.dto";
 
 export class GetFavoriteByUserQuery {
   userId: string;
@@ -7,8 +6,7 @@ export class GetFavoriteByUserQuery {
     this.userId = userId;
   }
 
-  static of(getFavoriteByUserRequestDto: GetFavoriteByUserRequestDto): GetFavoriteByUserQuery {
-    const { userId } = getFavoriteByUserRequestDto;
+  static of(userId: string): GetFavoriteByUserQuery {
     return new GetFavoriteByUserQuery(userId);
   }
 }

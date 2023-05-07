@@ -1,4 +1,4 @@
-import { CommandHandler, QueryHandler } from "@nestjs/cqrs";
+import { CommandHandler } from "@nestjs/cqrs";
 import { CreateFavoriteCommand } from "./create-favorite.command";
 import { GameAlreadyInYourFavoritesException } from "../../exceptions/game-already-in-your-favorites.exception";
 import { FavoriteGame } from "../../../../domain/model/favorite-game.entity";
@@ -15,6 +15,7 @@ export class CreateFavoriteHandler {
     if (foundFavorite != null) {
       throw new GameAlreadyInYourFavoritesException();
     }
+
     const favorite = new FavoriteGame();
     favorite.gameId = gameId;
     favorite.userId = userId;
