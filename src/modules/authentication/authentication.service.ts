@@ -4,7 +4,7 @@ import { Injectable } from "@nestjs/common";
 import { UserNotFoundException } from "../../shared/exceptions/user-not-found.exception";
 import { AccountNotVerifiedException } from "./exception/account-not-verified.exception";
 import { AccountClosedException } from "./exception/account-closed.exception";
-import { PasswordsDoesNotMatchException } from "./exception/password-does-not-match.exception";
+import { InvalidCredentialsException } from "./exception/password-does-not-match.exception";
 import { LoginResponseDto } from "./dto/response/login-response.dto";
 import { JwtService } from "@nestjs/jwt";
 
@@ -17,7 +17,7 @@ export class AuthenticationService {
   public async getAuthenticatedUser(email: string, hashedPassword: string) {
     const user = await this.userRepository.findByEmail(email);
     if (!user) {
-      throw new UserNotFoundException();
+      throw new InvalidCredentialsException();
     }
     if (!user.isAccountVerified) {
       throw new AccountNotVerifiedException();
@@ -28,7 +28,7 @@ export class AuthenticationService {
 
     const passwordMatched = await verify(user.password, hashedPassword);
     if (!passwordMatched) {
-      throw new PasswordsDoesNotMatchException();
+      throw new InvalidCredentialsException();
     }
 
     return user;
