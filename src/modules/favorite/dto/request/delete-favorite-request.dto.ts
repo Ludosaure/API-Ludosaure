@@ -1,0 +1,8 @@
+import { ApiProperty } from "@nestjs/swagger";
+import { IsNotEmpty } from "class-validator";
+
+export class DeleteFavoriteRequestDto {
+  @ApiProperty({default: "2cfc2f43-5f32-405e-9cb2-26ac6e7ba615"})
+  @IsNotEmpty()
+  gameId: string;
+}

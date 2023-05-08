@@ -1,8 +1,9 @@
 import {Injectable} from "@nestjs/common";
-import {Repository} from "typeorm";
+import { MoreThan, Repository } from "typeorm";
 import {Unavailability} from "../../domain/model/unavailability.entity";
 import {UnavailabilityRepository} from "../../infrastructure/unavailability.repository";
 import {InjectRepository} from "@nestjs/typeorm";
+import { Plan } from "../../domain/model/plan.entity";
 
 @Injectable()
 export class UnavailabilityEntityRepository extends Repository<Unavailability> implements UnavailabilityRepository {
@@ -39,6 +40,15 @@ export class UnavailabilityEntityRepository extends Repository<Unavailability> i
             },
             date: date,
         });
+    }
+
+    findBetweenDates(gameId: string, startDate: Date, endDate: Date): Promise<Unavailability[]> {
+        return this.manager
+          .createQueryBuilder(Unavailability, 'unavailability')
+          .select('*')
+          .where('unavailability.date BETWEEN :startDate AND :endDate', {startDate: startDate, endDate: endDate})
+          .andWhere('unavailability.game_id = :gameId', {gameId: gameId})
+          .getRawMany();
     }
 
     async saveUnavailability(unavailability: Unavailability): Promise<void> {

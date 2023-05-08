@@ -25,11 +25,20 @@ import { ReturnReservationHandler } from "./application/command/return-reservati
 import { CancelReservationHandler } from "./application/command/cancel-reservation.handler";
 import { EmailReservationCanceledService } from "../email/email-reservation-canceled.service";
 import { EmailReservationReturnedService } from "../email/email-reservation-returned.service";
+import { UnavailabilityEntityRepository } from "../unavailability/unavailability-entity.repository";
+import { Unavailability } from "../../domain/model/unavailability.entity";
 
 @Module({
   imports: [
     CqrsModule,
-    TypeOrmModule.forFeature([Reservation, User, Plan, Game, Invoice])
+    TypeOrmModule.forFeature([
+      Reservation,
+      User,
+      Plan,
+      Game,
+      Invoice,
+      Unavailability
+    ])
   ],
   controllers: [ReservationController],
   providers: [
@@ -44,6 +53,7 @@ import { EmailReservationReturnedService } from "../email/email-reservation-retu
     UserEntityRepository,
     GameEntityRepository,
     PlanEntityRepository,
+    UnavailabilityEntityRepository,
     GetAllReservationsHandler,
     GetReservationByIdHandler,
     GetReservationByUserIdHandler,

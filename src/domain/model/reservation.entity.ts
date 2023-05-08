@@ -42,6 +42,9 @@ export class Reservation {
     @Column({nullable: false, default: false, name: 'is_returned'})
     isReturned: boolean;
 
+    @Column({nullable: true, name: 'returned_date'})
+    returnedDate: Date;
+
     @Column({nullable: false, default: false, name: 'is_cancelled'})
     isCancelled: boolean;
 

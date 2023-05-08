@@ -10,6 +10,7 @@ export class GetReservationByIdHandler {
 
     async execute(query: GetReservationByIdQuery): Promise<GetReservationByIdResponseDto> {
         const reservation = await this.reservationRepository.findById(query.id);
+        reservation.user.password = undefined;
         return new GetReservationByIdResponseDto(reservation);
     }
 }
