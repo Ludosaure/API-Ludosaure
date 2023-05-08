@@ -1,10 +1,9 @@
-import {BadRequestException, Injectable} from '@nestjs/common';
-import {JwtService} from '@nestjs/jwt';
+import { Injectable } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
 import EmailService from "./email.service";
-import {emailConfig} from "../../config/email.config";
-import {urlConfig} from "../../config/url.config";
-import {jwtConfig} from "../../config/jwt.config";
-import {Reservation} from "../../domain/model/reservation.entity";
+import { emailConfig } from "../../config/email.config";
+import { urlConfig } from "../../config/url.config";
+import { Reservation } from "../../domain/model/reservation.entity";
 
 @Injectable()
 export class EmailReservationConfirmationService {

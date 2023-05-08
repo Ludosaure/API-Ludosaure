@@ -1,32 +1,35 @@
-import { Injectable } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
+import {BadRequestException, Injectable} from '@nestjs/common';
+import {JwtService} from '@nestjs/jwt';
 import EmailService from "./email.service";
-import { emailConfig } from "../../config/email.config";
-import { urlConfig } from "../../config/url.config";
-import { Reservation } from "../../domain/model/reservation.entity";
+import {emailConfig} from "../../config/email.config";
+import {urlConfig} from "../../config/url.config";
+import {jwtConfig} from "../../config/jwt.config";
+import {Reservation} from "../../domain/model/reservation.entity";
+import { Game } from "../../domain/model/game.entity";
+import { User } from "../../domain/model/user.entity";
 
 @Injectable()
-export class EmailReservationReturnedService {
+export class GameAvailableAgainService {
     constructor(
       private readonly jwtService: JwtService,
       private readonly emailService: EmailService,
     ) {}
 
-    public sendConfirmationMail(reservation: Reservation): void {
-        const token = this.jwtService.sign({ email: reservation.user.email });
+    public sendInformationMail(game:Game, user: User): void {
+        const token = this.jwtService.sign({ email: user.email });
 
         const unsubscribeUrl = `${urlConfig.unsubscribeUrl}?token=${token}`;
 
         return this.emailService.sendMail({
             from: emailConfig.emailUser,
-            to: reservation.user.email,
-            subject: `La Ludosaure - Réservation #${reservation.reservationNumber} retournée`,
+            to: user.email,
+            subject: `La Ludosaure - Votre jeu favoris ${game.name} est de nouveau disponible`,
             html: `<!DOCTYPE html>
                     <html lang="">
                     <head>
                     
                       <meta charset="utf-8">
-                      <title>Votre réservation #${reservation.reservationNumber} a été retournée</title>
+                      <title>La Ludosaure - Votre jeu favoris ${game.name} est de nouveau disponible</title>
                       <style>
                           @media screen {
                               @font-face {
@@ -77,20 +80,19 @@ export class EmailReservationReturnedService {
                       <div style="background-color:#ffffff; margin: auto; display: block; max-width: 600px; padding: 36px 24px 0;
                             font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;">
                         <h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">
-                          Votre réservation #${reservation.reservationNumber} a été retournée
+                          Bonne nouvelle ! Votre jeu favoris ${game.name} est de nouveau disponible :D
                         </h1>
                         <p class="text">
-                            Bonjour ${reservation.user.firstname} ${reservation.user.lastname},<br><br>
-                            Les jeux de la réservation #${reservation.reservationNumber} du ${reservation.startDate.toLocaleString()} au ${reservation.endDate.toLocaleString()} ont bien été retournés.<br>
-                            Merci encore pour votre confiance et nous espérant vous revoir bientôt.<br><br>
-                            Si vous avez des questions, n'hésitez pas à nous contacter par mail à l'adresse suivante : <b>laludosaure@gmail.com</b>
+                            Bonjour ${user.firstname} ${user.lastname},<br><br>
+                            Nous avons le plaisir de vous informer que le jeu ${game.name} est de nouveau disponible à la location.<br>
+                            N'hésitez pas à venir le réserver !<br><br>
                         <div style="padding: 24px"></div>
                       </div>
                     
                       <div style="background-color: #e9ecef; margin: auto; display: block; max-width: 600px; padding: 24px;
                             font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf; text-align: center">
                         <p class="footer-text">
-                          Vous avez reçu cet email suite au retour des jeux de votre réservation.
+                          Vous avez reçu cet email suite à la nouvelle disponibilité d'un jeu dans vos favoris.
                         </p>
                         <p class="footer-text">
                           Pour ne plus recevoir d'autres emails de notre part, vous pouvez

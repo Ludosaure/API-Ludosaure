@@ -10,6 +10,11 @@ import { GetFavoriteByUserHandler } from "./application/query/get-favorite-by-us
 import { CreateFavoriteHandler } from "./application/command/create-favorite.handler";
 import { DeleteFavoriteHandler } from "./application/command/delete-favorite.handler";
 import { FavoriteController } from "./favorite.controller";
+import { GameAvailableAgainService } from "../email/game-available-again.service";
+import { JwtStrategy } from "../authentication/strategy/jwt.strategy";
+import EmailService from "../email/email.service";
+import { UserEntityRepository } from "../user/user-entity.repository";
+import { FavoriteService } from "./favorite.service";
 
 @Module({
     imports: [
@@ -18,6 +23,11 @@ import { FavoriteController } from "./favorite.controller";
     ],
     controllers: [FavoriteController],
     providers: [
+      JwtStrategy,
+      EmailService,
+      GameAvailableAgainService,
+      UserEntityRepository,
+      FavoriteService,
       FavoriteEntityRepository,
       GetFavoriteByGameHandler,
       GetFavoriteByUserHandler,

@@ -4,11 +4,13 @@ import { ReservationEntityRepository } from "../../reservation-entity.repository
 import { ReservationCantBeModifiedException } from "../../exceptions/reservation-cant-be-modified.exception";
 import { ReturnReservationCommand } from "./return-reservation.command";
 import { EmailReservationReturnedService } from "../../../email/email-reservation-returned.service";
+import { FavoriteService } from "../../../favorite/favorite.service";
 
 @CommandHandler(ReturnReservationCommand)
 export class ReturnReservationHandler {
   constructor(private readonly repository: ReservationEntityRepository,
-              private readonly emailReservationReturnedService: EmailReservationReturnedService) {
+              private readonly emailReservationReturnedService: EmailReservationReturnedService,
+              private readonly favoriteService: FavoriteService) {
   }
 
   async execute(command: ReturnReservationCommand): Promise<void> {
@@ -24,5 +26,9 @@ export class ReturnReservationHandler {
     await this.repository.saveOrUpdate(foundReservation);
 
     await this.emailReservationReturnedService.sendConfirmationMail(foundReservation);
+
+    for (const game of foundReservation.games) {
+      await this.favoriteService.sendAvailableAgainEmailForFavoriteGame(game);
+    }
   }
 }

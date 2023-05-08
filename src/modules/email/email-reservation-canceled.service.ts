@@ -12,7 +12,7 @@ export class EmailReservationCanceledService {
         private readonly emailService: EmailService,
     ) {}
 
-    public sendConfirmationMail(reservation: Reservation): void {
+    public sendCancellationMail(reservation: Reservation): void {
         const token = this.jwtService.sign({ email: reservation.user.email });
 
         const unsubscribeUrl = `${urlConfig.unsubscribeUrl}?token=${token}`;
