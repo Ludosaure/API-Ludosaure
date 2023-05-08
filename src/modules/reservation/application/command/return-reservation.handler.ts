@@ -20,6 +20,7 @@ export class ReturnReservationHandler {
       throw new ReservationCantBeModifiedException();
     }
     foundReservation.isReturned = true;
+    foundReservation.returnedDate = new Date();
     await this.repository.saveOrUpdate(foundReservation);
 
     await this.emailReservationReturnedService.sendConfirmationMail(foundReservation);
