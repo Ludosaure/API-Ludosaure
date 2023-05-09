@@ -1,12 +1,10 @@
-import {BadRequestException, Injectable} from '@nestjs/common';
-import {JwtService} from '@nestjs/jwt';
+import { Injectable } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
 import EmailService from "./email.service";
-import {emailConfig} from "../../config/email.config";
-import {urlConfig} from "../../config/url.config";
-import {jwtConfig} from "../../config/jwt.config";
-import {Reservation} from "../../domain/model/reservation.entity";
+import { emailConfig } from "../../config/email.config";
 import { Game } from "../../domain/model/game.entity";
 import { User } from "../../domain/model/user.entity";
+import { EmailFooter } from "./email-footer";
 
 @Injectable()
 export class GameAvailableAgainService {
@@ -17,8 +15,6 @@ export class GameAvailableAgainService {
 
     public sendInformationMail(game:Game, user: User): void {
         const token = this.jwtService.sign({ email: user.email });
-
-        const unsubscribeUrl = `${urlConfig.unsubscribeUrl}?token=${token}`;
 
         return this.emailService.sendMail({
             from: emailConfig.emailUser,
@@ -88,23 +84,8 @@ export class GameAvailableAgainService {
                             N'hésitez pas à venir le réserver !<br><br>
                         <div style="padding: 24px"></div>
                       </div>
-                    
-                      <div style="background-color: #e9ecef; margin: auto; display: block; max-width: 600px; padding: 24px;
-                            font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf; text-align: center">
-                        <p class="footer-text">
-                          Vous avez reçu cet email suite à la nouvelle disponibilité d'un jeu dans vos favoris.
-                        </p>
-                        <p class="footer-text">
-                          Pour ne plus recevoir d'autres emails de notre part, vous pouvez
-                          <a href="${unsubscribeUrl}" target="_blank">vous désabonner</a> à tout moment.
-                        </p>
-                        <p class="footer-text">
-                          2 BIS Boulevard Cahours, Janzé, France
-                        </p>
-                        <p class="footer-text"></p>
-                      </div>
+                      ${EmailFooter.getFooter(token, "à la nouvelle disponibilité d'un jeu dans vos favoris")}
                     </div>
-                    
                     </body>
                     </html>`,
         })
