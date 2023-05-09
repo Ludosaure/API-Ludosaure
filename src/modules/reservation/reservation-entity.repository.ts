@@ -20,6 +20,7 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
             relations: {
                 user: true,
                 games: true,
+                appliedPlan: true,
             }
         });
     }
