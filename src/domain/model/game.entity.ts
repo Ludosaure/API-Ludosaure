@@ -2,6 +2,7 @@ import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGe
 import { Category } from "./category.entity";
 import { Unavailability } from "./unavailability.entity";
 import { Reservation } from "./reservation.entity";
+import { Review } from "./review.entity";
 
 @Entity()
 export class Game {
@@ -41,4 +42,7 @@ export class Game {
 
     @ManyToMany(() => Reservation, (reservation) => reservation.games)
     reservations: Reservation[];
+
+    @OneToMany(() => Review, (review) => review.game)
+    reviews: Review[];
 }

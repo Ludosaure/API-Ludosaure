@@ -15,6 +15,7 @@ import { FavoriteGame } from "../../domain/model/favorite-game.entity";
 import { ReservationEntityRepository } from "../reservation/reservation-entity.repository";
 import { Reservation } from "../../domain/model/reservation.entity";
 import { GetAvailableGamesHandler } from "./application/query/get-available-games.handler";
+import { Review } from "../../domain/model/review.entity";
 
 @Module({
   imports: [

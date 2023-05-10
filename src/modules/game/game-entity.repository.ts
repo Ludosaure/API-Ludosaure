@@ -25,7 +25,8 @@ export class GameEntityRepository extends Repository<Game> implements GameReposi
       },
       relations: {
         category: true,
-        unavailabilities: true
+        unavailabilities: true,
+        reviews: true
       }
     });
   }
@@ -36,13 +37,24 @@ export class GameEntityRepository extends Repository<Game> implements GameReposi
         isArchived: false
       },
       relations: {
-        reservations: true
+        reservations: true,
+        category: true,
+        reviews: true
       }
     });
   }
 
   findById(gameId: string): Promise<Game> {
-    return this.findOneBy({ id: gameId });
+    return this.findOne({
+      where: {
+        id: gameId
+      },
+      relations: {
+        reservations: true,
+        category: true,
+        reviews: true
+      }
+    });
   }
 
   findByName(name: string): Promise<Game[]> {
