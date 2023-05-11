@@ -46,6 +46,17 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
         });
     }
 
+    findByGameIdAndUserId(gameId: string, userId: string): Promise<Reservation[]> {
+        return this.findBy({
+            user: {
+                id: userId
+            },
+            games: {
+                id: gameId
+            }
+        });
+    }
+
     findCurrentOrFutureReservationsByGameId(gameId: string): Promise<Reservation[]> {
         return this.find({
             where: {

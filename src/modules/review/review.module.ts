@@ -12,6 +12,7 @@ import { CreateReviewHandler } from "./application/command/create-review.handler
 import { DeleteReviewHandler } from "./application/command/delete-review.handler";
 import { GameEntityRepository } from "../game/game-entity.repository";
 import { UpdateReviewHandler } from "./application/command/update-review.handler";
+import { ReservationEntityRepository } from "../reservation/reservation-entity.repository";
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { UpdateReviewHandler } from "./application/command/update-review.handler
   providers: [
     ReviewEntityRepository,
     GameEntityRepository,
+    ReservationEntityRepository,
     GetReviewByIdHandler,
     GetReviewByGameIdHandler,
     CreateReviewHandler,

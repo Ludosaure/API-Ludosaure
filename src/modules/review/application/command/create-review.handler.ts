@@ -5,11 +5,16 @@ import { GameEntityRepository } from "../../../game/game-entity.repository";
 import { GameNotFoundException } from "../../../../shared/exceptions/game-not-found.exception";
 import { Review } from "../../../../domain/model/review.entity";
 import { UserAlreadyReviewedThisGameException } from "../../exceptions/user-already-reviewed-this-game.exception";
+import { ReservationEntityRepository } from "../../../reservation/reservation-entity.repository";
+import {
+  YouCantReviewAGameThatYouNeverReservedException
+} from "../../exceptions/you-cant-review-a-game-that-you-never-reserved.exception";
 
 @CommandHandler(CreateReviewCommand)
 export class CreateReviewHandler implements ICommandHandler<CreateReviewCommand> {
   constructor(private readonly reviewRepository: ReviewEntityRepository,
-              private readonly gameRepository: GameEntityRepository) {
+              private readonly gameRepository: GameEntityRepository,
+              private readonly reservationRepository: ReservationEntityRepository) {
   }
 
   async execute(command: CreateReviewCommand): Promise<void> {
@@ -17,9 +22,13 @@ export class CreateReviewHandler implements ICommandHandler<CreateReviewCommand>
     if (foundGame == null) {
       throw new GameNotFoundException();
     }
-    const foundReservation = await this.reviewRepository.findByGameIdAndUserId(foundGame.id, command.user.id);
-    if (foundReservation != null) {
+    const foundReview = await this.reviewRepository.findByGameIdAndUserId(foundGame.id, command.user.id);
+    if (foundReview != null) {
       throw new UserAlreadyReviewedThisGameException();
+    }
+    const foundReservation = await this.reservationRepository.findByGameIdAndUserId(foundGame.id, command.user.id);
+    if (foundReservation == null) {
+      throw new YouCantReviewAGameThatYouNeverReservedException();
     }
     const review = new Review();
     review.rating = command.rating;
