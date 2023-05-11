@@ -2,11 +2,13 @@ import { ICommandHandler, QueryHandler } from "@nestjs/cqrs";
 import { GameEntityRepository } from "../../game-entity.repository";
 import { GetAvailableGamesQuery } from "./get-available-games.query";
 import { GetAvailableGamesResponseDto } from "../../dto/response/get-available-games-response.dto";
+import { ReviewEntityRepository } from "../../../review/review-entity.repository";
 
 @QueryHandler(GetAvailableGamesQuery)
 export class GetAvailableGamesHandler implements ICommandHandler<GetAvailableGamesQuery> {
 
-  constructor(private readonly gameRepository: GameEntityRepository) {
+  constructor(private readonly gameRepository: GameEntityRepository,
+              private readonly reviewRepository: ReviewEntityRepository) {
   }
 
   async execute(): Promise<GetAvailableGamesResponseDto> {
@@ -25,6 +27,10 @@ export class GetAvailableGamesHandler implements ICommandHandler<GetAvailableGam
       }
       if (isAvailable)
         availableGames.push(game);
+    }
+
+    for (const game of availableGames) {
+      game.averageRating = await this.reviewRepository.findAverageRatingByGameId(game.id);
     }
     return new GetAvailableGamesResponseDto(availableGames);
   }

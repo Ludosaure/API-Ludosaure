@@ -16,16 +16,18 @@ import { ReservationEntityRepository } from "../reservation/reservation-entity.r
 import { Reservation } from "../../domain/model/reservation.entity";
 import { GetAvailableGamesHandler } from "./application/query/get-available-games.handler";
 import { Review } from "../../domain/model/review.entity";
+import { ReviewEntityRepository } from "../review/review-entity.repository";
 
 @Module({
   imports: [
     CqrsModule,
-    TypeOrmModule.forFeature([Game, Category, FavoriteGame, Reservation])
+    TypeOrmModule.forFeature([Game, Category, FavoriteGame, Reservation, Review])
   ],
   controllers: [GameController],
   providers: [
     ReservationEntityRepository,
     CategoryEntityRepository,
+    ReviewEntityRepository,
     GameEntityRepository,
     GetAllGamesHandler,
     GetAvailableGamesHandler,
