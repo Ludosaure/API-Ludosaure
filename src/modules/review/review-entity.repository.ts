@@ -7,7 +7,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 
 @Injectable()
 export class ReviewEntityRepository extends Repository<Review> implements ReviewRepository {
-  constructor(@InjectRepository(Reservation)
+  constructor(@InjectRepository(Review)
               private reviewRepository: Repository<Review>) {
     super(reviewRepository.target, reviewRepository.manager, reviewRepository.queryRunner);
   }
