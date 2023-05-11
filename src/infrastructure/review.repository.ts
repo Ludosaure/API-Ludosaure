@@ -6,6 +6,8 @@ export interface ReviewRepository {
 
     findByGameId(gameId: string): Promise<Review[]>;
 
+    findByGameIdAndUserId(gameId: string, userId: string): Promise<Review>;
+
     findAverageRatingByGameId(gameId: string): Promise<number>;
 
     saveOrUpdate(review: Review): Promise<void>;

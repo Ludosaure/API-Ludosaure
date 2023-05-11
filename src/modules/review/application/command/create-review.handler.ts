@@ -4,6 +4,7 @@ import { ReviewEntityRepository } from "../../review-entity.repository";
 import { GameEntityRepository } from "../../../game/game-entity.repository";
 import { GameNotFoundException } from "../../../../shared/exceptions/game-not-found.exception";
 import { Review } from "../../../../domain/model/review.entity";
+import { UserAlreadyReviewedThisGameException } from "../../exceptions/user-already-reviewed-this-game.exception";
 
 @CommandHandler(CreateReviewCommand)
 export class CreateReviewHandler implements ICommandHandler<CreateReviewCommand> {
@@ -15,6 +16,10 @@ export class CreateReviewHandler implements ICommandHandler<CreateReviewCommand>
     const foundGame = await this.gameRepository.findById(command.gameId);
     if (foundGame == null) {
       throw new GameNotFoundException();
+    }
+    const foundReservation = await this.reviewRepository.findByGameIdAndUserId(foundGame.id, command.user.id);
+    if (foundReservation != null) {
+      throw new UserAlreadyReviewedThisGameException();
     }
     const review = new Review();
     review.rating = command.rating;

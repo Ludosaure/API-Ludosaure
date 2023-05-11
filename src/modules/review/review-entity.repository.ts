@@ -34,6 +34,18 @@ export class ReviewEntityRepository extends Repository<Review> implements Review
     });
   }
 
+  findByGameIdAndUserId(gameId: string, userId: string): Promise<Review> {
+    return this.findOne({
+      where: {
+        game: { id: gameId },
+        user: { id: userId }
+      },
+      relations: {
+        game: true
+      }
+    });
+  }
+
   findAverageRatingByGameId(gameId: string): Promise<number> {
     return this.manager
       .createQueryBuilder(Review, 'review')
