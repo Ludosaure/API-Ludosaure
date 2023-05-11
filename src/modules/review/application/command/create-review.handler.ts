@@ -27,7 +27,7 @@ export class CreateReviewHandler implements ICommandHandler<CreateReviewCommand>
       throw new UserAlreadyReviewedThisGameException();
     }
     const foundReservation = await this.reservationRepository.findByGameIdAndUserId(foundGame.id, command.user.id);
-    if (foundReservation == null) {
+    if (foundReservation.length === 0) {
       throw new YouCantReviewAGameThatYouNeverReservedException();
     }
     const review = new Review();
