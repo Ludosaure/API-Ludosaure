@@ -13,11 +13,12 @@ import { DeleteReviewHandler } from "./application/command/delete-review.handler
 import { GameEntityRepository } from "../game/game-entity.repository";
 import { UpdateReviewHandler } from "./application/command/update-review.handler";
 import { ReservationEntityRepository } from "../reservation/reservation-entity.repository";
+import { Reservation } from "../../domain/model/reservation.entity";
 
 @Module({
   imports: [
     CqrsModule,
-    TypeOrmModule.forFeature([Review, Game, User])
+    TypeOrmModule.forFeature([Review, Game, User, Reservation])
   ],
   controllers: [ReviewController],
   providers: [
