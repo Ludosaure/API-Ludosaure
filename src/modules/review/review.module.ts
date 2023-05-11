@@ -9,9 +9,9 @@ import { ReviewController } from "./review.controller";
 import { GetReviewByIdHandler } from "./application/query/get-review-by-id.handler";
 import { GetReviewByGameIdHandler } from "./application/query/get-review-by-game-id.handler";
 import { CreateReviewHandler } from "./application/command/create-review.handler";
-import { UpdateReservationHandler } from "../reservation/application/command/update-reservation.handler";
 import { DeleteReviewHandler } from "./application/command/delete-review.handler";
 import { GameEntityRepository } from "../game/game-entity.repository";
+import { UpdateReviewHandler } from "./application/command/update-review.handler";
 
 @Module({
   imports: [
@@ -25,7 +25,7 @@ import { GameEntityRepository } from "../game/game-entity.repository";
     GetReviewByIdHandler,
     GetReviewByGameIdHandler,
     CreateReviewHandler,
-    UpdateReservationHandler,
+    UpdateReviewHandler,
     DeleteReviewHandler
   ]
 })
