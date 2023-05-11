@@ -35,13 +35,20 @@ export class ReviewEntityRepository extends Repository<Review> implements Review
   }
 
   findAverageRatingByGameId(gameId: string): Promise<number> {
-    return this.createQueryBuilder('review')
+    return this.manager
+      .createQueryBuilder(Review, 'review')
       .select('AVG(review.rating)', 'averageRating')
-      .where('review.gameId = :gameId', { gameId: gameId })
+      .where(
+        'review.game_id = :gameId',
+        {
+          gameId: gameId,
+        }
+      )
       .getRawOne()
       .then((result) => {
+        result.averageRating = Math.round(result.averageRating * 10) / 10;
         return result.averageRating;
-      }); // TODO modifier car pas bon
+      });
   }
 
   async saveOrUpdate(review: Review): Promise<void> {
