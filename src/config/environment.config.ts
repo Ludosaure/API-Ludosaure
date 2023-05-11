@@ -9,6 +9,10 @@ export interface IEnvironmentConfig {
     dataSourcePassword: string;
     dataSourcePort: number;
     cgvFilePath: string;
+    awsRegion: string;
+    awsAccessKeyId: string;
+    awsSecretAccessKey: string;
+    awsBucketName: string;
 }
 
 export class EnvironmentConfig implements IEnvironmentConfig {
@@ -20,6 +24,10 @@ export class EnvironmentConfig implements IEnvironmentConfig {
     dataSourcePassword: string;
     dataSourcePort: number;
     cgvFilePath: string;
+    awsRegion: string;
+    awsAccessKeyId: string;
+    awsSecretAccessKey: string;
+    awsBucketName: string;
 
     constructor() {
         this.port = Number(process.env.PORT) || 3000;
@@ -30,6 +38,10 @@ export class EnvironmentConfig implements IEnvironmentConfig {
         this.dataSourcePassword = process.env.RDS_PASSWORD;
         this.dataSourcePort = Number(process.env.RDS_PORT);
         this.cgvFilePath = process.env.CGV_FILE_PATH;
+        this.awsRegion = process.env.AWS_REGION;
+        this.awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID;
+        this.awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+        this.awsBucketName = process.env.AWS_PUBLIC_BUCKET_NAME;
     }
 }
 
