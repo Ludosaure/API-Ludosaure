@@ -10,7 +10,6 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { AppModule } from "./app.module";
 import { environmentConfig } from "./config/environment.config";
 import { config as awsConfig } from "aws-sdk";
-import fmp = require('fastify-multipart');
 
 function setupSwagger(app: NestFastifyApplication): void {
   const config = new DocumentBuilder()
@@ -21,7 +20,6 @@ function setupSwagger(app: NestFastifyApplication): void {
     .addBearerAuth()
     .build();
   app.useGlobalPipes(new ValidationPipe());
-  app.register(fmp);
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup("api", app, document);
 
