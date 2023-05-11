@@ -1,9 +1,8 @@
-import {Injectable} from "@nestjs/common";
-import {Repository} from "typeorm";
-import {Category} from "../../domain/model/category.entity";
-import {CategoryRepository} from "../../infrastructure/category.repository";
-import {InjectRepository} from "@nestjs/typeorm";
-import {Game} from "../../domain/model/game.entity";
+import { Injectable } from "@nestjs/common";
+import { Repository } from "typeorm";
+import { Category } from "../../domain/model/category.entity";
+import { CategoryRepository } from "../../infrastructure/category.repository";
+import { InjectRepository } from "@nestjs/typeorm";
 
 @Injectable()
 export class CategoryEntityRepository extends Repository<Category> implements CategoryRepository {
