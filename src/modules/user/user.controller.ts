@@ -26,7 +26,8 @@ import { UnsubscribeRequestDto } from "./dto/request/unsubscribe-request.dto";
 import { UnsubscribeCommand } from "./application/command/unsubscribe.command";
 import { OwnGuard } from "../../shared/guards/own.guard";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { UserService } from "./user.service";
+import { AddProfilePictureCommand } from "./application/command/add-profile-picture.command";
+import { User } from "../../domain/model/user.entity";
 
 @ApiTags("User")
 @Controller("user")
@@ -34,8 +35,7 @@ export class UserController {
 
   constructor(
     private readonly commandBus: CommandBus,
-    private readonly queryBus: QueryBus,
-    private readonly usersService: UserService) {
+    private readonly queryBus: QueryBus) {
   }
 
   @ApiBearerAuth()
@@ -70,6 +70,7 @@ export class UserController {
   @UseGuards(JwtAuthGuard, OwnGuard)
   @UseInterceptors(FileInterceptor("file"))
   async addAvatar(@Req() request, @UploadedFile() file: Express.Multer.File) {
-    return this.usersService.addProfilePicture(request.user.id, file.buffer, file.originalname);
+    const user = request.user as User;
+    await this.commandBus.execute<AddProfilePictureCommand>(AddProfilePictureCommand.of(user, file.buffer, file.originalname));
   }
 }

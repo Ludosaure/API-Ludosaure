@@ -15,7 +15,7 @@ import { UserEntityRepository } from "./user-entity.repository";
 import { MediaService } from "../media/media.service";
 import { Media } from "../../domain/model/media.entity";
 import { MediaEntityRepository } from "../media/media-entity.repository";
-import { UserService } from "./user.service";
+import { AddProfilePictureHandler } from "./application/command/add-profile-picture.handler";
 
 @Module({
   imports: [
@@ -29,13 +29,13 @@ import { UserService } from "./user.service";
     EmailAccountConfirmationService,
     EmailService,
     MediaService,
-    UserService,
     MediaEntityRepository,
     UserEntityRepository,
     GetAllUsersHandler,
     CloseAccountHandler,
     UpdateUserHandler,
     UnsubscribeHandler,
+    AddProfilePictureHandler,
   ]
 })
 export class UserModule {
