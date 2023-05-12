@@ -19,7 +19,6 @@ export class AddProfilePictureHandler implements ICommandHandler<AddProfilePictu
     if (foundUser == null) {
       throw new UserNotFoundException();
     }
-    console.log(foundUser);
     foundUser.profilePicture = avatar;
     await this.userRepository.saveOrUpdate(foundUser);
   }

@@ -10,7 +10,7 @@ import {
   UseGuards,
   UseInterceptors
 } from "@nestjs/common";
-import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from "@nestjs/swagger";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { GetAllUsersResponseDto } from "./dto/response/get-all-users-response.dto";
 import { GetAllUsersQuery } from "./application/query/get-all-users.query";
@@ -67,6 +67,18 @@ export class UserController {
 
   @Post("/profile-picture")
   @ApiBearerAuth()
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   @UseGuards(JwtAuthGuard, OwnGuard)
   @UseInterceptors(FileInterceptor("file"))
   async addAvatar(@Req() request, @UploadedFile() file: Express.Multer.File) {
