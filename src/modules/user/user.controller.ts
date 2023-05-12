@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  HttpStatus,
+  ParseFilePipeBuilder,
   Post,
   Put,
   Query,
@@ -81,7 +83,17 @@ export class UserController {
   })
   @UseGuards(JwtAuthGuard, OwnGuard)
   @UseInterceptors(FileInterceptor("file"))
-  async addAvatar(@Req() request, @UploadedFile() file: Express.Multer.File) {
+  async addAvatar(@Req() request, @UploadedFile(
+    new ParseFilePipeBuilder()
+      .addMaxSizeValidator({
+        maxSize: 10000000 // environ 10Mo
+      })
+      .addFileTypeValidator({
+        fileType: /(jpg|jpeg|png)$/,
+      })
+      .build({
+        errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
+      }),) file: Express.Multer.File) {
     const user = request.user as User;
     await this.commandBus.execute<AddProfilePictureCommand>(AddProfilePictureCommand.of(user, file.buffer, file.originalname));
   }
