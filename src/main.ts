@@ -1,4 +1,5 @@
 import { config } from "dotenv";
+// attention a bien le laisser juste en dessous de l'import en premier import
 config();
 import { ClassSerializerInterceptor, INestApplication, Logger, ValidationPipe } from "@nestjs/common";
 import { NestFactory, Reflector } from "@nestjs/core";
