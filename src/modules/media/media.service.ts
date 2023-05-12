@@ -1,6 +1,4 @@
 import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
 import { S3 } from "aws-sdk";
 import { v4 as uuid } from "uuid";
 import { Media } from "../../domain/model/media.entity";

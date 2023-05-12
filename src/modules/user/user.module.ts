@@ -15,6 +15,7 @@ import { UserEntityRepository } from "./user-entity.repository";
 import { MediaService } from "../media/media.service";
 import { Media } from "../../domain/model/media.entity";
 import { MediaEntityRepository } from "../media/media-entity.repository";
+import { UserService } from "./user.service";
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { MediaEntityRepository } from "../media/media-entity.repository";
     EmailAccountConfirmationService,
     EmailService,
     MediaService,
+    UserService,
     MediaEntityRepository,
     UserEntityRepository,
     GetAllUsersHandler,
