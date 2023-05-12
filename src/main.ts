@@ -1,13 +1,16 @@
 import { config } from "dotenv";
+
+config();
 import { ClassSerializerInterceptor, Logger, ValidationPipe } from "@nestjs/common";
 import { NestFactory, Reflector } from "@nestjs/core";
-import { FastifyAdapter, NestFastifyApplication } from "@nestjs/platform-fastify";
+import {
+  FastifyAdapter,
+  NestFastifyApplication
+} from "@nestjs/platform-fastify";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { AppModule } from "./app.module";
 import { environmentConfig } from "./config/environment.config";
 import { config as awsConfig } from "aws-sdk";
-
-config();
 
 async function bootstrap() {
   const logger = new Logger("bootstrap");
