@@ -1,12 +1,8 @@
 import { config } from "dotenv";
-
+// attention a bien le laisser juste en dessous de l'import en premier import
 config();
-import { ClassSerializerInterceptor, Logger, ValidationPipe } from "@nestjs/common";
+import { ClassSerializerInterceptor, INestApplication, Logger, ValidationPipe } from "@nestjs/common";
 import { NestFactory, Reflector } from "@nestjs/core";
-import {
-  FastifyAdapter,
-  NestFastifyApplication
-} from "@nestjs/platform-fastify";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { AppModule } from "./app.module";
 import { environmentConfig } from "./config/environment.config";
@@ -14,10 +10,7 @@ import { config as awsConfig } from "aws-sdk";
 
 async function bootstrap() {
   const logger = new Logger("bootstrap");
-  const app = await NestFactory.create<NestFastifyApplication>(
-    AppModule,
-    new FastifyAdapter()
-  );
+  const app = await NestFactory.create(AppModule);
   app.useGlobalInterceptors(
     new ClassSerializerInterceptor(app.get(Reflector))
   );
@@ -33,7 +26,7 @@ async function bootstrap() {
   logger.log(await app.getUrl());
 }
 
-function setupSwagger(app: NestFastifyApplication): void {
+function setupSwagger(app: INestApplication): void {
   const config = new DocumentBuilder()
     .setTitle("API-Ludosaure")
     .setDescription("La ludosaure API description")
