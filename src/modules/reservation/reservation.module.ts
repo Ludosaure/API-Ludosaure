@@ -27,6 +27,10 @@ import { EmailReservationCanceledService } from "../email/email-reservation-canc
 import { EmailReservationReturnedService } from "../email/email-reservation-returned.service";
 import { UnavailabilityEntityRepository } from "../unavailability/unavailability-entity.repository";
 import { Unavailability } from "../../domain/model/unavailability.entity";
+import { FavoriteService } from "../favorite/favorite.service";
+import { FavoriteGame } from "../../domain/model/favorite-game.entity";
+import { FavoriteEntityRepository } from "../favorite/favorite-entity.repository";
+import { GameAvailableAgainService } from "../email/game-available-again.service";
 
 @Module({
   imports: [
@@ -37,7 +41,8 @@ import { Unavailability } from "../../domain/model/unavailability.entity";
       Plan,
       Game,
       Invoice,
-      Unavailability
+      Unavailability,
+      FavoriteGame,
     ])
   ],
   controllers: [ReservationController],
@@ -46,10 +51,13 @@ import { Unavailability } from "../../domain/model/unavailability.entity";
     EmailReservationConfirmationService,
     EmailReservationCanceledService,
     EmailReservationReturnedService,
+    GameAvailableAgainService,
     EmailService,
+    FavoriteService,
     InvoiceService,
     InvoiceEntityRepository,
     ReservationEntityRepository,
+    FavoriteEntityRepository,
     UserEntityRepository,
     GameEntityRepository,
     PlanEntityRepository,

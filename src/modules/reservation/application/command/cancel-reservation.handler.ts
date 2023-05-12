@@ -24,6 +24,6 @@ export class CancelReservationHandler {
 
     await this.repository.saveOrUpdate(foundReservation);
 
-    await this.emailReservationCanceledService.sendConfirmationMail(foundReservation);
+    await this.emailReservationCanceledService.sendCancellationMail(foundReservation);
   }
 }

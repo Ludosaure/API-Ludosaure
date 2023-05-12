@@ -2,8 +2,8 @@ import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import EmailService from "./email.service";
 import { emailConfig } from "../../config/email.config";
-import { urlConfig } from "../../config/url.config";
 import { Reservation } from "../../domain/model/reservation.entity";
+import { EmailFooter } from "./email-footer";
 
 @Injectable()
 export class EmailReservationCanceledService {
@@ -12,10 +12,8 @@ export class EmailReservationCanceledService {
         private readonly emailService: EmailService,
     ) {}
 
-    public sendConfirmationMail(reservation: Reservation): void {
+    public sendCancellationMail(reservation: Reservation): void {
         const token = this.jwtService.sign({ email: reservation.user.email });
-
-        const unsubscribeUrl = `${urlConfig.unsubscribeUrl}?token=${token}`;
 
         return this.emailService.sendMail({
             from: emailConfig.emailUser,
@@ -86,21 +84,7 @@ export class EmailReservationCanceledService {
                             Si vous avez des questions, n'hésitez pas à nous contacter par mail à l'adresse suivante : <b>laludosaure@gmail.com</b>
                         <div style="padding: 24px"></div>
                       </div>
-                    
-                      <div style="background-color: #e9ecef; margin: auto; display: block; max-width: 600px; padding: 24px;
-                            font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf; text-align: center">
-                        <p class="footer-text">
-                          Vous avez reçu cet email suite à la l'annulation d'une commande sur notre site ou notre application.
-                        </p>
-                        <p class="footer-text">
-                          Pour ne plus recevoir d'autres emails de notre part, vous pouvez
-                          <a href="${unsubscribeUrl}" target="_blank">vous désabonner</a> à tout moment.
-                        </p>
-                        <p class="footer-text">
-                          2 BIS Boulevard Cahours, Janzé, France
-                        </p>
-                        <p class="footer-text"></p>
-                      </div>
+                      ${EmailFooter.getFooter(token, "à l'annulation d'une commande sur notre site ou notre application")}
                     </div>
                     
                     </body>
