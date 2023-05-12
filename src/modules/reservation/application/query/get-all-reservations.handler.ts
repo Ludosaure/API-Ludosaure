@@ -10,9 +10,6 @@ export class GetAllReservationsHandler {
 
     async execute(): Promise<GetAllReservationsResponseDto> {
         const reservations = await this.reservationRepository.findAll();
-        for(let reservation of reservations) {
-            reservation.user.password = undefined;
-        }
         return new GetAllReservationsResponseDto(reservations);
     }
 }
