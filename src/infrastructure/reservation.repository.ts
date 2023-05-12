@@ -7,6 +7,8 @@ export interface ReservationRepository {
 
     findByUserId(userId: string): Promise<Reservation[]>;
 
+    findByGameIdAndUserId(gameId: string, userId: string): Promise<Reservation[]>;
+
     findCurrentOrFutureReservationsByGameId(gameId: string): Promise<Reservation[]>;
 
     saveOrUpdate(reservation: Reservation): Promise<void>;

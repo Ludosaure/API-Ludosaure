@@ -18,9 +18,6 @@ export class UpdateUserRequestDto {
     @ApiProperty({default: 'mr-john-doe'})
     public readonly pseudo: string;
 
-    @ApiProperty({default: 'https://kengo.bzh/media/image/aaf9a0e8-b90f-4727-8d5d-1b94ab6f7a6c_sticker-kengojpg.jpg'})
-    public readonly profilePicture: string;
-
     @ApiProperty({default: true})
     public readonly hasEnabledMailNotifications: boolean;
 

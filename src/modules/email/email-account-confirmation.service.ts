@@ -1,28 +1,29 @@
-import {BadRequestException, Injectable} from '@nestjs/common';
-import {JwtService} from '@nestjs/jwt';
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
 import EmailService from "./email.service";
-import {emailConfig} from "../../config/email.config";
-import {urlConfig} from "../../config/url.config";
-import {jwtConfig} from "../../config/jwt.config";
+import { emailConfig } from "../../config/email.config";
+import { urlConfig } from "../../config/url.config";
+import { jwtConfig } from "../../config/jwt.config";
+import { EmailFooter } from "./email-footer";
 
 @Injectable()
 export class EmailAccountConfirmationService {
-    constructor(
-        private readonly jwtService: JwtService,
-        private readonly emailService: EmailService,
-    ) {}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly emailService: EmailService
+  ) {
+  }
 
-    public sendVerificationLink(email: string) {
-        const token = this.jwtService.sign({ email: email });
+  public sendVerificationLink(email: string) {
+    const token = this.jwtService.sign({ email: email });
 
-        const confirmationAccountUrl = `${urlConfig.emailConfirmationAccountUrl}?token=${token}`;
-        const unsubscribeUrl = `${urlConfig.unsubscribeUrl}?token=${token}`;
+    const confirmationAccountUrl = `${urlConfig.emailConfirmationAccountUrl}?token=${token}`;
 
-        return this.emailService.sendMail({
-            from: emailConfig.emailUser,
-            to: email,
-            subject: 'La Ludosaure - Confirmation de compte',
-            html: `<!DOCTYPE html>
+    return this.emailService.sendMail({
+      from: emailConfig.emailUser,
+      to: email,
+      subject: "La Ludosaure - Confirmation de compte",
+      html: `<!DOCTYPE html>
                     <html lang="">
                     <head>
                     
@@ -98,43 +99,28 @@ export class EmailAccountConfirmationService {
                           <a href="${confirmationAccountUrl}" target="_blank">${confirmationAccountUrl}</a></p>
                         <div style="padding: 24px"></div>
                       </div>
-                    
-                      <div style="background-color: #e9ecef; margin: auto; display: block; max-width: 600px; padding: 24px;
-                            font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf; text-align: center">
-                        <p class="footer-text">
-                          Vous avez reçu cet email suite à une requête de création de compte sur notre site ou notre application.
-                        </p>
-                        <p class="footer-text">
-                          Pour ne plus recevoir d'autres emails de notre part, vous pouvez
-                          <a href="${unsubscribeUrl}" target="_blank">vous désabonner</a> à tout moment.
-                        </p>
-                        <p class="footer-text">
-                          2 BIS Boulevard Cahours, Janzé, France
-                        </p>
-                        <p class="footer-text"></p>
-                      </div>
+                      ${EmailFooter.getFooter(token, "à une requête de création de compte sur notre site ou notre application")}
                     </div>
-                    
                     </body>
-                    </html>`,
-        })
-    }
+                    </html>`
+    });
+  }
 
-    public async decodeConfirmationToken(token: string) {
-        try {
-            const payload = await this.jwtService.verify(token, {
-                secret: jwtConfig.jwtAccessSecret,
-            });
+  public async decodeConfirmationToken(token: string) {
+    try {
+      const payload = await this.jwtService.verify(token, {
+        secret: jwtConfig.jwtAccessSecret
+      });
 
-            if (typeof payload === 'object' && 'email' in payload) {
-                return payload.email;
-            }
-            throw new BadRequestException();
-        } catch (error) {
-            if (error?.name === 'TokenExpiredError') {
-                throw new BadRequestException('Email confirmation token expired');
-            }
-            throw new BadRequestException('Bad confirmation token');
-        }
+      if (typeof payload === "object" && "email" in payload) {
+        return payload.email;
+      }
+      throw new BadRequestException();
+    } catch (error) {
+      if (error?.name === "TokenExpiredError") {
+        throw new BadRequestException("Email confirmation token expired");
+      }
+      throw new BadRequestException("Bad confirmation token");
     }
+  }
 }

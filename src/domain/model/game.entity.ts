@@ -1,7 +1,18 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import {
+    Column,
+    Entity,
+    JoinColumn,
+    ManyToMany,
+    ManyToOne,
+    OneToMany,
+    OneToOne,
+    PrimaryGeneratedColumn
+} from "typeorm";
 import { Category } from "./category.entity";
 import { Unavailability } from "./unavailability.entity";
 import { Reservation } from "./reservation.entity";
+import { Review } from "./review.entity";
+import { Media } from "./media.entity";
 
 @Entity()
 export class Game {
@@ -32,6 +43,10 @@ export class Game {
     @Column({nullable: false, default:false, name: 'is_archived'})
     isArchived: boolean;
 
+    @OneToOne(() => Media, media => media.id, {nullable: true})
+    @JoinColumn({name: 'picture_id'})
+    picture: Media;
+
     @ManyToOne(() => Category, (category) => category.id, {nullable: false})
     @JoinColumn({name: 'category_id'})
     category: Category;
@@ -41,4 +56,9 @@ export class Game {
 
     @ManyToMany(() => Reservation, (reservation) => reservation.games)
     reservations: Reservation[];
+
+    @OneToMany(() => Review, (review) => review.game)
+    reviews: Review[];
+
+    averageRating: number;
 }

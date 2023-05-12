@@ -19,7 +19,6 @@ import {NewsModule} from "./modules/news/news.module";
 import {NotificationModule} from "./modules/notification/notification.module";
 import {ReservationModule} from "./modules/reservation/reservation.module";
 import {ReviewModule} from "./modules/review/review.module";
-import {UserGameReviewModule} from "./modules/user-game-review/user-game-review.module";
 import {PlanModule} from "./modules/plan/plan.module";
 import { CgvModule } from './modules/cgv/cgv.module';
 
@@ -64,7 +63,6 @@ import { CgvModule } from './modules/cgv/cgv.module';
         NotificationModule,
         ReservationModule,
         ReviewModule,
-        UserGameReviewModule,
         CgvModule,
     ],
 })

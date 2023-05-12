@@ -11,6 +11,9 @@ export class GetAllUsersHandler implements ICommandHandler<GetAllUsersQuery> {
 
   async execute(): Promise<GetAllUsersResponseDto> {
     const users = await this.userRepository.find();
+    for(let user of users) {
+      user.password = undefined;
+    }
     return new GetAllUsersResponseDto(users);
   }
 }

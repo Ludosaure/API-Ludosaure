@@ -1,8 +1,8 @@
-import {Injectable} from "@nestjs/common";
-import {ReservationRepository} from "../../infrastructure/reservation.repository";
-import {Reservation} from "../../domain/model/reservation.entity";
-import {LessThan, MoreThan, Repository} from "typeorm";
-import {InjectRepository} from "@nestjs/typeorm";
+import { Injectable } from "@nestjs/common";
+import { ReservationRepository } from "../../infrastructure/reservation.repository";
+import { Reservation } from "../../domain/model/reservation.entity";
+import { MoreThan, Repository } from "typeorm";
+import { InjectRepository } from "@nestjs/typeorm";
 
 @Injectable()
 export class ReservationEntityRepository extends Repository<Reservation> implements ReservationRepository {
@@ -16,6 +16,11 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
             order: {
                 startDate: "DESC",
                 endDate: "DESC"
+            },
+            relations: {
+                user: true,
+                games: true,
+                appliedPlan: true,
             }
         });
     }
@@ -34,7 +39,22 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
     }
 
     findByUserId(userId: string): Promise<Reservation[]> {
-        return this.findBy({user: {id: userId}});
+        return this.findBy({
+            user: {
+                id: userId
+            },
+        });
+    }
+
+    findByGameIdAndUserId(gameId: string, userId: string): Promise<Reservation[]> {
+        return this.findBy({
+            user: {
+                id: userId
+            },
+            games: {
+                id: gameId
+            }
+        });
     }
 
     findCurrentOrFutureReservationsByGameId(gameId: string): Promise<Reservation[]> {

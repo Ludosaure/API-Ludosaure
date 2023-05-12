@@ -1,7 +1,8 @@
-import {Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique} from 'typeorm';
-import {IsEmail, IsPhoneNumber} from 'class-validator';
-import {Role} from "./enum/role";
-import {FavoriteGame} from "./favorite-game.entity";
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { IsEmail, IsPhoneNumber } from "class-validator";
+import { Role } from "./enum/role";
+import { FavoriteGame } from "./favorite-game.entity";
+import { Media } from "./media.entity";
 
 @Entity()
 export class User {
@@ -28,9 +29,6 @@ export class User {
     @Column({nullable: true, unique: true})
     pseudo: string;
 
-    @Column({nullable: true, name: 'profile_picture_path'})
-    profilePicturePath: string;
-
     @Column({nullable: false, type: 'enum', enum: Role, default: Role.CLIENT})
     role: Role;
 
@@ -48,6 +46,10 @@ export class User {
 
     @Column({nullable: false, default: false, name: 'is_account_closed'})
     isAccountClosed: boolean;
+
+    @OneToOne(() => Media, media => media.id, {nullable: true})
+    @JoinColumn({name: 'profile_picture_id'})
+    profilePicture: Media;
 
     @OneToMany(() => FavoriteGame, (favoriteGame) => favoriteGame.user)
     favoriteGames: FavoriteGame[];
