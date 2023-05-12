@@ -1,7 +1,8 @@
-import {Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique} from 'typeorm';
-import {IsEmail, IsPhoneNumber} from 'class-validator';
-import {Role} from "./enum/role";
-import {FavoriteGame} from "./favorite-game.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { IsEmail, IsPhoneNumber } from "class-validator";
+import { Role } from "./enum/role";
+import { FavoriteGame } from "./favorite-game.entity";
+import { Exclude } from "class-transformer";
 
 @Entity()
 export class User {
@@ -23,6 +24,7 @@ export class User {
     phone: string;
 
     @Column({nullable: false})
+    @Exclude({ toPlainOnly: true })
     password: string;
 
     @Column({nullable: true, unique: true})

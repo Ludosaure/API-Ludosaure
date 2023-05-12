@@ -29,7 +29,6 @@ export class AuthenticationController {
     @Post('/login')
     async login(@Body() loginRequest: LoginRequestDto, @Req() request) {
         const user : User = request.user;
-        user.password = undefined;
         const token = this.authenticationService.getJwtToken(user.id);
         return new LoginResponseDto(token, user);
     }
