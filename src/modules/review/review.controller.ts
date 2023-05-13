@@ -2,7 +2,6 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from 
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "../../shared/guards/jwt-auth.guard";
-import { OwnGuard } from "../../shared/guards/own.guard";
 import { User } from "../../domain/model/user.entity";
 import { GetReviewByIdResponseDto } from "./dto/response/get-review-by-id-response.dto";
 import { GetReviewByGameIdResponseDto } from "./dto/response/get-review-by-game-id-response.dto";
