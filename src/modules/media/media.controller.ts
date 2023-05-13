@@ -1,6 +1,8 @@
 import {
   Controller,
+  Delete,
   HttpStatus,
+  Param,
   ParseFilePipeBuilder,
   Post,
   Req,
@@ -17,9 +19,11 @@ import { CreateMediaResponseDto } from "./dto/response/create-media-response.dto
 import { CreateMediaCommand } from "./application/command/create-media.command";
 import { CommandBus } from "@nestjs/cqrs";
 import { FileInterceptor } from "@nestjs/platform-express";
+import { DeleteMediaRequestDto } from "./dto/request/delete-media-request.dto";
+import { DeleteMediaCommand } from "./application/command/delete-media.command";
 
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiTags("Media")
 @Controller("media")
 export class MediaController {
@@ -27,7 +31,6 @@ export class MediaController {
   }
 
   @Post()
-  @ApiBearerAuth()
   @ApiConsumes("multipart/form-data")
   @ApiBody({
     schema: {
@@ -40,7 +43,6 @@ export class MediaController {
       }
     }
   })
-  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.CLIENT)
   @UseInterceptors(FileInterceptor("file"))
   async createMedia(@Req() request, @UploadedFile(
@@ -57,4 +59,10 @@ export class MediaController {
     file: Express.Multer.File): Promise<CreateMediaResponseDto> {
     return await this.commandBus.execute<CreateMediaCommand, CreateMediaResponseDto>(CreateMediaCommand.of(file.buffer, file.originalname));
   };
+
+  @Delete("/:mediaId")
+  @Roles(Role.ADMIN, Role.CLIENT)
+  async deleteMedia(@Param() deleteMediaRequest: DeleteMediaRequestDto): Promise<void> {
+    await this.commandBus.execute<DeleteMediaRequestDto, void>(DeleteMediaCommand.of(deleteMediaRequest));
+  }
 }

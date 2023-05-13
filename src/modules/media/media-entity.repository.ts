@@ -23,7 +23,7 @@ export class MediaEntityRepository extends Repository<Media> implements MediaRep
     await this.save(media);
   }
 
-  async deleteMedia(media: Media): Promise<void> {
-    await this.remove(media);
+  async deleteMedia(mediaId: string): Promise<void> {
+    await this.delete(mediaId);
   }
 }

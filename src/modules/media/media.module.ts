@@ -7,6 +7,7 @@ import { News } from "../../domain/model/news.entity";
 import { MediaEntityRepository } from "./media-entity.repository";
 import { MediaController } from "./media.controller";
 import { CreateMediaHandler } from "./application/command/create-media.handler";
+import { DeleteMediaHandler } from "./application/command/delete-media.handler";
 
 @Module({
     imports: [
@@ -17,6 +18,7 @@ import { CreateMediaHandler } from "./application/command/create-media.handler";
     providers: [
       MediaEntityRepository,
       CreateMediaHandler,
+      DeleteMediaHandler,
     ],
 })
 export class MediaModule {}
