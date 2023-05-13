@@ -1,18 +1,5 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpStatus,
-  ParseFilePipeBuilder,
-  Post,
-  Put,
-  Query,
-  Req,
-  UploadedFile,
-  UseGuards,
-  UseInterceptors
-} from "@nestjs/common";
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from "@nestjs/swagger";
+import { Body, Controller, Get, Post, Put, Query, UseGuards } from "@nestjs/common";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { GetAllUsersResponseDto } from "./dto/response/get-all-users-response.dto";
 import { GetAllUsersQuery } from "./application/query/get-all-users.query";
@@ -27,10 +14,7 @@ import { UpdateUserRequestDto } from "./dto/request/update-user-request.dto";
 import { UnsubscribeRequestDto } from "./dto/request/unsubscribe-request.dto";
 import { UnsubscribeCommand } from "./application/command/unsubscribe.command";
 import { OwnGuard } from "../../shared/guards/own.guard";
-import { FileInterceptor } from "@nestjs/platform-express";
-import { AddProfilePictureCommand } from "./application/command/add-profile-picture.command";
 import { User } from "../../domain/model/user.entity";
-import { AddProfilePictureResponseDto } from "./dto/response/add-profile-picture-response.dto";
 
 @ApiTags("User")
 @Controller("user")
@@ -66,37 +50,5 @@ export class UserController {
   @Get("/unsubscribe")
   async unsubscribe(@Query() unsubscribeRequest: UnsubscribeRequestDto) {
     await this.commandBus.execute<UnsubscribeCommand>(UnsubscribeCommand.of(unsubscribeRequest));
-  }
-
-  @Post("/profile-picture")
-  @ApiBearerAuth()
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        file: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    },
-  })
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.CLIENT)
-  @UseInterceptors(FileInterceptor("file"))
-  async addAvatar(@Req() request, @UploadedFile(
-    new ParseFilePipeBuilder()
-      .addMaxSizeValidator({
-        maxSize: 10000000 // environ 10Mo
-      })
-      .addFileTypeValidator({
-        fileType: /(jpg|jpeg|png)$/,
-      })
-      .build({
-        errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
-      }),) file: Express.Multer.File): Promise<AddProfilePictureResponseDto> {
-    const user = request.user as User;
-    return await this.commandBus.execute<AddProfilePictureCommand, AddProfilePictureResponseDto>(AddProfilePictureCommand.of(user, file.buffer, file.originalname));
   }
 }

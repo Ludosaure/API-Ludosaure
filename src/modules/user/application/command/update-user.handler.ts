@@ -4,7 +4,6 @@ import { UpdateUserCommand } from "./update-user.command";
 import { PasswordValidator } from "../../../../shared/password-validator.service";
 import { hash } from "argon2";
 import { UserEntityRepository } from "../../user-entity.repository";
-import { MediaService } from "../../../media/media.service";
 
 @CommandHandler(UpdateUserCommand)
 export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {

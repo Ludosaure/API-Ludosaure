@@ -1,11 +1,60 @@
-import { Controller, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import {
+  Controller,
+  HttpStatus,
+  ParseFilePipeBuilder,
+  Post,
+  Req,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors
+} from "@nestjs/common";
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from "src/shared/guards/jwt-auth.guard";
+import { RolesGuard } from "../../shared/guards/roles.guard";
+import { Roles } from "../../shared/roles.decorator";
+import { Role } from "../../domain/model/enum/role";
+import { CreateMediaResponseDto } from "./dto/response/create-media-response.dto";
+import { CreateMediaCommand } from "./application/command/create-media.command";
+import { CommandBus } from "@nestjs/cqrs";
+import { FileInterceptor } from "@nestjs/platform-express";
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
-@ApiTags('Media')
-@Controller('media')
+@ApiTags("Media")
+@Controller("media")
 export class MediaController {
+  constructor(private readonly commandBus: CommandBus) {
+  }
 
+  @Post()
+  @ApiBearerAuth()
+  @ApiConsumes("multipart/form-data")
+  @ApiBody({
+    schema: {
+      type: "object",
+      properties: {
+        file: {
+          type: "string",
+          format: "binary"
+        }
+      }
+    }
+  })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.CLIENT)
+  @UseInterceptors(FileInterceptor("file"))
+  async createMedia(@Req() request, @UploadedFile(
+    new ParseFilePipeBuilder()
+      .addMaxSizeValidator({
+        maxSize: 10000000 // environ 10Mo
+      })
+      .addFileTypeValidator({
+        fileType: /(jpg|jpeg|png)$/
+      })
+      .build({
+        errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
+      }))
+    file: Express.Multer.File): Promise<CreateMediaResponseDto> {
+    return await this.commandBus.execute<CreateMediaCommand, CreateMediaResponseDto>(CreateMediaCommand.of(file.buffer, file.originalname));
+  };
 }

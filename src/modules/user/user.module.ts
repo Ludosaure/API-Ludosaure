@@ -12,10 +12,8 @@ import { EmailAccountConfirmationService } from "../email/email-account-confirma
 import { JwtStrategy } from "../authentication/strategy/jwt.strategy";
 import EmailService from "../email/email.service";
 import { UserEntityRepository } from "./user-entity.repository";
-import { MediaService } from "../media/media.service";
 import { Media } from "../../domain/model/media.entity";
 import { MediaEntityRepository } from "../media/media-entity.repository";
-import { AddProfilePictureHandler } from "./application/command/add-profile-picture.handler";
 
 @Module({
   imports: [
@@ -28,14 +26,12 @@ import { AddProfilePictureHandler } from "./application/command/add-profile-pict
     JwtStrategy,
     EmailAccountConfirmationService,
     EmailService,
-    MediaService,
     MediaEntityRepository,
     UserEntityRepository,
     GetAllUsersHandler,
     CloseAccountHandler,
     UpdateUserHandler,
     UnsubscribeHandler,
-    AddProfilePictureHandler,
   ]
 })
 export class UserModule {
