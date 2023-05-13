@@ -61,4 +61,6 @@ export class Game {
     reviews: Review[];
 
     averageRating: number;
+
+    nbReviews: number;
 }

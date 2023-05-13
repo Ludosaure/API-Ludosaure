@@ -10,6 +10,8 @@ export interface ReviewRepository {
 
     findAverageRatingByGameId(gameId: string): Promise<number>;
 
+    countReviewsByGameId(gameId: string): Promise<number>;
+
     saveOrUpdate(review: Review): Promise<void>;
 
     deleteReview(review: Review): Promise<void>;
