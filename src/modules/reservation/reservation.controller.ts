@@ -68,10 +68,11 @@ export class ReservationController {
         return await this.commandBus.execute<CreateReservationCommand>(CreateReservationCommand.of(createReservationRequest, user));
     }
 
-    @UseGuards(OwnGuard) // TODO own guard pas bon ici mais on ne peut pas récupérer le user_id logiquement ici
+    @UseGuards(RolesGuard)
+    @Roles(Role.ADMIN, Role.CLIENT)
     @Put()
-    async updateReservation(@Body() updateReservationRequest: UpdateReservationRequestDto) {
-        return await this.commandBus.execute<UpdateReservationCommand>(UpdateReservationCommand.of(updateReservationRequest));
+    async updateReservation(@Body() updateReservationRequest: UpdateReservationRequestDto, @Req() request) {
+        return await this.commandBus.execute<UpdateReservationCommand>(UpdateReservationCommand.of(updateReservationRequest, request.user as User));
     }
 
     @UseGuards(RolesGuard)

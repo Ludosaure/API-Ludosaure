@@ -1,16 +1,19 @@
 import { UpdateReservationRequestDto } from "../../dto/request/update-reservation-request.dto";
+import { User } from "../../../../domain/model/user.entity";
 
 export class UpdateReservationCommand {
   public readonly id: string;
   public readonly endDate: Date;
+  public readonly user: User;
 
-  private constructor(id: string, endDate: Date) {
+  private constructor(id: string, endDate: Date, user: User) {
     this.id = id;
     this.endDate = endDate;
+    this.user = user;
   }
 
-  public static of(updateReservationRequest: UpdateReservationRequestDto): UpdateReservationCommand {
+  public static of(updateReservationRequest: UpdateReservationRequestDto, user: User): UpdateReservationCommand {
     const { id, endDate } = updateReservationRequest;
-    return new UpdateReservationCommand(id, endDate);
+    return new UpdateReservationCommand(id, endDate, user);
   }
 }
