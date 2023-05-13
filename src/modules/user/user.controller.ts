@@ -30,6 +30,7 @@ import { OwnGuard } from "../../shared/guards/own.guard";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { AddProfilePictureCommand } from "./application/command/add-profile-picture.command";
 import { User } from "../../domain/model/user.entity";
+import { AddProfilePictureResponseDto } from "./dto/response/add-profile-picture-response.dto";
 
 @ApiTags("User")
 @Controller("user")
@@ -81,7 +82,8 @@ export class UserController {
       },
     },
   })
-  @UseGuards(JwtAuthGuard, OwnGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.CLIENT)
   @UseInterceptors(FileInterceptor("file"))
   async addAvatar(@Req() request, @UploadedFile(
     new ParseFilePipeBuilder()
@@ -93,8 +95,8 @@ export class UserController {
       })
       .build({
         errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
-      }),) file: Express.Multer.File) {
+      }),) file: Express.Multer.File): Promise<AddProfilePictureResponseDto> {
     const user = request.user as User;
-    await this.commandBus.execute<AddProfilePictureCommand>(AddProfilePictureCommand.of(user, file.buffer, file.originalname));
+    return await this.commandBus.execute<AddProfilePictureCommand, AddProfilePictureResponseDto>(AddProfilePictureCommand.of(user, file.buffer, file.originalname));
   }
 }

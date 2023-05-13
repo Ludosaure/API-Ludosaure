@@ -1,15 +1,17 @@
-import { UpdateReviewRequestDto } from "../../dto/request/update-review-request.dto";
 import { DeleteReviewRequestDto } from "../../dto/request/delete-review-request.dto";
+import { User } from "../../../../domain/model/user.entity";
 
 export class DeleteReviewCommand {
-  public readonly id: string;
+  public readonly gameId: string;
+  public readonly user: User
 
-  private constructor(id: string) {
-    this.id = id;
+  private constructor(gameId: string, user: User) {
+    this.gameId = gameId;
+    this.user = user;
   }
 
-  public static of(deleteReviewRequestDto: DeleteReviewRequestDto): DeleteReviewCommand {
-    const { id } = deleteReviewRequestDto;
-    return new DeleteReviewCommand(id);
+  public static of(deleteReviewRequestDto: DeleteReviewRequestDto, user: User): DeleteReviewCommand {
+    const { gameId } = deleteReviewRequestDto;
+    return new DeleteReviewCommand(gameId, user);
   }
 }

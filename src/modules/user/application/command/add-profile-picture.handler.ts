@@ -3,6 +3,7 @@ import { UserEntityRepository } from "../../user-entity.repository";
 import { AddProfilePictureCommand } from "./add-profile-picture.command";
 import { MediaService } from "../../../media/media.service";
 import { UserNotFoundException } from "../../../../shared/exceptions/user-not-found.exception";
+import { AddProfilePictureResponseDto } from "../../dto/response/add-profile-picture-response.dto";
 
 @CommandHandler(AddProfilePictureCommand)
 export class AddProfilePictureHandler implements ICommandHandler<AddProfilePictureCommand> {
@@ -12,14 +13,15 @@ export class AddProfilePictureHandler implements ICommandHandler<AddProfilePictu
   ) {
   }
 
-  async execute(command: AddProfilePictureCommand): Promise<void> {
+  async execute(command: AddProfilePictureCommand): Promise<AddProfilePictureResponseDto> {
     const { user, imageBuffer, filename } = command;
-    const avatar = await this.mediaService.uploadPublicFile(imageBuffer, filename);
+    const profilePicture = await this.mediaService.uploadPublicFile(imageBuffer, filename);
     const foundUser = await this.userRepository.findById(user.id);
     if (foundUser == null) {
       throw new UserNotFoundException();
     }
-    foundUser.profilePicture = avatar;
+    foundUser.profilePicture = profilePicture;
     await this.userRepository.saveOrUpdate(foundUser);
+    return new AddProfilePictureResponseDto(profilePicture);
   }
 }

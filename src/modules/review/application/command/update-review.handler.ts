@@ -9,17 +9,17 @@ export class UpdateReviewHandler implements ICommandHandler<UpdateReviewCommand>
   }
 
   async execute(command: UpdateReviewCommand): Promise<void> {
-    const foundReview = await this.reviewRepository.findById(command.id);
-    if(foundReview == null) {
+    const foundReview = await this.reviewRepository.findByGameIdAndUserId(command.gameId, command.user.id);
+    if (foundReview == null) {
       throw new ReviewNotFoundException();
     }
-    if(command.rating != null) {
+    if (command.rating != null) {
       foundReview.rating = command.rating;
     }
-    if(command.title != null) {
+    if (command.title != null) {
       foundReview.title = command.title;
     }
-    if(command.comment != null) {
+    if (command.comment != null) {
       foundReview.comment = command.comment;
     }
     await this.reviewRepository.saveOrUpdate(foundReview);

@@ -1,14 +1,14 @@
 import {GetReservationByIdRequestDto} from "../../dto/request/get-reservation-by-id-request.dto";
 
 export class GetReservationByUserIdQuery {
-    public readonly id: string;
+    public readonly userId: string;
 
-    private constructor(id: string) {
-        this.id = id;
+    private constructor(userId: string) {
+        this.userId = userId;
     }
 
     static of(getReservationByIdRequest: GetReservationByIdRequestDto): GetReservationByUserIdQuery {
-        const {id} = getReservationByIdRequest;
-        return new GetReservationByUserIdQuery(id);
+        const {userId} = getReservationByIdRequest;
+        return new GetReservationByUserIdQuery(userId);
     }
 }

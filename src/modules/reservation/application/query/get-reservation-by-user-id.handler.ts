@@ -9,7 +9,7 @@ export class GetReservationByUserIdHandler {
     }
 
     async execute(query: GetReservationByUserIdQuery): Promise<GetReservationByUserIdResponseDto> {
-        const reservations = await this.reservationRepository.findByUserId(query.id);
+        const reservations = await this.reservationRepository.findByUserId(query.userId);
         return new GetReservationByUserIdResponseDto(reservations);
     }
 }

@@ -54,8 +54,8 @@ export class ReservationController {
     }
 
     @UseGuards(OwnGuard)
-    @Get('/getByUserId')
-    async getReservationByUserId(@Query() getReservationByUserIdRequest: GetReservationByUserIdRequestDto) {
+    @Get('/userId/:userId')
+    async getReservationByUserId(@Param() getReservationByUserIdRequest: GetReservationByUserIdRequestDto) {
         return await this.queryBus.execute<GetReservationByUserIdQuery, GetReservationByUserIdResponseDto>
         (GetReservationByUserIdQuery.of(getReservationByUserIdRequest));
     }
@@ -68,7 +68,7 @@ export class ReservationController {
         return await this.commandBus.execute<CreateReservationCommand>(CreateReservationCommand.of(createReservationRequest, user));
     }
 
-    @UseGuards(OwnGuard)
+    @UseGuards(OwnGuard) // TODO own guard pas bon ici mais on ne peut pas récupérer le user_id logiquement ici
     @Put()
     async updateReservation(@Body() updateReservationRequest: UpdateReservationRequestDto) {
         return await this.commandBus.execute<UpdateReservationCommand>(UpdateReservationCommand.of(updateReservationRequest));
