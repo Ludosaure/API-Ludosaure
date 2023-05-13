@@ -9,9 +9,10 @@ export class CreateGameCommand {
     public readonly ageMin: number;
     public readonly weeklyAmount: number;
     public readonly categoryId: string;
+    public readonly pictureId: string;
 
     private constructor(name: string, description: string, nbPlayersMin: number, nbPlayersMax: number,
-                averageDuration: number, ageMin: number, weeklyAmount: number, categoryId: string) {
+                averageDuration: number, ageMin: number, weeklyAmount: number, categoryId: string, pictureId: string) {
         this.name = name;
         this.description = description;
         this.nbPlayersMin = nbPlayersMin;
@@ -20,6 +21,7 @@ export class CreateGameCommand {
         this.ageMin = ageMin;
         this.weeklyAmount = weeklyAmount;
         this.categoryId = categoryId;
+        this.pictureId = pictureId;
     }
 
     public static of(createGameRequest: CreateGameRequestDto): CreateGameCommand {
@@ -31,9 +33,10 @@ export class CreateGameCommand {
             averageDuration,
             ageMin,
             weeklyAmount,
-            categoryId
+            categoryId,
+            pictureId
         } = createGameRequest;
         return new CreateGameCommand(name, description, nbPlayersMin, nbPlayersMax,
-            averageDuration, ageMin, weeklyAmount, categoryId);
+            averageDuration, ageMin, weeklyAmount, categoryId, pictureId);
     }
 }

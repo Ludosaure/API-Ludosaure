@@ -1,15 +1,20 @@
 import {ApiProperty} from "@nestjs/swagger";
+import { IsNotEmpty, IsOptional } from "class-validator";
 
 export class UpdatePlanRequestDto {
+    @IsNotEmpty()
     @ApiProperty({default: '93541800-ddfe-493e-ab6f-98e1e0ac8fc9'})
-    id: string;
+    public readonly id: string;
 
+    @IsOptional()
     @ApiProperty({default: 'semaine'})
-    name: string;
+    public readonly name: string;
 
+    @IsOptional()
     @ApiProperty({default: 2})
-    reduction: number;
+    public readonly reduction: number;
 
+    @IsOptional()
     @ApiProperty({default: 2})
-    nbWeeks: number;
+    public readonly nbWeeks: number;
 }

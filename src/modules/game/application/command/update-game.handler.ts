@@ -7,6 +7,7 @@ import { GameNotFoundException } from "../../../../shared/exceptions/game-not-fo
 import { ReservationEntityRepository } from "../../../reservation/reservation-entity.repository";
 import { GameCurrentlyBookedExceptions } from "../../exceptions/game-currently-booked.exceptions";
 import { CannotUpdateArchivedGameException } from "../../exceptions/cannot-update-archived-game.exception";
+import { Media } from "../../../../domain/model/media.entity";
 
 @CommandHandler(UpdateGameCommand)
 export class UpdateGameHandler {
@@ -49,13 +50,18 @@ export class UpdateGameHandler {
       }
     }
 
-
     if (command.categoryId != null) {
       const foundCategory = await this.categoryRepository.findOneBy({ id: command.categoryId });
       if (foundCategory == null) {
         throw new CategoryNotFoundException();
       }
       foundGame.category = foundCategory;
+    }
+
+    if(command.pictureId != null) {
+      const picture = new Media();
+      picture.id = command.pictureId;
+      foundGame.picture = picture;
     }
     await this.gameRepository.saveOrUpdate(foundGame);
   }

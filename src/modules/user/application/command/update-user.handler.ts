@@ -4,6 +4,7 @@ import { UpdateUserCommand } from "./update-user.command";
 import { PasswordValidator } from "../../../../shared/password-validator.service";
 import { hash } from "argon2";
 import { UserEntityRepository } from "../../user-entity.repository";
+import { Media } from "../../../../domain/model/media.entity";
 
 @CommandHandler(UpdateUserCommand)
 export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
@@ -33,6 +34,11 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
       foundUser.hasEnabledMailNotifications = command.hasEnabledMailNotifications;
     if (command.hasEnabledPhoneNotifications != null)
       foundUser.hasEnabledPhoneNotifications = command.hasEnabledPhoneNotifications;
+    if (command.profilePictureId != null) {
+      const profilePicture = new Media();
+      profilePicture.id = command.profilePictureId;
+      foundUser.profilePicture = profilePicture;
+    }
     await this.userRepository.saveOrUpdate(foundUser);
   }
 }

@@ -9,7 +9,7 @@ export class News {
     @Column({nullable: false, name: 'end_date'})
     endDate: Date;
 
-    @OneToOne(() => Media, media => media.id, {nullable: true})
+    @OneToOne(() => Media, media => media.id, {nullable: false})
     @JoinColumn({name: 'picture_id'})
     picture: Media;
 }
