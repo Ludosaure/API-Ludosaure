@@ -9,6 +9,8 @@ import { EmailReservationConfirmationService } from "../../../email/email-reserv
 import { ReservationCantBeModifiedException } from "../../exceptions/reservation-cant-be-modified.exception";
 import { UnavailabilityEntityRepository } from "../../../unavailability/unavailability-entity.repository";
 import { UnavailableGameException } from "../../exceptions/unavailable-game.exception";
+import { Role } from "../../../../domain/model/enum/role";
+import { NotAllowedToUpdateReservationException } from "../../exceptions/not-allowed-to-update-reservation.exception";
 
 @CommandHandler(UpdateReservationCommand)
 export class UpdateReservationHandler {
@@ -23,6 +25,9 @@ export class UpdateReservationHandler {
     const foundReservation = await this.repository.findById(command.id);
     if (foundReservation == null) {
       throw new ReservationNotFoundException();
+    }
+    if(foundReservation.user.id !== command.user.id && command.user.role !== Role.ADMIN) {
+      throw new NotAllowedToUpdateReservationException();
     }
     if (foundReservation.isCancelled || foundReservation.isReturned) {
       throw new ReservationCantBeModifiedException();

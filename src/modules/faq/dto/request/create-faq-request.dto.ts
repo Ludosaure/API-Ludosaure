@@ -4,9 +4,9 @@ import {ApiProperty} from "@nestjs/swagger";
 export class CreateFaqRequestDto {
     @ApiProperty({default: 'Question'})
     @IsNotEmpty()
-    question: string;
+    public readonly question: string;
 
     @ApiProperty({default: 'Answer'})
     @IsNotEmpty()
-    answer: string;
+    public readonly answer: string;
 }

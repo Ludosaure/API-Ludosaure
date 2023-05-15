@@ -9,7 +9,7 @@ export class DeleteReviewHandler implements ICommandHandler<DeleteReviewCommand>
   }
 
   async execute(command: DeleteReviewCommand): Promise<void> {
-    const foundReview = await this.reviewRepository.findById(command.id);
+    const foundReview = await this.reviewRepository.findByGameIdAndUserId(command.gameId, command.user.id);
     if (foundReview == null) {
       throw new ReviewNotFoundException();
     }

@@ -63,6 +63,14 @@ export class ReviewEntityRepository extends Repository<Review> implements Review
       });
   }
 
+  countReviewsByGameId(gameId: string): Promise<number> {
+    return this.count({
+      where: {
+        game: { id: gameId }
+      }
+    });
+  }
+
   async saveOrUpdate(review: Review): Promise<void> {
     await this.save(review);
   }

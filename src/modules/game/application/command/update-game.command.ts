@@ -11,9 +11,10 @@ export class UpdateGameCommand {
   public readonly weeklyAmount: number;
   public readonly isArchived: boolean;
   public readonly categoryId: string;
+  public readonly pictureId: string;
 
   private constructor(id: string, name: string, description: string, nbPlayersMin: number, nbPlayersMax: number,
-                      averageDuration: number, ageMin: number, weeklyAmount: number, isArchived: boolean, categoryId: string) {
+                      averageDuration: number, ageMin: number, weeklyAmount: number, isArchived: boolean, categoryId: string, pictureId: string) {
     this.id = id;
     this.name = name;
     this.description = description;
@@ -24,6 +25,7 @@ export class UpdateGameCommand {
     this.weeklyAmount = weeklyAmount;
     this.isArchived = isArchived;
     this.categoryId = categoryId;
+    this.pictureId = pictureId;
   }
 
   public static of(updateGameRequestDto: UpdateGameRequestDto): UpdateGameCommand {
@@ -37,9 +39,10 @@ export class UpdateGameCommand {
       ageMin,
       weeklyAmount,
       isArchived,
-      categoryId
+      categoryId,
+      pictureId
     } = updateGameRequestDto;
     return new UpdateGameCommand(id, name, description, nbPlayersMin, nbPlayersMax, averageDuration,
-      ageMin, weeklyAmount, isArchived, categoryId);
+      ageMin, weeklyAmount, isArchived, categoryId, pictureId);
   }
 }

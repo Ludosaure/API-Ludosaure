@@ -4,5 +4,5 @@ import {ApiProperty} from "@nestjs/swagger";
 export class CreateCategoryRequestDto {
     @IsNotEmpty()
     @ApiProperty({default: "Category name"})
-    name: string;
+    public readonly name: string;
 }

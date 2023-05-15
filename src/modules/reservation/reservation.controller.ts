@@ -54,8 +54,8 @@ export class ReservationController {
     }
 
     @UseGuards(OwnGuard)
-    @Get('/getByUserId')
-    async getReservationByUserId(@Query() getReservationByUserIdRequest: GetReservationByUserIdRequestDto) {
+    @Get('/userId/:userId')
+    async getReservationByUserId(@Param() getReservationByUserIdRequest: GetReservationByUserIdRequestDto) {
         return await this.queryBus.execute<GetReservationByUserIdQuery, GetReservationByUserIdResponseDto>
         (GetReservationByUserIdQuery.of(getReservationByUserIdRequest));
     }
@@ -68,10 +68,11 @@ export class ReservationController {
         return await this.commandBus.execute<CreateReservationCommand>(CreateReservationCommand.of(createReservationRequest, user));
     }
 
-    @UseGuards(OwnGuard)
+    @UseGuards(RolesGuard)
+    @Roles(Role.ADMIN, Role.CLIENT)
     @Put()
-    async updateReservation(@Body() updateReservationRequest: UpdateReservationRequestDto) {
-        return await this.commandBus.execute<UpdateReservationCommand>(UpdateReservationCommand.of(updateReservationRequest));
+    async updateReservation(@Body() updateReservationRequest: UpdateReservationRequestDto, @Req() request) {
+        return await this.commandBus.execute<UpdateReservationCommand>(UpdateReservationCommand.of(updateReservationRequest, request.user as User));
     }
 
     @UseGuards(RolesGuard)

@@ -4,5 +4,5 @@ import {ApiProperty} from "@nestjs/swagger";
 export class GetGamesByNameRequestDto {
     @IsNotEmpty()
     @ApiProperty({default: "gam"})
-    name: string;
+    public readonly name: string;
 }

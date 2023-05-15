@@ -15,7 +15,6 @@ import { JwtAuthGuard } from "../../shared/guards/jwt-auth.guard";
 import { RolesGuard } from "../../shared/guards/roles.guard";
 import { Roles } from "../../shared/roles.decorator";
 import { Role } from "../../domain/model/enum/role";
-import { OwnGuard } from "../../shared/guards/own.guard";
 
 @ApiTags("Favorite")
 @Controller("favorite")
@@ -25,7 +24,8 @@ export class FavoriteController {
               private readonly queryBus: QueryBus) {
   }
 
-  @UseGuards(JwtAuthGuard, OwnGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.CLIENT)
   @Get()
   async getMyFavoriteGames(@Req() request) {
     const user: User = request.user;
@@ -41,7 +41,8 @@ export class FavoriteController {
     (GetFavoriteByGameQuery.of(getFavoriteByGameRequest));
   }
 
-  @UseGuards(JwtAuthGuard, OwnGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.CLIENT)
   @Post("/:gameId")
   async createFavorite(@Param() createFavoriteRequest: CreateFavoriteRequestDto, @Req() request) {
     const user: User = request.user;
@@ -49,7 +50,8 @@ export class FavoriteController {
     (CreateFavoriteCommand.of(createFavoriteRequest.gameId, user.id));
   }
 
-  @UseGuards(JwtAuthGuard, OwnGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.CLIENT)
   @Delete("/:gameId")
   async deleteFavorite(@Param() deleteFavoriteRequest: DeleteFavoriteRequestDto, @Req() request) {
     const user: User = request.user;

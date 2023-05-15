@@ -8,6 +8,7 @@ export class UpdateUserCommand {
     public readonly pseudo: string;
     public readonly hasEnabledMailNotifications: boolean;
     public readonly hasEnabledPhoneNotifications: boolean;
+    public readonly profilePictureId: string;
 
 
     private constructor(
@@ -18,6 +19,7 @@ export class UpdateUserCommand {
         pseudo: string,
         hasEnabledMailNotifications: boolean,
         hasEnabledPhoneNotifications: boolean,
+        profilePictureId: string
     ) {
         this.userId = userId;
         this.password = password;
@@ -26,6 +28,7 @@ export class UpdateUserCommand {
         this.pseudo = pseudo;
         this.hasEnabledMailNotifications = hasEnabledMailNotifications;
         this.hasEnabledPhoneNotifications = hasEnabledPhoneNotifications;
+        this.profilePictureId = profilePictureId;
     }
 
     public static of(updateUserRequestDto: UpdateUserRequestDto): UpdateUserCommand {
@@ -36,7 +39,8 @@ export class UpdateUserCommand {
             phoneNumber,
             pseudo,
             hasEnabledMailNotifications,
-            hasEnabledPhoneNotifications
+            hasEnabledPhoneNotifications,
+            profilePictureId
         } = updateUserRequestDto;
         return new UpdateUserCommand(
             userId,
@@ -44,6 +48,7 @@ export class UpdateUserCommand {
             confirmPassword,
             phoneNumber, pseudo,
             hasEnabledMailNotifications,
-            hasEnabledPhoneNotifications);
+            hasEnabledPhoneNotifications,
+            profilePictureId);
     }
 }

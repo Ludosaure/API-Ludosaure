@@ -3,6 +3,6 @@ import { ApiProperty } from "@nestjs/swagger";
 
 export class DeleteReviewRequestDto {
   @IsNotEmpty()
-  @ApiProperty({ default: "5813f374-cfca-4e1f-a609-a3930d2c9795" })
-  id: string;
+  @ApiProperty({ default: "93541800-ddfe-493e-ab6f-98e1e0ac8fc9" })
+  gameId: string;
 }

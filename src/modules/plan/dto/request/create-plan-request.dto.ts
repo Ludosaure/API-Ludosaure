@@ -1,12 +1,16 @@
 import {ApiProperty} from "@nestjs/swagger";
+import { IsNotEmpty } from "class-validator";
 
 export class CreatePlanRequestDto {
+    @IsNotEmpty()
     @ApiProperty({default: 'semaine'})
-    name: string;
+    public readonly name: string;
 
+    @IsNotEmpty()
     @ApiProperty({default: 2})
-    reduction: number;
+    public readonly reduction: number;
 
+    @IsNotEmpty()
     @ApiProperty({default: 2})
-    nbWeeks: number;
+    public readonly nbWeeks: number;
 }

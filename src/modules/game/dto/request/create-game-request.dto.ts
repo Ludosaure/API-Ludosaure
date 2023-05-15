@@ -1,35 +1,39 @@
-import {IsNotEmpty} from "class-validator";
+import {IsNotEmpty, IsOptional} from "class-validator";
 import {ApiProperty} from "@nestjs/swagger";
 
 export class CreateGameRequestDto {
     @IsNotEmpty()
     @ApiProperty({default: "Game name"})
-    name: string;
+    public readonly name: string;
 
+    @IsOptional()
     @ApiProperty({default: "Game description"})
-    description: string;
+    public readonly description: string;
 
     @IsNotEmpty()
     @ApiProperty({default: 2})
-    nbPlayersMin: number;
+    public readonly nbPlayersMin: number;
 
     @IsNotEmpty()
     @ApiProperty({default: 4})
-    nbPlayersMax: number;
+    public readonly nbPlayersMax: number;
 
     @IsNotEmpty()
     @ApiProperty({default: 30})
-    averageDuration: number;
+    public readonly averageDuration: number;
 
     @IsNotEmpty()
     @ApiProperty({default: 8})
-    ageMin: number;
+    public readonly ageMin: number;
 
     @IsNotEmpty()
     @ApiProperty({default: 10})
-    weeklyAmount: number;
+    public readonly weeklyAmount: number;
 
     @IsNotEmpty()
     @ApiProperty({default: "5b2b9c6e-9d6a-464d-b7db-23e70de019c3"})
-    categoryId: string;
+    public readonly categoryId: string;
+
+    @ApiProperty({default: '2ace9cf2-fbdd-4b99-92b6-9b2e21bd6cd3'})
+    public readonly pictureId: string;
 }
