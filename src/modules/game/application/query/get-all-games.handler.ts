@@ -15,7 +15,6 @@ export class GetAllGamesHandler implements ICommandHandler<GetAllGamesQuery> {
     const games = await this.gameRepository.findAll();
     for (const game of games) {
       game.averageRating = await this.reviewRepository.findAverageRatingByGameId(game.id);
-      game.nbReviews = await this.reviewRepository.countReviewsByGameId(game.id);
     }
     return new GetAllGamesResponseDto(games);
   }

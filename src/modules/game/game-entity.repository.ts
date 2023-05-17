@@ -26,6 +26,7 @@ export class GameEntityRepository extends Repository<Game> implements GameReposi
       relations: {
         category: true,
         unavailabilities: true,
+        reviews: true,
       }
     });
   }
@@ -36,8 +37,9 @@ export class GameEntityRepository extends Repository<Game> implements GameReposi
         isArchived: false
       },
       relations: {
-        reservations: true,
         category: true,
+        unavailabilities: true,
+        reviews: true,
       }
     });
   }
@@ -48,8 +50,9 @@ export class GameEntityRepository extends Repository<Game> implements GameReposi
         id: gameId
       },
       relations: {
-        reservations: true,
         category: true,
+        unavailabilities: true,
+        reviews: true,
       }
     });
   }

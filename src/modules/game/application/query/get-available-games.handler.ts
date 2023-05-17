@@ -31,7 +31,6 @@ export class GetAvailableGamesHandler implements ICommandHandler<GetAvailableGam
 
     for (const game of availableGames) {
       game.averageRating = await this.reviewRepository.findAverageRatingByGameId(game.id);
-      game.nbReviews = await this.reviewRepository.countReviewsByGameId(game.id);
     }
     return new GetAvailableGamesResponseDto(availableGames);
   }
