@@ -17,7 +17,6 @@ export class GetGameByIdHandler implements ICommandHandler<GetGameByIdQuery> {
             throw new GameNotFoundException();
         }
         game.averageRating = await this.reviewRepository.findAverageRatingByGameId(game.id);
-        game.nbReviews = await this.reviewRepository.countReviewsByGameId(game.id);
         return new GetGameByIdResponseDto(game);
     }
 }
