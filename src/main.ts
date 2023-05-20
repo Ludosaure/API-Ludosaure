@@ -14,12 +14,13 @@ async function bootstrap() {
   app.useGlobalInterceptors(
     new ClassSerializerInterceptor(app.get(Reflector))
   );
-  app.useGlobalPipes(new ValidationPipe());
   awsConfig.update({
     accessKeyId: environmentConfig.awsAccessKeyId,
     secretAccessKey: environmentConfig.awsSecretAccessKey,
     region: environmentConfig.awsRegion
   });
+  app.enableCors();
+  app.useGlobalPipes(new ValidationPipe());
   setupSwagger(app);
   await app.listen(environmentConfig.port, "0.0.0.0");
   logger.log(`Application started on port ${environmentConfig.port}`);
