@@ -45,10 +45,9 @@ export class UnavailabilityEntityRepository extends Repository<Unavailability> i
     findBetweenDates(gameId: string, startDate: Date, endDate: Date): Promise<Unavailability[]> {
         return this.manager
           .createQueryBuilder(Unavailability, 'unavailability')
-          .select('*')
           .where('unavailability.date BETWEEN :startDate AND :endDate', {startDate: startDate, endDate: endDate})
           .andWhere('unavailability.game_id = :gameId', {gameId: gameId})
-          .getRawMany();
+          .getMany();
     }
 
     async saveUnavailability(unavailability: Unavailability): Promise<void> {
