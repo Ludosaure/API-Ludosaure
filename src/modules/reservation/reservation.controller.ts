@@ -1,5 +1,5 @@
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
-import { Body, Controller, Get, Param, Post, Put, Query, Req, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put, Req, UseGuards } from "@nestjs/common";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { JwtAuthGuard } from "../../shared/guards/jwt-auth.guard";
 import { RolesGuard } from "../../shared/guards/roles.guard";
@@ -23,6 +23,7 @@ import { CancelReservationCommand } from "./application/command/cancel-reservati
 import { ReturnReservationCommand } from "./application/command/return-reservation.command";
 import { GetReservationByIdRequestDto } from "./dto/request/get-reservation-by-id-request.dto";
 import { User } from "../../domain/model/user.entity";
+import { OwnReservationGuard } from "../../shared/guards/own-reservation.guard";
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
@@ -68,8 +69,7 @@ export class ReservationController {
         return await this.commandBus.execute<CreateReservationCommand>(CreateReservationCommand.of(createReservationRequest, user));
     }
 
-    @UseGuards(RolesGuard)
-    @Roles(Role.ADMIN, Role.CLIENT)
+    @UseGuards(OwnReservationGuard)
     @Put()
     async updateReservation(@Body() updateReservationRequest: UpdateReservationRequestDto, @Req() request) {
         return await this.commandBus.execute<UpdateReservationCommand>(UpdateReservationCommand.of(updateReservationRequest, request.user as User));

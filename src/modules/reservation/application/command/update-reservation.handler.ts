@@ -9,12 +9,10 @@ import { EmailReservationConfirmationService } from "../../../email/email-reserv
 import { ReservationCantBeModifiedException } from "../../exceptions/reservation-cant-be-modified.exception";
 import { UnavailabilityEntityRepository } from "../../../unavailability/unavailability-entity.repository";
 import { UnavailableGameException } from "../../exceptions/unavailable-game.exception";
-import { Role } from "../../../../domain/model/enum/role";
-import { NotAllowedToUpdateReservationException } from "../../exceptions/not-allowed-to-update-reservation.exception";
 
 @CommandHandler(UpdateReservationCommand)
 export class UpdateReservationHandler {
-  constructor(private readonly repository: ReservationEntityRepository,
+  constructor(private readonly reservationRepository: ReservationEntityRepository,
               private readonly planRepository: PlanEntityRepository,
               private readonly unavailabilityRepository: UnavailabilityEntityRepository,
               private readonly invoiceService: InvoiceService,
@@ -22,12 +20,9 @@ export class UpdateReservationHandler {
   }
 
   async execute(command: UpdateReservationCommand): Promise<void> {
-    const foundReservation = await this.repository.findById(command.id);
+    const foundReservation = await this.reservationRepository.findById(command.id);
     if (foundReservation == null) {
       throw new ReservationNotFoundException();
-    }
-    if(foundReservation.user.id !== command.user.id && command.user.role !== Role.ADMIN) {
-      throw new NotAllowedToUpdateReservationException();
     }
     if (foundReservation.isCancelled || foundReservation.isReturned) {
       throw new ReservationCantBeModifiedException();
@@ -46,7 +41,7 @@ export class UpdateReservationHandler {
         foundReservation.totalAmount = foundReservation.calculateTotalAmount();
       }
     }
-    await this.repository.saveOrUpdate(foundReservation);
+    await this.reservationRepository.saveOrUpdate(foundReservation);
 
     const facturedAmount = await this.invoiceService.getFacturedAmountForReservation(foundReservation.id);
     const restToPay = foundReservation.totalAmount - facturedAmount;
