@@ -7,7 +7,8 @@ import { GameNotFoundException } from "../../../../shared/exceptions/game-not-fo
 import { ReservationEntityRepository } from "../../../reservation/reservation-entity.repository";
 import { GameCurrentlyBookedExceptions } from "../../exceptions/game-currently-booked.exceptions";
 import { CannotUpdateArchivedGameException } from "../../exceptions/cannot-update-archived-game.exception";
-import { Media } from "../../../../domain/model/media.entity";
+import { MediaNotFoundException } from "../../../../shared/exceptions/media-not-found.exception";
+import { MediaEntityRepository } from "../../../media/media-entity.repository";
 
 @CommandHandler(UpdateGameCommand)
 export class UpdateGameHandler {
@@ -15,7 +16,8 @@ export class UpdateGameHandler {
   constructor(
     private readonly gameRepository: GameEntityRepository,
     private readonly categoryRepository: CategoryEntityRepository,
-    private readonly reservationRepository: ReservationEntityRepository
+    private readonly reservationRepository: ReservationEntityRepository,
+    private readonly mediaRepository: MediaEntityRepository,
   ) {
   }
 
@@ -59,9 +61,11 @@ export class UpdateGameHandler {
     }
 
     if(command.pictureId != null) {
-      const picture = new Media();
-      picture.id = command.pictureId;
-      foundGame.picture = picture;
+      const profilePicture = await this.mediaRepository.findById(command.pictureId);
+      if(profilePicture == null) {
+        throw new MediaNotFoundException();
+      }
+      foundGame.picture = profilePicture;
     }
     await this.gameRepository.saveOrUpdate(foundGame);
   }
