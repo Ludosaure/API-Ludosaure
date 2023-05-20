@@ -34,7 +34,7 @@ export class NewsController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
-  @Get('/:id')
+  @Get('/id/:id')
   async getById(@Param() getNewsByIdRequest: GetNewsByIdRequestDto) {
     return await this.queryBus.execute<GetNewsByIdQuery, GetNewsByIdResponseDto>(GetNewsByIdQuery.of(getNewsByIdRequest));
   }
