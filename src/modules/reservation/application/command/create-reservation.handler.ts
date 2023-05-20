@@ -22,8 +22,7 @@ export class CreateReservationHandler {
                 private readonly gameRepository: GameEntityRepository,
                 private readonly planRepository: PlanEntityRepository,
                 private readonly unavailabilityRepository: UnavailabilityEntityRepository,
-                private readonly invoiceService: InvoiceService,
-                private readonly emailReservationConfirmationService: EmailReservationConfirmationService) {
+                private readonly invoiceService: InvoiceService) {
     }
 
     async execute(command: CreateReservationCommand): Promise<void> {
@@ -57,7 +56,6 @@ export class CreateReservationHandler {
 
         await this.reservationRepository.saveOrUpdate(reservation);
         await this.invoiceService.createInvoice(reservation.totalAmount, reservation);
-        await this.emailReservationConfirmationService.sendConfirmationMail(reservation, false);
     }
 
     private async initGames(gamesId: string[]): Promise<Game[]> {

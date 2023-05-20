@@ -6,6 +6,7 @@ import { PlanEntityRepository } from "../../modules/plan/plan-entity.repository"
 import { UnavailabilityEntityRepository } from "../../modules/unavailability/unavailability-entity.repository";
 import InvoiceService from "../../modules/invoice/invoice.service";
 import { EmailReservationConfirmationService } from "../../modules/email/email-reservation-confirmation.service";
+import { ReservationNotFoundException } from "../../modules/reservation/exceptions/reservation-not-found.exception";
 
 @Injectable()
 export class OwnReservationGuard implements CanActivate {
@@ -26,7 +27,7 @@ export class OwnReservationGuard implements CanActivate {
     }
     const reservation = await this.reservationRepository.findById(reservationId);
     if (reservation == null) {
-      return false;
+      throw new ReservationNotFoundException();
     }
     return user.isAccountActive() && (req.user.role == Role.ADMIN.toString() || user.id === reservation.user.id);
   }

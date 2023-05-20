@@ -31,6 +31,7 @@ import { FavoriteService } from "../favorite/favorite.service";
 import { FavoriteGame } from "../../domain/model/favorite-game.entity";
 import { FavoriteEntityRepository } from "../favorite/favorite-entity.repository";
 import { GameAvailableAgainService } from "../email/game-available-again.service";
+import { PayReservationHandler } from "./application/command/pay-reservation.handler";
 
 @Module({
   imports: [
@@ -68,7 +69,8 @@ import { GameAvailableAgainService } from "../email/game-available-again.service
     CreateReservationHandler,
     UpdateReservationHandler,
     ReturnReservationHandler,
-    CancelReservationHandler
+    CancelReservationHandler,
+    PayReservationHandler,
   ]
 })
 export class ReservationModule {
