@@ -3,7 +3,7 @@ import { ReservationNotFoundException } from "../../exceptions/reservation-not-f
 import { ReservationEntityRepository } from "../../reservation-entity.repository";
 import { ReservationCantBeModifiedException } from "../../exceptions/reservation-cant-be-modified.exception";
 import { ReturnReservationCommand } from "./return-reservation.command";
-import { EmailReservationReturnedService } from "../../../email/email-reservation-returned.service";
+import { EmailReservationReturnedService } from "../../../email/mail-bodies/email-reservation-returned.service";
 import { FavoriteService } from "../../../favorite/favorite.service";
 
 @CommandHandler(ReturnReservationCommand)

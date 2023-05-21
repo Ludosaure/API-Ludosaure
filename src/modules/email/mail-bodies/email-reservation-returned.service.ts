@@ -1,31 +1,30 @@
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import EmailService from "./email.service";
-import { emailConfig } from "../../config/email.config";
-import { Game } from "../../domain/model/game.entity";
-import { User } from "../../domain/model/user.entity";
-import { EmailFooter } from "./email-footer";
+import EmailService from "../email.service";
+import { emailConfig } from "../../../config/email.config";
+import { Reservation } from "../../../domain/model/reservation.entity";
+import { EmailFooter } from "./footer/email-footer";
 
 @Injectable()
-export class GameAvailableAgainService {
+export class EmailReservationReturnedService {
     constructor(
       private readonly jwtService: JwtService,
       private readonly emailService: EmailService,
     ) {}
 
-    public sendInformationMail(game:Game, user: User): void {
-        const token = this.jwtService.sign({ email: user.email });
+    public sendConfirmationMail(reservation: Reservation): void {
+        const token = this.jwtService.sign({ email: reservation.user.email });
 
         return this.emailService.sendMail({
             from: emailConfig.emailUser,
-            to: user.email,
-            subject: `La Ludosaure - Votre jeu favoris ${game.name} est de nouveau disponible`,
+            to: reservation.user.email,
+            subject: `La Ludosaure - Réservation #${reservation.reservationNumber} retournée`,
             html: `<!DOCTYPE html>
                     <html lang="">
                     <head>
                     
                       <meta charset="utf-8">
-                      <title>La Ludosaure - Votre jeu favoris ${game.name} est de nouveau disponible</title>
+                      <title>Votre réservation #${reservation.reservationNumber} a été retournée</title>
                       <style>
                           @media screen {
                               @font-face {
@@ -76,15 +75,16 @@ export class GameAvailableAgainService {
                       <div style="background-color:#ffffff; margin: auto; display: block; max-width: 600px; padding: 36px 24px 0;
                             font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;">
                         <h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">
-                          Bonne nouvelle ! Votre jeu favoris ${game.name} est de nouveau disponible :D
+                          Votre réservation #${reservation.reservationNumber} a été retournée
                         </h1>
                         <p class="text">
-                            Bonjour ${user.firstname} ${user.lastname},<br><br>
-                            Nous avons le plaisir de vous informer que le jeu ${game.name} est de nouveau disponible à la location.<br>
-                            N'hésitez pas à venir le réserver !<br><br>
+                            Bonjour ${reservation.user.firstname} ${reservation.user.lastname},<br><br>
+                            Les jeux de la réservation #${reservation.reservationNumber} du ${reservation.startDate.toLocaleString()} au ${reservation.endDate.toLocaleString()} ont bien été retournés.<br>
+                            Merci encore pour votre confiance et nous espérant vous revoir bientôt.<br><br>
+                            Si vous avez des questions, n'hésitez pas à nous contacter par mail à l'adresse suivante : <b>laludosaure@gmail.com</b>
                         <div style="padding: 24px"></div>
                       </div>
-                      ${EmailFooter.getFooter(token, "à la nouvelle disponibilité d'un jeu dans vos favoris")}
+                      ${EmailFooter.getFooter(token, "au retour des jeux de votre réservation")}
                     </div>
                     </body>
                     </html>`,

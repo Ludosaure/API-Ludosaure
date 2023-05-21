@@ -21,6 +21,7 @@ import {ReservationModule} from "./modules/reservation/reservation.module";
 import {ReviewModule} from "./modules/review/review.module";
 import {PlanModule} from "./modules/plan/plan.module";
 import { CgvModule } from './modules/cgv/cgv.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
     controllers: [AppController],
@@ -46,6 +47,7 @@ import { CgvModule } from './modules/cgv/cgv.module';
                 }
             }),
         }),
+        ScheduleModule.forRoot(),
         CoreModule,
         UserModule,
         AuthenticationModule,

@@ -16,21 +16,22 @@ import { UpdateReservationHandler } from "./application/command/update-reservati
 import { PlanEntityRepository } from "../plan/plan-entity.repository";
 import InvoiceService from "../invoice/invoice.service";
 import { InvoiceEntityRepository } from "../invoice/invoice-entity.repository";
-import { EmailReservationConfirmationService } from "../email/email-reservation-confirmation.service";
+import { EmailReservationConfirmationService } from "../email/mail-bodies/email-reservation-confirmation.service";
 import EmailService from "../email/email.service";
 import { GetAllReservationsHandler } from "./application/query/get-all-reservations.handler";
 import { Invoice } from "../../domain/model/invoice.entity";
 import { JwtStrategy } from "../authentication/strategy/jwt.strategy";
 import { ReturnReservationHandler } from "./application/command/return-reservation.handler";
 import { CancelReservationHandler } from "./application/command/cancel-reservation.handler";
-import { EmailReservationCanceledService } from "../email/email-reservation-canceled.service";
-import { EmailReservationReturnedService } from "../email/email-reservation-returned.service";
+import { EmailReservationCanceledService } from "../email/mail-bodies/email-reservation-canceled.service";
+import { EmailReservationReturnedService } from "../email/mail-bodies/email-reservation-returned.service";
 import { UnavailabilityEntityRepository } from "../unavailability/unavailability-entity.repository";
 import { Unavailability } from "../../domain/model/unavailability.entity";
 import { FavoriteService } from "../favorite/favorite.service";
 import { FavoriteGame } from "../../domain/model/favorite-game.entity";
 import { FavoriteEntityRepository } from "../favorite/favorite-entity.repository";
-import { GameAvailableAgainService } from "../email/game-available-again.service";
+import { GameAvailableAgainService } from "../email/mail-bodies/game-available-again.service";
+import { PayReservationHandler } from "./application/command/pay-reservation.handler";
 
 @Module({
   imports: [
@@ -68,7 +69,8 @@ import { GameAvailableAgainService } from "../email/game-available-again.service
     CreateReservationHandler,
     UpdateReservationHandler,
     ReturnReservationHandler,
-    CancelReservationHandler
+    CancelReservationHandler,
+    PayReservationHandler,
   ]
 })
 export class ReservationModule {

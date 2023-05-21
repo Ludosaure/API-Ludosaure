@@ -3,7 +3,7 @@ import { ReservationNotFoundException } from "../../exceptions/reservation-not-f
 import { ReservationEntityRepository } from "../../reservation-entity.repository";
 import { ReservationCantBeModifiedException } from "../../exceptions/reservation-cant-be-modified.exception";
 import { CancelReservationCommand } from "./cancel-reservation.command";
-import { EmailReservationCanceledService } from "../../../email/email-reservation-canceled.service";
+import { EmailReservationCanceledService } from "../../../email/mail-bodies/email-reservation-canceled.service";
 
 @CommandHandler(CancelReservationCommand)
 export class CancelReservationHandler {

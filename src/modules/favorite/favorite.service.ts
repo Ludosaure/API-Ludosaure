@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { GameAvailableAgainService } from "../email/game-available-again.service";
+import { GameAvailableAgainService } from "../email/mail-bodies/game-available-again.service";
 import { Game } from "../../domain/model/game.entity";
 import { FavoriteEntityRepository } from "./favorite-entity.repository";
 

@@ -1,18 +1,20 @@
-import {CommandHandler} from "@nestjs/cqrs";
-import {CreateGameCommand} from "./create-game.command";
-import {GameEntityRepository} from "../../game-entity.repository";
-import {Game} from "../../../../domain/model/game.entity";
-import {CategoryEntityRepository} from "../../../category/category-entity.repository";
-import {CategoryNotFoundException} from "../../../../shared/exceptions/category-not-found.exception";
+import { CommandHandler } from "@nestjs/cqrs";
+import { CreateGameCommand } from "./create-game.command";
+import { GameEntityRepository } from "../../game-entity.repository";
+import { Game } from "../../../../domain/model/game.entity";
+import { CategoryEntityRepository } from "../../../category/category-entity.repository";
+import { CategoryNotFoundException } from "../../../../shared/exceptions/category-not-found.exception";
 import { GameNameAlreadyExistsExceptions } from "../../exceptions/game-name-already-exists.exceptions";
-import { Media } from "../../../../domain/model/media.entity";
+import { MediaNotFoundException } from "../../../../shared/exceptions/media-not-found.exception";
+import { MediaEntityRepository } from "../../../media/media-entity.repository";
 
 @CommandHandler(CreateGameCommand)
 export class CreateGameHandler {
 
     constructor(
         private readonly gameRepository: GameEntityRepository,
-        private readonly categoryRepository: CategoryEntityRepository
+        private readonly categoryRepository: CategoryEntityRepository,
+        private readonly mediaRepository: MediaEntityRepository,
     ) {
     }
 
@@ -39,9 +41,11 @@ export class CreateGameHandler {
         game.weeklyAmount = command.weeklyAmount;
         game.category = foundCategory;
         if(command.pictureId != null) {
-            const picture = new Media();
-            picture.id = command.pictureId;
-            game.picture = picture;
+            const profilePicture = await this.mediaRepository.findById(command.pictureId);
+            if(profilePicture == null) {
+                throw new MediaNotFoundException();
+            }
+            game.picture = profilePicture;
         }
         await this.gameRepository.saveOrUpdate(game);
     }

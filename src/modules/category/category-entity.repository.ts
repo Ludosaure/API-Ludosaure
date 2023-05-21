@@ -25,14 +25,8 @@ export class CategoryEntityRepository extends Repository<Category> implements Ca
     async findByName(name: string): Promise<Category> {
         return await this.manager
             .createQueryBuilder(Category, 'category')
-            .select('*')
-            .where(
-                'UPPER(category.name) = UPPER(:name)',
-                {
-                    name: name,
-                },
-            )
-            .getRawOne();
+            .where('UPPER(category.name) = UPPER(:name)', { name: name })
+            .getOne();
     }
 
     findAll(): Promise<Category[]> {

@@ -13,7 +13,7 @@ export class UpdateReservationCommand {
   }
 
   public static of(updateReservationRequest: UpdateReservationRequestDto, user: User): UpdateReservationCommand {
-    const { id, endDate } = updateReservationRequest;
-    return new UpdateReservationCommand(id, endDate, user);
+    const { reservationId, endDate } = updateReservationRequest;
+    return new UpdateReservationCommand(reservationId, endDate, user);
   }
 }

@@ -1,5 +1,5 @@
 import {CommandHandler, ICommandHandler} from '@nestjs/cqrs';
-import {EmailAccountConfirmationService} from "../../../email/email-account-confirmation.service";
+import {EmailAccountConfirmationService} from "../../../email/mail-bodies/email-account-confirmation.service";
 import {ConfirmAccountCommand} from "./confirm-account.command";
 import {UserNotFoundException} from "../../../../shared/exceptions/user-not-found.exception";
 import {UserEntityRepository} from "../../../user/user-entity.repository";

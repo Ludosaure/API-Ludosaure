@@ -60,7 +60,6 @@ export class GameEntityRepository extends Repository<Game> implements GameReposi
   findByName(name: string): Promise<Game[]> {
     return this.manager
       .createQueryBuilder(Game, "game")
-      .select("*")
       .where(
         "UPPER(game.name) LIKE UPPER(:name)",
         {
@@ -68,7 +67,7 @@ export class GameEntityRepository extends Repository<Game> implements GameReposi
         }
       )
       .andWhere("game.isArchived = false")
-      .getRawMany();
+      .getMany();
   }
 
   async saveOrUpdate(game: Game): Promise<void> {

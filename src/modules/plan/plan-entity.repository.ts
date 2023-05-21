@@ -24,14 +24,13 @@ export class PlanEntityRepository extends Repository<Plan> implements PlanReposi
     findByName(name: string): Promise<Plan> {
         return this.manager
             .createQueryBuilder(Plan, 'plan')
-            .select('*')
             .where(
                 'UPPER(plan.name) LIKE UPPER(:name)',
                 {
                     name: `%${name}%`,
                 },
             )
-            .getRawOne();
+            .getOne();
     }
 
     findByReduction(reduction: number): Promise<Plan> {
@@ -44,18 +43,17 @@ export class PlanEntityRepository extends Repository<Plan> implements PlanReposi
 
     findByDuration(start: Date, end: Date): Promise<Plan> {
         return this.manager
-            .createQueryBuilder(Plan, 'plan')
-            .select('*')
-            .where(
-                'plan.nb_weeks <= FLOOR((EXTRACT(days FROM (:endDate::timestamp - :startDate::timestamp)) / 7))',
-                {
-                    startDate: start,
-                    endDate: end,
-                },
-            )
-            .orderBy('plan.nb_weeks', 'DESC')
-            .limit(1)
-            .getRawOne();
+          .createQueryBuilder(Plan, 'plan')
+          .where(
+            'plan.nb_weeks <= FLOOR((EXTRACT(days FROM (:endDate::timestamp - :startDate::timestamp)) / 7))',
+            {
+                startDate: start,
+                endDate: end,
+            }
+          )
+          .orderBy('plan.nb_weeks', 'DESC')
+          .limit(1)
+          .getOne();
     }
 
     async deletePlan(plan: Plan): Promise<void> {

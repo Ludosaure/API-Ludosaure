@@ -17,11 +17,13 @@ import { Reservation } from "../../domain/model/reservation.entity";
 import { GetAvailableGamesHandler } from "./application/query/get-available-games.handler";
 import { Review } from "../../domain/model/review.entity";
 import { ReviewEntityRepository } from "../review/review-entity.repository";
+import { MediaEntityRepository } from "../media/media-entity.repository";
+import { Media } from "../../domain/model/media.entity";
 
 @Module({
   imports: [
     CqrsModule,
-    TypeOrmModule.forFeature([Game, Category, FavoriteGame, Reservation, Review])
+    TypeOrmModule.forFeature([Game, Category, FavoriteGame, Reservation, Review, Media])
   ],
   controllers: [GameController],
   providers: [
@@ -29,6 +31,7 @@ import { ReviewEntityRepository } from "../review/review-entity.repository";
     CategoryEntityRepository,
     ReviewEntityRepository,
     GameEntityRepository,
+    MediaEntityRepository,
     GetAllGamesHandler,
     GetAvailableGamesHandler,
     GetGameByIdHandler,
