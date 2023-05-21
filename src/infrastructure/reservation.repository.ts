@@ -11,6 +11,10 @@ export interface ReservationRepository {
 
     findCurrentOrFutureReservationsByGameId(gameId: string): Promise<Reservation[]>;
 
+    findLastDayReservations(): Promise<Reservation[]>;
+
+    findLateReservations(): Promise<Reservation[]>;
+
     saveOrUpdate(reservation: Reservation): Promise<void>;
 
     deleteReservation(reservation: Reservation): Promise<void>;

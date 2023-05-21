@@ -5,7 +5,7 @@ import { MailAlreadyUsedException } from '../../exception/mail-already-used.exce
 import { User } from '../../../../domain/model/user.entity';
 import { hash } from 'argon2';
 import { PasswordValidator } from '../../../../shared/password-validator.service';
-import {EmailAccountConfirmationService} from "../../../email/email-account-confirmation.service";
+import {EmailAccountConfirmationService} from "../../../email/mail-bodies/email-account-confirmation.service";
 import {UserEntityRepository} from "../../../user/user-entity.repository";
 
 @CommandHandler(RegisterCommand)

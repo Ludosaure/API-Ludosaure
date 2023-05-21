@@ -1,30 +1,34 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import EmailService from "./email.service";
-import { emailConfig } from "../../config/email.config";
-import { Reservation } from "../../domain/model/reservation.entity";
-import { EmailFooter } from "./email-footer";
+import EmailService from "../email.service";
+import { emailConfig } from "../../../config/email.config";
+import { urlConfig } from "../../../config/url.config";
+import { jwtConfig } from "../../../config/jwt.config";
+import { EmailFooter } from "./footer/email-footer";
 
 @Injectable()
-export class EmailReservationCanceledService {
-    constructor(
-        private readonly jwtService: JwtService,
-        private readonly emailService: EmailService,
-    ) {}
+export class EmailAccountConfirmationService {
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly emailService: EmailService
+  ) {
+  }
 
-    public sendCancellationMail(reservation: Reservation): void {
-        const token = this.jwtService.sign({ email: reservation.user.email });
+  public sendVerificationLink(email: string) {
+    const token = this.jwtService.sign({ email: email });
 
-        return this.emailService.sendMail({
-            from: emailConfig.emailUser,
-            to: reservation.user.email,
-            subject: `La Ludosaure - Réservation #${reservation.reservationNumber} annulée`,
-            html: `<!DOCTYPE html>
+    const confirmationAccountUrl = `${urlConfig.emailConfirmationAccountUrl}?token=${token}`;
+
+    return this.emailService.sendMail({
+      from: emailConfig.emailUser,
+      to: email,
+      subject: "La Ludosaure - Confirmation de compte",
+      html: `<!DOCTYPE html>
                     <html lang="">
                     <head>
                     
                       <meta charset="utf-8">
-                      <title>Votre réservation #${reservation.reservationNumber} a été annulée</title>
+                      <title>Confirmation de compte</title>
                       <style>
                           @media screen {
                               @font-face {
@@ -50,7 +54,7 @@ export class EmailReservationCanceledService {
                               padding: 24px;
                               font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
                               font-size: 16px;
-                              line-height: 28px;
+                              line-height: 24px;
                           }
                     
                           .footer-text {
@@ -75,20 +79,48 @@ export class EmailReservationCanceledService {
                       <div style="background-color:#ffffff; margin: auto; display: block; max-width: 600px; padding: 36px 24px 0;
                             font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;">
                         <h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">
-                          Votre réservation #${reservation.reservationNumber} a été annulée
+                          Confirmez votre inscription
                         </h1>
                         <p class="text">
-                            Bonjour ${reservation.user.firstname} ${reservation.user.lastname},<br><br>
-                            Nous vous informons que votre réservation #${reservation.reservationNumber} censée débuter le ${reservation.startDate.toLocaleString()} et se terminer le ${reservation.endDate.toLocaleString()} a été annulée.<br>
-                            Cette annulation a été effectuée par un de nos administrateurs.<br>
-                            Si vous avez des questions, n'hésitez pas à nous contacter par mail à l'adresse suivante : <b>laludosaure@gmail.com</b>
+                          Bienvenue chez la Ludosaure !<br>
+                          Pour terminer votre inscription, veuillez cliquer sur le bouton ci-dessous afin de confirmer la création de votre
+                          compte.
+                        </p>
+                        <div style="width: 100%; text-align: center;">
+                          <button style="background-color: #1a82e2; border-radius: 6px; border: 0; margin: 24px">
+                            <a href="${confirmationAccountUrl}" target="_blank"
+                               style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none;">
+                              Confirmer mon compte</a>
+                          </button>
+                        </div>
+                        <p class="text">
+                          Si cela ne fonctionne pas, copiez et collez le lien suivant dans votre
+                          navigateur : <br>
+                          <a href="${confirmationAccountUrl}" target="_blank">${confirmationAccountUrl}</a></p>
                         <div style="padding: 24px"></div>
                       </div>
-                      ${EmailFooter.getFooter(token, "à l'annulation d'une commande sur notre site ou notre application")}
+                      ${EmailFooter.getFooter(token, "à une requête de création de compte sur notre site ou notre application")}
                     </div>
-                    
                     </body>
-                    </html>`,
-        })
+                    </html>`
+    });
+  }
+
+  public async decodeConfirmationToken(token: string) {
+    try {
+      const payload = await this.jwtService.verify(token, {
+        secret: jwtConfig.jwtAccessSecret
+      });
+
+      if (typeof payload === "object" && "email" in payload) {
+        return payload.email;
+      }
+      throw new BadRequestException();
+    } catch (error) {
+      if (error?.name === "TokenExpiredError") {
+        throw new BadRequestException("Email confirmation token expired");
+      }
+      throw new BadRequestException("Bad confirmation token");
     }
+  }
 }

@@ -5,7 +5,7 @@ import { ReservationEntityRepository } from "../../modules/reservation/reservati
 import { PlanEntityRepository } from "../../modules/plan/plan-entity.repository";
 import { UnavailabilityEntityRepository } from "../../modules/unavailability/unavailability-entity.repository";
 import InvoiceService from "../../modules/invoice/invoice.service";
-import { EmailReservationConfirmationService } from "../../modules/email/email-reservation-confirmation.service";
+import { EmailReservationConfirmationService } from "../../modules/email/mail-bodies/email-reservation-confirmation.service";
 import { ReservationNotFoundException } from "../../modules/reservation/exceptions/reservation-not-found.exception";
 
 @Injectable()

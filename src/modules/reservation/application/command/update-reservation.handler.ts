@@ -5,7 +5,7 @@ import { ReservationEntityRepository } from "../../reservation-entity.repository
 import { PlanEntityRepository } from "../../../plan/plan-entity.repository";
 import InvoiceService from "../../../invoice/invoice.service";
 import { IncoherentAmountException } from "../../exceptions/incoherent-amount.exception";
-import { EmailReservationConfirmationService } from "../../../email/email-reservation-confirmation.service";
+import { EmailReservationConfirmationService } from "../../../email/mail-bodies/email-reservation-confirmation.service";
 import { ReservationCantBeModifiedException } from "../../exceptions/reservation-cant-be-modified.exception";
 import { UnavailabilityEntityRepository } from "../../../unavailability/unavailability-entity.repository";
 import { UnavailableGameException } from "../../exceptions/unavailable-game.exception";

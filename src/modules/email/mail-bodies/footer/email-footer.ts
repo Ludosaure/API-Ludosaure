@@ -1,4 +1,4 @@
-import { urlConfig } from "../../config/url.config";
+import { urlConfig } from "../../../../config/url.config";
 
 export class EmailFooter {
   public static getFooter(token: string, sendReason: string): string {

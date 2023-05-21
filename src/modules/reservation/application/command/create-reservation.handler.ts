@@ -10,7 +10,7 @@ import {PlanEntityRepository} from "../../../plan/plan-entity.repository";
 import InvoiceService from "../../../invoice/invoice.service";
 import {DateUtils} from "../../../../shared/date.utils";
 import {Game} from "../../../../domain/model/game.entity";
-import {EmailReservationConfirmationService} from "../../../email/email-reservation-confirmation.service";
+import {EmailReservationConfirmationService} from "../../../email/mail-bodies/email-reservation-confirmation.service";
 import {InvalidDateException} from "../../exceptions/invalid-date.exception";
 import { UnavailabilityEntityRepository } from "../../../unavailability/unavailability-entity.repository";
 import { UnavailableGameException } from "../../exceptions/unavailable-game.exception";

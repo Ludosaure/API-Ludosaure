@@ -1,7 +1,7 @@
 import {CommandHandler, ICommandHandler} from '@nestjs/cqrs';
 import {UserNotFoundException} from "../../../../shared/exceptions/user-not-found.exception";
 import {UnsubscribeCommand} from "./unsubscribe.command";
-import {EmailAccountConfirmationService} from "../../../email/email-account-confirmation.service";
+import {EmailAccountConfirmationService} from "../../../email/mail-bodies/email-account-confirmation.service";
 import {UserEntityRepository} from "../../user-entity.repository";
 
 @CommandHandler(UnsubscribeCommand)
