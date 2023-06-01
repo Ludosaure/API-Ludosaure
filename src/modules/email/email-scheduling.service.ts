@@ -1,8 +1,5 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { Cron } from "@nestjs/schedule";
-import { createTransport } from "nodemailer";
-import * as Mail from "nodemailer/lib/mailer";
-import { emailConfig } from "../../config/email.config";
 import { ReservationEntityRepository } from "../reservation/reservation-entity.repository";
 import { EmailLastDayReservationService } from "./mail-bodies/email-last-day-reservation.service";
 import { EmailLateReservationService } from "./mail-bodies/email-late-reservation.service";
