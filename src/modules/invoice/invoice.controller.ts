@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
+import { Controller, Get, Param, Post, Res, UseGuards } from "@nestjs/common";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { Roles } from "src/shared/roles.decorator";
@@ -17,6 +17,8 @@ import { GetAllInvoicesQuery } from "./application/query/get-all-invoices.query"
 import { GetInvoicesByReservationIdQuery } from "./application/query/get-invoices-by-reservation-id.query";
 import { GetInvoicesByUserIdQuery } from "./application/query/get-invoices-by-user-id.query";
 import { GenerateInvoiceCommand } from "./application/command/generate-invoice.command";
+import { Response } from "express";
+import { GenerateInvoiceResponseDto } from "./dto/response/generate-invoice-response.dto";
 
 @ApiTags("Invoice")
 @Controller("invoice")
@@ -34,21 +36,26 @@ export class InvoiceController {
     return await this.queryBus.execute<GetAllInvoicesQuery, GetAllInvoicesResponseDto>(GetAllInvoicesQuery.of());
   }
 
-  @Get('/reservation/:reservationId')
+  @Get("/reservation/:reservationId")
   @UseGuards(OwnReservationGuard)
   async getInvoicesByReservationId(@Param() getInvoicesByReservationIdRequest: GetInvoicesByReservationIdRequestDto) {
     return await this.queryBus.execute<GetInvoicesByReservationIdQuery, GetInvoicesByReservationIdResponseDto>(GetInvoicesByReservationIdQuery.of(getInvoicesByReservationIdRequest));
   }
 
-  @Get('/user/:userId')
+  @Get("/user/:userId")
   @UseGuards(OwnGuard)
   async getInvoicesByUserId(@Param() getInvoicesByUserIdRequest: GetInvoicesByUserIdRequestDto) {
     return await this.queryBus.execute<GetInvoicesByUserIdQuery, GetInvoicesByUserIdResponseDto>(GetInvoicesByUserIdQuery.of(getInvoicesByUserIdRequest));
   }
 
-  @Post('/generate/:id')
+  @Post("/generate/:id")
   @UseGuards(OwnGuard)
-  async generateInvoiceById(@Param() generateInvoiceByIdRequest: GenerateInvoiceRequestDto) {
-    return await this.commandBus.execute<GenerateInvoiceCommand>(GenerateInvoiceCommand.of(generateInvoiceByIdRequest));
+  async generateInvoiceById(@Param() generateInvoiceByIdRequest: GenerateInvoiceRequestDto, @Res() response: Response) {
+    const generateInvoiceResponseDto = await this.commandBus.execute<GenerateInvoiceCommand>(GenerateInvoiceCommand.of(generateInvoiceByIdRequest));
+    const { doc, filename } = generateInvoiceResponseDto;
+    response.setHeader("Content-Type", "application/pdf");
+    response.setHeader("Content-Disposition", `attachment; filename=${filename}`);
+
+    doc.pipe(response);
   }
 }

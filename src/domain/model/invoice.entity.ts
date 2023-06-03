@@ -1,10 +1,14 @@
-import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, Generated, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Reservation} from "./reservation.entity";
 
 @Entity()
 export class Invoice {
     @PrimaryGeneratedColumn('uuid')
     id: string;
+
+    @Column({nullable: false, unique: true, name: 'facture_number'})
+    @Generated('increment')
+    invoiceNumber: number;
 
     @Column({nullable: false, name: 'created_at'})
     createdAt: Date;

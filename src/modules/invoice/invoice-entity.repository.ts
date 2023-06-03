@@ -21,7 +21,12 @@ export class InvoiceEntityRepository extends Repository<Invoice> implements Invo
     }
 
     findById(invoiceId: string): Promise<Invoice> {
-        return this.findOneBy({id: invoiceId});
+        return this.findOne({
+            where: {
+                id: invoiceId,
+            },
+            relations: ["reservation", "reservation.user"]
+        });
     }
 
     findByReservationId(reservationId: string): Promise<Invoice[]> {
