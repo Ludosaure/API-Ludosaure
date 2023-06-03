@@ -1,6 +1,6 @@
-import { Controller, Get, Param, UseGuards } from "@nestjs/common";
+import { Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { Roles } from "src/shared/roles.decorator";
 import { JwtAuthGuard } from "../../shared/guards/jwt-auth.guard";
 import { RolesGuard } from "../../shared/guards/roles.guard";
@@ -21,6 +21,7 @@ import { GenerateInvoiceCommand } from "./application/command/generate-invoice.c
 @ApiTags("Invoice")
 @Controller("invoice")
 @UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
 export class InvoiceController {
   constructor(private readonly commandBus: CommandBus,
               private readonly queryBus: QueryBus) {
@@ -45,7 +46,7 @@ export class InvoiceController {
     return await this.queryBus.execute<GetInvoicesByUserIdQuery, GetInvoicesByUserIdResponseDto>(GetInvoicesByUserIdQuery.of(getInvoicesByUserIdRequest));
   }
 
-  @Get('/generate/:id')
+  @Post('/generate/:id')
   @UseGuards(OwnGuard)
   async generateInvoiceById(@Param() generateInvoiceByIdRequest: GenerateInvoiceRequestDto) {
     return await this.commandBus.execute<GenerateInvoiceCommand>(GenerateInvoiceCommand.of(generateInvoiceByIdRequest));

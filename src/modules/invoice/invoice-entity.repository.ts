@@ -13,7 +13,11 @@ export class InvoiceEntityRepository extends Repository<Invoice> implements Invo
     }
 
     findAll(): Promise<Invoice[]> {
-        return this.find();
+        return this.find({
+            relations: {
+                reservation: true,
+            }
+        });
     }
 
     findById(invoiceId: string): Promise<Invoice> {
@@ -21,19 +25,29 @@ export class InvoiceEntityRepository extends Repository<Invoice> implements Invo
     }
 
     findByReservationId(reservationId: string): Promise<Invoice[]> {
-        return this.findBy({
-            reservation: {
-                id: reservationId
+        return this.find({
+            where: {
+                reservation: {
+                    id: reservationId,
+                }
+            },
+            relations: {
+                reservation: true,
             }
-        });
+        })
     }
 
     findByUserId(userId: string): Promise<Invoice[]> {
-        return this.findBy({
-            reservation: {
-                user: {
-                    id: userId
+        return this.find({
+            where: {
+                reservation: {
+                    user: {
+                        id: userId,
+                    }
                 }
+            },
+            relations: {
+                reservation: true,
             }
         });
     }
