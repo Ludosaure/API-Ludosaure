@@ -1,10 +1,10 @@
-import {CommandHandler} from "@nestjs/cqrs";
+import {CommandHandler, ICommandHandler} from "@nestjs/cqrs";
 import {DeleteFaqCommand} from "./delete-faq.command";
 import {FaqNotFoundException} from "../../exceptions/faq-not-found.exception";
 import {FaqEntityRepository} from "../../faq-entity.repository";
 
 @CommandHandler(DeleteFaqCommand)
-export class DeleteFaqHandler {
+export class DeleteFaqHandler implements ICommandHandler<DeleteFaqCommand> {
     constructor(private readonly faqRepository: FaqEntityRepository) {
     }
 

@@ -1,4 +1,4 @@
-import { CommandHandler } from "@nestjs/cqrs";
+import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { ReservationNotFoundException } from "../../exceptions/reservation-not-found.exception";
 import { ReservationEntityRepository } from "../../reservation-entity.repository";
 import { ReservationCantBeModifiedException } from "../../exceptions/reservation-cant-be-modified.exception";
@@ -7,7 +7,7 @@ import { EmailReservationReturnedService } from "../../../email/mail-bodies/emai
 import { FavoriteService } from "../../../favorite/favorite.service";
 
 @CommandHandler(ReturnReservationCommand)
-export class ReturnReservationHandler {
+export class ReturnReservationHandler implements ICommandHandler<ReturnReservationCommand> {
   constructor(private readonly repository: ReservationEntityRepository,
               private readonly emailReservationReturnedService: EmailReservationReturnedService,
               private readonly favoriteService: FavoriteService) {

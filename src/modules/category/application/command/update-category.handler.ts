@@ -1,10 +1,10 @@
-import {CommandHandler} from "@nestjs/cqrs";
+import {CommandHandler, ICommandHandler} from "@nestjs/cqrs";
 import {UpdateCategoryCommand} from "./update-category.command";
 import {CategoryEntityRepository} from "../../category-entity.repository";
 import {CategoryNotFoundException} from "../../../../shared/exceptions/category-not-found.exception";
 
 @CommandHandler(UpdateCategoryCommand)
-export class UpdateCategoryHandler {
+export class UpdateCategoryHandler implements ICommandHandler<UpdateCategoryCommand> {
     constructor(private readonly categoryRepository: CategoryEntityRepository) {
     }
 

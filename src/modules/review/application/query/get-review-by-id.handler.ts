@@ -1,9 +1,9 @@
-import { QueryHandler } from "@nestjs/cqrs";
+import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 import { ReviewEntityRepository } from "../../review-entity.repository";
 import { GetReviewByIdQuery } from "./get-review-by-id.query";
 
 @QueryHandler(GetReviewByIdQuery)
-export class GetReviewByIdHandler {
+export class GetReviewByIdHandler implements IQueryHandler<GetReviewByIdQuery> {
   constructor(private readonly reviewRepository: ReviewEntityRepository) {
   }
 

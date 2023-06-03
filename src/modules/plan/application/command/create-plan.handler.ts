@@ -1,4 +1,4 @@
-import {CommandHandler} from "@nestjs/cqrs";
+import {CommandHandler, ICommandHandler} from "@nestjs/cqrs";
 import {CreatePlanCommand} from "./create-plan.command";
 import {Plan} from "../../../../domain/model/plan.entity";
 import {PlanEntityRepository} from "../../plan-entity.repository";
@@ -7,7 +7,7 @@ import {ReductionAlreadyExistsException} from "../../exceptions/reduction-alread
 import {NbWeeksAlreadyExistsException} from "../../exceptions/nb-weeks-already-exists.exception";
 
 @CommandHandler(CreatePlanCommand)
-export class CreatePlanHandler {
+export class CreatePlanHandler implements ICommandHandler<CreatePlanCommand> {
     constructor(private readonly planRepository: PlanEntityRepository) {
     }
 

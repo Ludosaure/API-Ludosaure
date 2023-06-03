@@ -1,10 +1,10 @@
-import {CommandHandler} from "@nestjs/cqrs";
+import {CommandHandler, ICommandHandler} from "@nestjs/cqrs";
 import {DeleteCategoryCommand} from "./delete-category.command";
 import {CategoryEntityRepository} from "../../category-entity.repository";
 import {CategoryNotFoundException} from "../../../../shared/exceptions/category-not-found.exception";
 
 @CommandHandler(DeleteCategoryCommand)
-export class DeleteCategoryHandler {
+export class DeleteCategoryHandler implements ICommandHandler<DeleteCategoryCommand> {
     constructor(private readonly categoryRepository: CategoryEntityRepository) {
     }
 

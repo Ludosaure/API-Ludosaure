@@ -1,4 +1,4 @@
-import { CommandHandler } from "@nestjs/cqrs";
+import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { ReservationNotFoundException } from "../../exceptions/reservation-not-found.exception";
 import { ReservationEntityRepository } from "../../reservation-entity.repository";
 import { ReservationCantBeModifiedException } from "../../exceptions/reservation-cant-be-modified.exception";
@@ -6,7 +6,7 @@ import { CancelReservationCommand } from "./cancel-reservation.command";
 import { EmailReservationCanceledService } from "../../../email/mail-bodies/email-reservation-canceled.service";
 
 @CommandHandler(CancelReservationCommand)
-export class CancelReservationHandler {
+export class CancelReservationHandler implements ICommandHandler<CancelReservationCommand> {
   constructor(private readonly repository: ReservationEntityRepository,
               private readonly emailReservationCanceledService: EmailReservationCanceledService) {
   }

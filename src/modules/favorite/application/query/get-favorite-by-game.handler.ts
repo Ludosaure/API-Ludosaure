@@ -1,10 +1,10 @@
-import { QueryHandler } from "@nestjs/cqrs";
+import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 import { GetFavoriteByGameQuery } from "./get-favorite-by-game.query";
 import { GetFavoriteByGameResponseDto } from "../../dto/response/get-favorite-by-game-response.dto";
 import { FavoriteEntityRepository } from "../../favorite-entity.repository";
 
 @QueryHandler(GetFavoriteByGameQuery)
-export class GetFavoriteByGameHandler {
+export class GetFavoriteByGameHandler implements IQueryHandler<GetFavoriteByGameQuery> {
   constructor(private readonly favoriteRepository: FavoriteEntityRepository) {
   }
 

@@ -1,4 +1,4 @@
-import { CommandHandler } from "@nestjs/cqrs";
+import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { ReservationNotFoundException } from "../../exceptions/reservation-not-found.exception";
 import { ReservationEntityRepository } from "../../reservation-entity.repository";
 import { ReservationCantBeModifiedException } from "../../exceptions/reservation-cant-be-modified.exception";
@@ -11,7 +11,7 @@ import { ReservationAlreadyPaidException } from "../../exceptions/reservation-al
 import { EmailReservationConfirmationService } from "../../../email/mail-bodies/email-reservation-confirmation.service";
 
 @CommandHandler(PayReservationCommand)
-export class PayReservationHandler {
+export class PayReservationHandler implements ICommandHandler<PayReservationCommand> {
   constructor(private readonly reservationRepository: ReservationEntityRepository,
               private readonly emailReservationConfirmationService: EmailReservationConfirmationService) {
   }
