@@ -1,4 +1,5 @@
 import { urlConfig } from "../../../../config/url.config";
+import { AppUtils } from "../../../../shared/appUtils";
 
 export class EmailFooter {
   public static getFooter(token: string, sendReason: string): string {
@@ -12,7 +13,7 @@ export class EmailFooter {
                 <a href="${urlConfig.unsubscribeUrl}?token=${token}" target="_blank">vous désabonner</a> à tout moment.
               </p>
               <p class="footer-text">
-                2 BIS Boulevard Cahours, Janzé, France
+              ${AppUtils.address}
               </p>
               <p class="footer-text"></p>
             </div>`;

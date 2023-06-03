@@ -4,6 +4,7 @@ import EmailService from "../email.service";
 import { emailConfig } from "../../../config/email.config";
 import { Reservation } from "../../../domain/model/reservation.entity";
 import { EmailFooter } from "./footer/email-footer";
+import { AppUtils } from "../../../shared/appUtils";
 
 @Injectable()
 export class EmailLastDayReservationService {
@@ -67,7 +68,7 @@ export class EmailLastDayReservationService {
                     <body style="background-color: #e9ecef;">
                     
                     <a href="//TODO rediriger vers site" target="_blank">
-                      <img src="https://kengo.bzh/media/image/aaf9a0e8-b90f-4727-8d5d-1b94ab6f7a6c_sticker-kengojpg.jpg"
+                      <img src="${AppUtils.logoUrl}"
                            alt="Logo" width="150"
                            style=" width: 150px; max-width: 150px; min-width: 48px;margin: 25px auto;display: block">
                     </a>
