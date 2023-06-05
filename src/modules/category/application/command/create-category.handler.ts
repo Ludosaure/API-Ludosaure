@@ -1,11 +1,11 @@
-import {CommandHandler} from "@nestjs/cqrs";
+import {CommandHandler, ICommandHandler} from "@nestjs/cqrs";
 import {CreateCategoryCommand} from "./create-category.command";
 import {CategoryEntityRepository} from "../../category-entity.repository";
 import {Category} from "../../../../domain/model/category.entity";
 import {CategoryAlreadyExistsException} from "../../exceptions/category-already-exists.exception";
 
 @CommandHandler(CreateCategoryCommand)
-export class CreateCategoryHandler {
+export class CreateCategoryHandler implements ICommandHandler<CreateCategoryCommand> {
 
     constructor(private readonly categoryRepository: CategoryEntityRepository) {
     }

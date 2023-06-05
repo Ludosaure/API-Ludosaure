@@ -1,4 +1,4 @@
-import {CommandHandler} from "@nestjs/cqrs";
+import {CommandHandler, ICommandHandler} from "@nestjs/cqrs";
 import {CreateUnavailabilityCommand} from "./create-unavailability.command";
 import {GameEntityRepository} from "../../../game/game-entity.repository";
 import {UnavailabilityEntityRepository} from "../../unavailability-entity.repository";
@@ -9,7 +9,7 @@ import {
 } from "../../exceptions/game-already-unavailable-for-this-date.exception";
 
 @CommandHandler(CreateUnavailabilityCommand)
-export class CreateUnavailabilityHandler {
+export class CreateUnavailabilityHandler implements ICommandHandler<CreateUnavailabilityCommand> {
     constructor(private readonly unavailabilityRepository: UnavailabilityEntityRepository,
                 private readonly gameRepository: GameEntityRepository) {
     }

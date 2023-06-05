@@ -1,10 +1,10 @@
-import {CommandHandler} from "@nestjs/cqrs";
+import {CommandHandler, ICommandHandler} from "@nestjs/cqrs";
 import {CreateFaqCommand} from "./create-faq.command";
 import {Faq} from "../../../../domain/model/faq.entity";
 import {FaqEntityRepository} from "../../faq-entity.repository";
 
 @CommandHandler(CreateFaqCommand)
-export class CreateFaqHandler {
+export class CreateFaqHandler implements ICommandHandler<CreateFaqCommand> {
     constructor(private readonly faqRepository: FaqEntityRepository) {
     }
 

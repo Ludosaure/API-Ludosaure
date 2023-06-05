@@ -1,10 +1,10 @@
-import {QueryHandler} from "@nestjs/cqrs";
+import {IQueryHandler, QueryHandler} from "@nestjs/cqrs";
 import {GetAllCategoriesQuery} from "./get-all-categories.query";
 import {CategoryEntityRepository} from "../../category-entity.repository";
 import {GetAllCategoriesResponseDto} from "../../dto/response/get-all-categories-response.dto";
 
 @QueryHandler(GetAllCategoriesQuery)
-export class GetAllCategoriesHandler {
+export class GetAllCategoriesHandler implements IQueryHandler<GetAllCategoriesQuery> {
     constructor(private readonly categoryRepository: CategoryEntityRepository) {
     }
 

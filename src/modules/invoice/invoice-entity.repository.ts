@@ -13,27 +13,46 @@ export class InvoiceEntityRepository extends Repository<Invoice> implements Invo
     }
 
     findAll(): Promise<Invoice[]> {
-        return this.find();
-    }
-
-    findById(invoiceId: string): Promise<Invoice> {
-        return this.findOneBy({id: invoiceId});
-    }
-
-    findByReservationId(reservationId: string): Promise<Invoice[]> {
-        return this.findBy({
-            reservation: {
-                id: reservationId
+        return this.find({
+            relations: {
+                reservation: true,
             }
         });
     }
 
-    findByUserId(userId: string): Promise<Invoice[]> {
-        return this.findBy({
-            reservation: {
-                user: {
-                    id: userId
+    findById(invoiceId: string): Promise<Invoice> {
+        return this.findOne({
+            where: {
+                id: invoiceId,
+            },
+            relations: ["reservation", "reservation.user"]
+        });
+    }
+
+    findByReservationId(reservationId: string): Promise<Invoice[]> {
+        return this.find({
+            where: {
+                reservation: {
+                    id: reservationId,
                 }
+            },
+            relations: {
+                reservation: true,
+            }
+        })
+    }
+
+    findByUserId(userId: string): Promise<Invoice[]> {
+        return this.find({
+            where: {
+                reservation: {
+                    user: {
+                        id: userId,
+                    }
+                }
+            },
+            relations: {
+                reservation: true,
             }
         });
     }

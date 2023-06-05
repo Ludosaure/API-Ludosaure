@@ -1,4 +1,4 @@
-import { CommandHandler } from "@nestjs/cqrs";
+import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { GameEntityRepository } from "../../game-entity.repository";
 import { CategoryEntityRepository } from "../../../category/category-entity.repository";
 import { CategoryNotFoundException } from "../../../../shared/exceptions/category-not-found.exception";
@@ -11,7 +11,7 @@ import { MediaNotFoundException } from "../../../../shared/exceptions/media-not-
 import { MediaEntityRepository } from "../../../media/media-entity.repository";
 
 @CommandHandler(UpdateGameCommand)
-export class UpdateGameHandler {
+export class UpdateGameHandler implements ICommandHandler<UpdateGameCommand> {
 
   constructor(
     private readonly gameRepository: GameEntityRepository,

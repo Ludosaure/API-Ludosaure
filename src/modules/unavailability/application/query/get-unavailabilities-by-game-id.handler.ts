@@ -1,12 +1,12 @@
-import {QueryHandler} from "@nestjs/cqrs";
-import {GetUnavailabilitiesByGameIdQuery} from "./get-unavailabilities-by-game-id.query";
-import {UnavailabilityEntityRepository} from "../../unavailability-entity.repository";
-import {Unavailability} from "../../../../domain/model/unavailability.entity";
-import {GameEntityRepository} from "../../../game/game-entity.repository";
-import {GameNotFoundException} from "../../../../shared/exceptions/game-not-found.exception";
+import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
+import { GetUnavailabilitiesByGameIdQuery } from "./get-unavailabilities-by-game-id.query";
+import { UnavailabilityEntityRepository } from "../../unavailability-entity.repository";
+import { Unavailability } from "../../../../domain/model/unavailability.entity";
+import { GameEntityRepository } from "../../../game/game-entity.repository";
+import { GameNotFoundException } from "../../../../shared/exceptions/game-not-found.exception";
 
 @QueryHandler(GetUnavailabilitiesByGameIdQuery)
-export class GetUnavailabilitiesByGameIdHandler {
+export class GetUnavailabilitiesByGameIdHandler implements IQueryHandler<GetUnavailabilitiesByGameIdQuery> {
     constructor(private readonly unavailabilityRepository: UnavailabilityEntityRepository,
                 private readonly gameRepository: GameEntityRepository) {
     }

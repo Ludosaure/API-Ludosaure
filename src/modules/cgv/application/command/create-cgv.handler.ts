@@ -1,11 +1,11 @@
-import { CommandHandler } from "@nestjs/cqrs";
+import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { CreateCgvCommand } from "./create-cgv.command";
 import * as fs from "fs";
 import { ImpossibleToProcessCgvException } from "../../exceptions/impossible-to-process-cgv.exception";
 import { environmentConfig } from "../../../../config/environment.config";
 
 @CommandHandler(CreateCgvCommand)
-export class CreateCgvHandler {
+export class CreateCgvHandler implements ICommandHandler<CreateCgvCommand> {
 
   async execute(command: CreateCgvCommand) {
     const cgv = { cgv: command.cgv };

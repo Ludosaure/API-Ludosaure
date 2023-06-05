@@ -1,4 +1,4 @@
-import { CommandHandler } from "@nestjs/cqrs";
+import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { CreateGameCommand } from "./create-game.command";
 import { GameEntityRepository } from "../../game-entity.repository";
 import { Game } from "../../../../domain/model/game.entity";
@@ -9,7 +9,7 @@ import { MediaNotFoundException } from "../../../../shared/exceptions/media-not-
 import { MediaEntityRepository } from "../../../media/media-entity.repository";
 
 @CommandHandler(CreateGameCommand)
-export class CreateGameHandler {
+export class CreateGameHandler implements ICommandHandler<CreateGameCommand> {
 
     constructor(
         private readonly gameRepository: GameEntityRepository,

@@ -1,10 +1,10 @@
-import {CommandHandler} from "@nestjs/cqrs";
+import {CommandHandler, ICommandHandler} from "@nestjs/cqrs";
 import {DeletePlanCommand} from "./delete-plan.command";
 import {PlanNotFoundException} from "../../exceptions/plan-not-found.exception";
 import {PlanEntityRepository} from "../../plan-entity.repository";
 
 @CommandHandler(DeletePlanCommand)
-export class DeletePlanHandler {
+export class DeletePlanHandler implements ICommandHandler<DeletePlanCommand> {
     constructor(private readonly planRepository: PlanEntityRepository) {
     }
 

@@ -1,4 +1,4 @@
-import { CommandHandler } from "@nestjs/cqrs";
+import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { UpdateReservationCommand } from "./update-reservation.command";
 import { ReservationNotFoundException } from "../../exceptions/reservation-not-found.exception";
 import { ReservationEntityRepository } from "../../reservation-entity.repository";
@@ -11,7 +11,7 @@ import { UnavailabilityEntityRepository } from "../../../unavailability/unavaila
 import { UnavailableGameException } from "../../exceptions/unavailable-game.exception";
 
 @CommandHandler(UpdateReservationCommand)
-export class UpdateReservationHandler {
+export class UpdateReservationHandler implements ICommandHandler<UpdateReservationCommand> {
   constructor(private readonly reservationRepository: ReservationEntityRepository,
               private readonly planRepository: PlanEntityRepository,
               private readonly unavailabilityRepository: UnavailabilityEntityRepository,
