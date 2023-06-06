@@ -25,7 +25,7 @@ export class InvoiceEntityRepository extends Repository<Invoice> implements Invo
             where: {
                 id: invoiceId,
             },
-            relations: ["reservation", "reservation.user", "reservation.games"],
+            relations: ["reservation", "reservation.user", "reservation.games", "reservation.appliedPlan"],
         });
     }
 

@@ -23,9 +23,9 @@ export default class InvoiceService {
   async getPreviouslyInvoicedWeeksForReservation(reservationId: string, invoice: Invoice): Promise<number> {
     const invoices = await this.invoiceRepository.findByReservationId(reservationId);
     return invoices
+      .filter((currentInvoice) => currentInvoice.id !== invoice.id)
       .filter((currentInvoice) => currentInvoice.createdAt < invoice.createdAt)
-      .filter((currentInvoice) => currentInvoice.id == invoice.id)
-      .reduce((invoicedWeeks, invoice) => invoicedWeeks + invoice.nbWeeks, 0);
+      .reduce((invoicedWeeks, currentInvoice) => invoicedWeeks + currentInvoice.nbWeeks, 0);
   }
 
   async getInvoicedWeeksForReservation(reservationId: string): Promise<number> {
@@ -36,9 +36,9 @@ export default class InvoiceService {
   async getPreviouslyInvoicedAmountForReservation(reservationId: string, invoice: Invoice): Promise<number> {
     const invoices = await this.invoiceRepository.findByReservationId(reservationId);
     return invoices
-      .filter((currentInvoice) => currentInvoice.createdAt < invoice.createdAt)
       .filter((currentInvoice) => currentInvoice.id !== invoice.id)
-      .reduce((invoicedAmount, invoice) => Number(invoicedAmount) + Number(invoice.amount), 0);
+      .filter((currentInvoice) => currentInvoice.createdAt < invoice.createdAt)
+      .reduce((invoicedAmount, currentInvoice) => Number(invoicedAmount) + Number(currentInvoice.amount), 0);
   }
 
   async getInvoicedAmountForReservation(reservationId: string): Promise<number> {

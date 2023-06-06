@@ -8,6 +8,7 @@ import { Invoice } from "../../../../domain/model/invoice.entity";
 import InvoiceService from "../../invoice.service";
 
 const PDFDocument = require("pdfkit-table");
+const pdfTable = require('voilab-pdf-table');
 
 @CommandHandler(GenerateInvoiceCommand)
 export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCommand> {
@@ -41,13 +42,16 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
       .text(`${invoice.reservation.user.firstname} ${invoice.reservation.user.lastname}`, { align: "right" })
       .text(invoice.reservation.user.email, { align: "right" })
       .text(invoice.reservation.user.phone, { align: "right" });
+
     // body
     doc.fontSize(10)
-      .text(`Réservation #${invoice.reservation.reservationNumber}`)
+      .text(`Réservation #${invoice.reservation.reservationNumber}`, 100)
       .text(`Facture créée le: ${invoice.createdAt.toLocaleDateString()}`)
       .moveDown()
       .text(`Début de réservation: ${invoice.reservation.startDate.toLocaleDateString()}`)
       .text(`Fin de réservation: ${invoice.reservation.endDate.toLocaleDateString()}`)
+      .moveDown()
+      .text(`Réduction appliquée: ${invoice.reservation.appliedPlan.reduction}%*`)
       .moveDown()
       .text(`Nombre de semaines totales facturées: ${invoice.reservation.nbWeeks}`);
     // TODO vérifier pour la première et deuxième facture
@@ -55,38 +59,23 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
       doc.text(`Montant déjà facturé: ${alreadyPaidAmount}€`)
         .text(`Nombre de semaines déjà facturées: ${alreadyPaidWeeks}`);
     }
-    doc.moveDown()
-      .fontSize(16).text("Facture")
-      .moveDown();
+    doc.moveDown(2);
 
     doc.table(invoiceTable, {
       x: 50,
       prepareHeader: () => doc.font("Helvetica-Bold").fontSize(10),
-      prepareRow: (row, i) => doc.font("Helvetica").fontSize(10)
+      prepareRow: () => doc.font("Helvetica").fontSize(10)
     });
 
     doc.table(totalTable, {
-      x: 50,
+      x: 150,
       prepareHeader: () => doc.font("Helvetica-Bold").fontSize(12),
-      prepareRow: (row, i) => doc.font("Helvetica").fontSize(12)
-    });
-    doc.fontSize(12)
-      .text(`Montant: ${invoice.amount}`);
-    // détail des jeux
-    doc.fontSize(16).text("Détail des jeux", { align: "center" });
-    invoice.reservation.games.forEach(game => {
-      console.log("game", game.name);
-      const duration = invoice.nbWeeks;
-      const priceTTC = game.weeklyAmount * duration;
-      const priceHT = priceTTC * (1 - AppUtils.tva);
-      doc.fontSize(12).text(`Nom du jeu: ${game.name}`)
-        .text(`Prix du jeu: ${game.weeklyAmount}`)
-        .text(`Nombre de semaines de location: ${duration}`)
-        .text(`Prix total HT: ${priceHT}`)
-        .text(`Prix total TTC: ${priceTTC}`);
+      prepareRow: () => doc.font("Helvetica").fontSize(12)
     });
 
     // footer
+    doc.fontSize(8)
+      .text(`* La réduction est appliquée sur le prix total de la réservation. Le prix est soustrait au pro rata de ce qui a déjà été facturé`, 100);
 
     doc.end();
 
@@ -94,6 +83,19 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
   }
 
   private initInvoiceTable(invoice: Invoice) {
+    const datas = invoice.reservation.games.map(game => {
+      const duration = invoice.nbWeeks;
+      const priceHT = game.weeklyAmount * (1 - AppUtils.tva);
+      const totalPriceHT = priceHT * duration;
+      const tva = totalPriceHT * AppUtils.tva;
+      return {
+        game: game.name,
+        nbWeeks: duration,
+        priceHT: priceHT + "€",
+        totalPriceHT: totalPriceHT + "€",
+        tva: tva + "€"
+      };
+    });
     return {
       headers: [
         { label: "Jeu", property: "game", width: 150, renderer: null },
@@ -103,29 +105,34 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
         { label: "TVA (20%)", property: "tva", width: 75, renderer: null }
       ],
       datas: [
-        {
-          game: "Donjon et dragon",
-          nbWeeks: "2",
-          priceHT: "4.5€",
-          totalPriceHT: "9€",
-          tva: "0,5€"
-        }
+        datas
       ]
     };
   }
 
   private initTotalTable(invoice: Invoice) {
+    const totalHTByGame = invoice.reservation.games.map(game => {
+      const priceHT = game.weeklyAmount * (1 - AppUtils.tva);
+      return priceHT * invoice.nbWeeks;
+    });
+    const totalHT = Math.round(totalHTByGame.reduce((globalTotalHT, gameTotalHT) => globalTotalHT + gameTotalHT, 0) * 100) / 100;
+    const totalTva = Math.round(totalHT * AppUtils.tva * 100) / 100;
+    // TODO réduction pas correcte
+    const totalReduction = Math.round(invoice.reservation.totalAmount * (invoice.reservation.appliedPlan.reduction / 100) * 100) / 100;
+
     return {
       headers: [
-        { label: "Total HT", property: "totalHT", width: 150, renderer: null },
-        { label: "Total TVA (20%)", property: "tva", width: 150, renderer: null },
-        { label: "TOTAL TTC", property: "totalTTC", width: 150, renderer: null }
+        { label: "Total HT", property: "totalHT", width: 110, renderer: null },
+        { label: "Total TVA (20%)", property: "totalTva", width: 110, renderer: null },
+        { label: "Total réduction", property: "totalReduction", width: 110, renderer: null },
+        { label: "TOTAL TTC", property: "totalTTC", width: 110, renderer: null }
       ],
       datas: [
         {
-          totalHT: "9€",
-          tva: "1€",
-          totalTTC: "10€"
+          totalHT: totalHT + "€",
+          totalTva: totalTva + "€",
+          totalReduction: totalReduction + "€",
+          totalTTC: invoice.amount + "€"
         }
       ]
     };
