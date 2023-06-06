@@ -5,13 +5,15 @@ import { GenerateInvoiceResponseDto } from "../../dto/response/generate-invoice-
 import { AppUtils } from "../../../../shared/appUtils";
 import axios from "axios";
 import { Invoice } from "../../../../domain/model/invoice.entity";
+import InvoiceService from "../../invoice.service";
 
 const PDFDocument = require("pdfkit-table");
 
 @CommandHandler(GenerateInvoiceCommand)
 export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCommand> {
   constructor(
-    private readonly invoiceRepository: InvoiceEntityRepository
+    private readonly invoiceRepository: InvoiceEntityRepository,
+    private readonly invoiceService: InvoiceService
   ) {
   }
 
@@ -26,6 +28,8 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
     const invoiceTable = this.initInvoiceTable(invoice);
     const totalTable = this.initTotalTable(invoice);
 
+    const alreadyPaidAmount = await this.invoiceService.getPreviouslyInvoicedAmountForReservation(invoice.reservation.id, invoice);
+    const alreadyPaidWeeks = await this.invoiceService.getPreviouslyInvoicedWeeksForReservation(invoice.reservation.id, invoice);
     // header
     doc.image(logo, 50, 45, { width: 50 })
       .fillColor("#444444")
@@ -36,17 +40,24 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
       .moveDown(2)
       .text(`${invoice.reservation.user.firstname} ${invoice.reservation.user.lastname}`, { align: "right" })
       .text(invoice.reservation.user.email, { align: "right" })
-      .text(invoice.reservation.user.phone, { align: "right" })
-      .moveDown(2);
+      .text(invoice.reservation.user.phone, { align: "right" });
     // body
-    doc.fontSize(16).text("Facture")
-      .moveDown()
-      .fontSize(12)
+    doc.fontSize(10)
       .text(`Réservation #${invoice.reservation.reservationNumber}`)
-      .text(`Créée le: ${invoice.createdAt.toLocaleDateString()}`)
+      .text(`Facture créée le: ${invoice.createdAt.toLocaleDateString()}`)
+      .moveDown()
       .text(`Début de réservation: ${invoice.reservation.startDate.toLocaleDateString()}`)
       .text(`Fin de réservation: ${invoice.reservation.endDate.toLocaleDateString()}`)
-      .moveDown(2);
+      .moveDown()
+      .text(`Nombre de semaines totales facturées: ${invoice.reservation.nbWeeks}`);
+    // TODO vérifier pour la première et deuxième facture
+    if (alreadyPaidAmount > 0 && alreadyPaidWeeks > 0) {
+      doc.text(`Montant déjà facturé: ${alreadyPaidAmount}€`)
+        .text(`Nombre de semaines déjà facturées: ${alreadyPaidWeeks}`);
+    }
+    doc.moveDown()
+      .fontSize(16).text("Facture")
+      .moveDown();
 
     doc.table(invoiceTable, {
       x: 50,
@@ -114,7 +125,7 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
         {
           totalHT: "9€",
           tva: "1€",
-          totalTTC: "10€",
+          totalTTC: "10€"
         }
       ]
     };
