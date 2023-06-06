@@ -9,6 +9,7 @@ import { EmailReservationConfirmationService } from "../../../email/mail-bodies/
 import { ReservationCantBeModifiedException } from "../../exceptions/reservation-cant-be-modified.exception";
 import { UnavailabilityEntityRepository } from "../../../unavailability/unavailability-entity.repository";
 import { UnavailableGameException } from "../../exceptions/unavailable-game.exception";
+import { DateUtils } from "../../../../shared/date.utils";
 
 @CommandHandler(UpdateReservationCommand)
 export class UpdateReservationHandler implements ICommandHandler<UpdateReservationCommand> {
@@ -37,14 +38,15 @@ export class UpdateReservationHandler implements ICommandHandler<UpdateReservati
           }
         }
         foundReservation.endDate = newEndDate;
+        foundReservation.nbWeeks = DateUtils.getNbWeeksBetween(foundReservation.startDate, foundReservation.endDate);
         foundReservation.appliedPlan = await this.planRepository.findByDuration(foundReservation.startDate, foundReservation.endDate);
         foundReservation.totalAmount = foundReservation.calculateTotalAmount();
       }
     }
     await this.reservationRepository.saveOrUpdate(foundReservation);
 
-    const facturedAmount = await this.invoiceService.getFacturedAmountForReservation(foundReservation.id);
-    const restToPay = foundReservation.totalAmount - facturedAmount;
+    const invoicedAmount = await this.invoiceService.getInvoicedAmountForReservation(foundReservation.id);
+    const restToPay = foundReservation.totalAmount - invoicedAmount;
     if (restToPay <= 0) {
       throw new IncoherentAmountException(restToPay);
     }

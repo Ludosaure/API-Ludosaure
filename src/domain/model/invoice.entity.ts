@@ -1,3 +1,4 @@
+import { Min } from "class-validator";
 import {Column, Entity, Generated, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Reservation} from "./reservation.entity";
 
@@ -15,6 +16,10 @@ export class Invoice {
 
     @Column('decimal', {nullable: false, precision: 10, scale: 2})
     amount: number;
+
+    @Column({nullable: false, name: 'nb_weeks'})
+    @Min(0)
+    nbWeeks: number;
 
     @ManyToOne(() => Reservation, (reservation) => reservation.id, {nullable: false})
     @JoinColumn({name: 'reservation_id'})

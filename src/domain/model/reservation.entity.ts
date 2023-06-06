@@ -20,6 +20,7 @@ import {
     ReservationAlreadyEndedException
 } from "../../modules/reservation/exceptions/reservation-already-ended.exception";
 import {InvalidDateException} from "../../modules/reservation/exceptions/invalid-date.exception";
+import { Min } from "class-validator";
 
 @Entity()
 export class Reservation {
@@ -38,6 +39,10 @@ export class Reservation {
 
     @Column({nullable: false, name: 'end_date'})
     endDate: Date;
+
+    @Column({nullable: false, name: 'nb_weeks'})
+    @Min(0)
+    nbWeeks: number;
 
     @Column({nullable: false, default: false, name: 'is_returned'})
     isReturned: boolean;
@@ -84,7 +89,7 @@ export class Reservation {
             throw new ReservationNotInitializedProperlyException();
         }
         let totalAmount = 0;
-        const weeks = DateUtils.getWeeksBetween(this.startDate, this.endDate);
+        const weeks = DateUtils.getNbWeeksBetween(this.startDate, this.endDate);
         if (weeks < 1) {
             throw new ReservationTooShortException();
         }
