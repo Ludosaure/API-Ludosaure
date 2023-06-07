@@ -16,7 +16,17 @@ export default class InvoiceService {
     invoice.createdAt = new Date();
     invoice.amount = amount;
     invoice.reservation = reservation;
-    invoice.nbWeeks = DateUtils.getNbWeeksBetween(reservation.startDate, reservation.endDate) - invoicedWeeks;
+    invoice.reservationNbWeeks = DateUtils.getNbWeeksBetween(reservation.startDate, reservation.endDate);
+    invoice.invoiceNbWeeks = invoice.reservationNbWeeks - invoicedWeeks;
+    invoice.firstname = reservation.user.firstname;
+    invoice.lastname = reservation.user.lastname;
+    invoice.email = reservation.user.email;
+    invoice.phone = reservation.user.phone;
+    invoice.reservationNumber = reservation.reservationNumber;
+    invoice.reservationStartDate = reservation.startDate;
+    invoice.reservationEndDate = reservation.endDate;
+    invoice.reduction = reservation.appliedPlan.reduction;
+    invoice.reservationTotalAmount = reservation.totalAmount;
     await this.invoiceRepository.saveInvoice(invoice);
   }
 
@@ -25,12 +35,12 @@ export default class InvoiceService {
     return invoices
       .filter((currentInvoice) => currentInvoice.id !== invoice.id)
       .filter((currentInvoice) => currentInvoice.createdAt < invoice.createdAt)
-      .reduce((invoicedWeeks, currentInvoice) => invoicedWeeks + currentInvoice.nbWeeks, 0);
+      .reduce((invoicedWeeks, currentInvoice) => invoicedWeeks + currentInvoice.invoiceNbWeeks, 0);
   }
 
   async getInvoicedWeeksForReservation(reservationId: string): Promise<number> {
     const invoices = await this.invoiceRepository.findByReservationId(reservationId);
-    return invoices.reduce((invoicedWeeks, invoice) => invoicedWeeks + invoice.nbWeeks, 0);
+    return invoices.reduce((invoicedWeeks, invoice) => invoicedWeeks + invoice.invoiceNbWeeks, 0);
   }
 
   async getPreviouslyInvoicedAmountForReservation(reservationId: string, invoice: Invoice): Promise<number> {

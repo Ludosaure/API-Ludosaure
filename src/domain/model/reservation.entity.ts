@@ -40,7 +40,7 @@ export class Reservation {
     @Column({nullable: false, name: 'end_date'})
     endDate: Date;
 
-    @Column({nullable: false, name: 'nb_weeks'})
+    @Column({nullable: false, name: 'nb_weeks', default: 0})
     @Min(0)
     nbWeeks: number;
 

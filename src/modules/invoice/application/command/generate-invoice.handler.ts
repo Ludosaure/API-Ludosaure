@@ -38,31 +38,31 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
       .fontSize(12)
       .text(AppUtils.address)
       .moveDown(2)
-      .text(`${invoice.reservation.user.firstname} ${invoice.reservation.user.lastname}`, { align: "right" })
-      .text(invoice.reservation.user.email, { align: "right" })
-      .text(invoice.reservation.user.phone, { align: "right" });
+      .text(`${invoice.firstname} ${invoice.lastname}`, { align: "right" })
+      .text(invoice.email, { align: "right" })
+      .text(invoice.phone, { align: "right" });
 
     // body
     doc.fontSize(10)
-      .text(`Réservation #${invoice.reservation.reservationNumber}`, 100)
+      .text(`Réservation #${invoice.reservationNumber}`, 100)
       .text(`Facture créée le: ${invoice.createdAt.toLocaleDateString()}`)
       .moveDown()
-      .text(`Début de réservation: ${invoice.reservation.startDate.toLocaleDateString()}`)
-      .text(`Fin de réservation: ${invoice.reservation.endDate.toLocaleDateString()}`)
+      .text(`Début de réservation: ${invoice.reservationStartDate.toLocaleDateString()}`)
+      .text(`Fin de réservation: ${invoice.reservationEndDate.toLocaleDateString()}`)
       .moveDown()
-      .text(`Réduction appliquée: ${invoice.reservation.appliedPlan.reduction}%*`)
+      .text(`Réduction appliquée: ${invoice.reduction}%*`)
       .moveDown()
-      .text(`Nombre de semaines totales facturées: ${invoice.reservation.nbWeeks}`);
+      .text(`Nombre de semaines totales facturées: ${invoice.reservationNbWeeks}`);
     if (alreadyPaidAmount > 0 && alreadyPaidWeeks > 0) {
       doc.text(`Montant déjà facturé: ${alreadyPaidAmount}€`)
         .text(`Nombre de semaines déjà facturées: ${alreadyPaidWeeks}`);
     }
     doc.moveDown(2);
 
-    const invoiceTable = new PDFTable(doc, 50);
+    const invoiceTable = new PDFTable(doc);
     this.initInvoiceTable(invoice, invoiceTable);
 
-    doc.moveDown()
+    doc.moveDown(2)
       .table(totalTable, {
         x: 170,
         prepareHeader: () => doc.font("Helvetica-Bold").fontSize(10),
@@ -70,7 +70,7 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
       });
 
     // footer
-    const totalReduction = AppUtils.roundToTwoDecimals(invoice.reservation.totalAmount * (invoice.reservation.appliedPlan.reduction / 100) + Number.EPSILON);
+    const totalReduction = AppUtils.roundToTwoDecimals(invoice.reservationTotalAmount * (invoice.reduction / 100) + Number.EPSILON);
     doc.fontSize(8)
       .text(`* La réduction est appliquée sur le prix total de la réservation. Le prix est soustrait au pro rata de ce qui a déjà été facturé`, 100)
       .text(`** Total réduction correspond à la réduction sur le montant de cette facture uniquement. La réduction totale au pro rata sur les précédentes factures est de ${totalReduction}€`)
@@ -129,8 +129,9 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
       });
 
     invoiceTable.addBody(
+      // TODO créer une table de liaison avec invoice
       invoice.reservation.games.map(game => {
-        const duration = invoice.nbWeeks;
+        const duration = invoice.invoiceNbWeeks;
         const priceHT = AppUtils.roundToTwoDecimals(game.weeklyAmount * (1 - AppUtils.tva));
         const totalPriceHT = AppUtils.roundToTwoDecimals(priceHT * duration);
         const tva = AppUtils.roundToTwoDecimals(totalPriceHT * AppUtils.tva);
@@ -147,11 +148,11 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
   private initTotalTable(invoice: Invoice) {
     const totalHTByGame = invoice.reservation.games.map(game => {
       const priceHT = game.weeklyAmount * (1 - AppUtils.tva);
-      return priceHT * invoice.nbWeeks;
+      return priceHT * invoice.invoiceNbWeeks;
     });
     const totalHT = AppUtils.roundToTwoDecimals(totalHTByGame.reduce((globalTotalHT, gameTotalHT) => globalTotalHT + gameTotalHT, 0));
     const totalTva = AppUtils.roundToTwoDecimals(totalHT * AppUtils.tva);
-    const reduction = AppUtils.roundToTwoDecimals(invoice.amount * (invoice.reservation.appliedPlan.reduction / 100));
+    const reduction = AppUtils.roundToTwoDecimals(invoice.amount * (invoice.reduction / 100));
 
     return {
       headers: [
