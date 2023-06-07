@@ -27,6 +27,7 @@ export class GameEntityRepository extends Repository<Game> implements GameReposi
         category: true,
         unavailabilities: true,
         reviews: true,
+        picture: true,
       }
     });
   }
@@ -40,6 +41,7 @@ export class GameEntityRepository extends Repository<Game> implements GameReposi
         category: true,
         unavailabilities: true,
         reviews: true,
+        picture: true,
       }
     });
   }
@@ -53,6 +55,7 @@ export class GameEntityRepository extends Repository<Game> implements GameReposi
         category: true,
         unavailabilities: true,
         reviews: true,
+        picture: true,
       }
     });
   }
@@ -60,6 +63,9 @@ export class GameEntityRepository extends Repository<Game> implements GameReposi
   findByName(name: string): Promise<Game[]> {
     return this.manager
       .createQueryBuilder(Game, "game")
+      .leftJoinAndSelect("game.category", "category")
+      .leftJoinAndSelect("game.reviews", "reviews")
+      .leftJoinAndSelect("game.picture", "picture")
       .where(
         "UPPER(game.name) LIKE UPPER(:name)",
         {
