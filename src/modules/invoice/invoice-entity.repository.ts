@@ -16,6 +16,7 @@ export class InvoiceEntityRepository extends Repository<Invoice> implements Invo
         return this.find({
             relations: {
                 reservation: true,
+                invoiceGames: true,
             }
         });
     }
@@ -25,7 +26,10 @@ export class InvoiceEntityRepository extends Repository<Invoice> implements Invo
             where: {
                 id: invoiceId,
             },
-            relations: ["reservation", "reservation.user", "reservation.games", "reservation.appliedPlan"],
+            relations: {
+                reservation: true,
+                invoiceGames: true,
+            },
         });
     }
 
@@ -38,7 +42,8 @@ export class InvoiceEntityRepository extends Repository<Invoice> implements Invo
             },
             relations: {
                 reservation: true,
-            }
+                invoiceGames: true,
+            },
         })
     }
 
@@ -53,7 +58,8 @@ export class InvoiceEntityRepository extends Repository<Invoice> implements Invo
             },
             relations: {
                 reservation: true,
-            }
+                invoiceGames: true,
+            },
         });
     }
 

@@ -1,6 +1,8 @@
 import { IsEmail, IsPhoneNumber, Min } from "class-validator";
-import {Column, Entity, Generated, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, Generated, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Reservation} from "./reservation.entity";
+import { FavoriteGame } from "./favorite-game.entity";
+import { InvoiceGame } from "./invoice-game.entity";
 
 @Entity()
 export class Invoice {
@@ -57,4 +59,7 @@ export class Invoice {
     @ManyToOne(() => Reservation, (reservation) => reservation.id, {nullable: false})
     @JoinColumn({name: 'reservation_id'})
     reservation: Reservation;
+
+    @OneToMany(() => InvoiceGame, (invoiceGame) => invoiceGame.invoice)
+    invoiceGames: InvoiceGame[];
 }

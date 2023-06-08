@@ -21,6 +21,7 @@ import {
 } from "../../modules/reservation/exceptions/reservation-already-ended.exception";
 import {InvalidDateException} from "../../modules/reservation/exceptions/invalid-date.exception";
 import { Min } from "class-validator";
+import { AppUtils } from "../../shared/appUtils";
 
 @Entity()
 export class Reservation {
@@ -99,7 +100,7 @@ export class Reservation {
         if (this.appliedPlan != null) {
             totalAmount = totalAmount * (1 - this.appliedPlan.reduction / 100);
         }
-        return Number(totalAmount.toFixed(2));
+        return AppUtils.roundToTwoDecimals(totalAmount);
     }
 
     public areDatesValid(newEndDate: Date): boolean {

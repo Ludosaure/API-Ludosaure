@@ -1,11 +1,11 @@
 import { GenerateInvoiceCommand } from "./generate-invoice.command";
-import { InvoiceEntityRepository } from "../../invoice-entity.repository";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { GenerateInvoiceResponseDto } from "../../dto/response/generate-invoice-response.dto";
 import { AppUtils } from "../../../../shared/appUtils";
 import axios from "axios";
 import { Invoice } from "../../../../domain/model/invoice.entity";
 import InvoiceService from "../../invoice.service";
+import { InvoiceEntityRepository } from "../../invoice-entity.repository";
 
 const PDFDocument = require("pdfkit-table");
 const PDFTable = require("voilab-pdf-table");
@@ -87,7 +87,9 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
       { column: "totalHT" },
       { column: "tva" }
     ))
-      .setColumnsDefaults({ headerBorder: "B", padding: [5] })
+      .setColumnsDefaults({
+        headerBorder: ['B'], headerPadding: [5], padding: [5]
+      })
       .addColumns([
         {
           id: "game",
@@ -97,30 +99,38 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
         {
           id: "nbWeeks",
           header: "Nombre de semaines",
-          width: 135
+          width: 60
         },
         {
           id: "priceHT",
           header: "Prix /sem HT",
-          width: 75,
+          width: 60,
           renderer: function(tb, data) {
             return data.priceHT + "€";
           }
         },
         {
+          id: "tva",
+          header: "TVA (20%)",
+          width: 60,
+          renderer: function(tb, data) {
+            return data.tva + "€";
+          },
+        },
+        {
           id: "totalHT",
           header: "Prix total HT",
-          width: 75,
+          width: 60,
           renderer: function(tb, data) {
             return data.totalHT + "€";
           }
         },
         {
-          id: "tva",
-          header: "TVA (20%)",
-          width: 75,
+          id: "totalTva",
+          header: "Total TVA (20%)",
+          width: 60,
           renderer: function(tb, data) {
-            return data.tva + "€";
+            return data.totalTva + "€";
           }
         }
       ])
@@ -129,30 +139,36 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
       });
 
     invoiceTable.addBody(
-      // TODO créer une table de liaison avec invoice
-      invoice.reservation.games.map(game => {
+      invoice.invoiceGames.map(invoiceGame => {
         const duration = invoice.invoiceNbWeeks;
-        const priceHT = AppUtils.roundToTwoDecimals(game.weeklyAmount * (1 - AppUtils.tva));
+        const weeklyAmount = invoiceGame.weeklyAmount;
+        const tvaRate = AppUtils.tva;
+        const priceHT = AppUtils.roundToTwoDecimals(weeklyAmount * (1 - tvaRate));
+        const tva = AppUtils.roundToTwoDecimals(weeklyAmount * tvaRate);
         const totalPriceHT = AppUtils.roundToTwoDecimals(priceHT * duration);
-        const tva = AppUtils.roundToTwoDecimals(totalPriceHT * AppUtils.tva);
+        const totalTva = AppUtils.roundToTwoDecimals(tva * duration);
         return {
-          game: game.name,
+          game: invoiceGame.name,
           nbWeeks: duration,
           priceHT: priceHT,
+          tva: tva,
           totalHT: totalPriceHT,
-          tva: tva
+          totalTva: totalTva
         };
       }));
   }
 
   private initTotalTable(invoice: Invoice) {
-    const totalHTByGame = invoice.reservation.games.map(game => {
-      const priceHT = game.weeklyAmount * (1 - AppUtils.tva);
+    const totalHTByGame = invoice.invoiceGames.map(invoiceGame => {
+      const priceHT = invoiceGame.weeklyAmount * (1 - AppUtils.tva);
       return priceHT * invoice.invoiceNbWeeks;
     });
+
     const totalHT = AppUtils.roundToTwoDecimals(totalHTByGame.reduce((globalTotalHT, gameTotalHT) => globalTotalHT + gameTotalHT, 0));
-    const totalTva = AppUtils.roundToTwoDecimals(totalHT * AppUtils.tva);
-    const reduction = AppUtils.roundToTwoDecimals(invoice.amount * (invoice.reduction / 100));
+    const totalTva = invoice.invoiceGames.map(invoiceGame => {
+      return invoiceGame.weeklyAmount * invoice.invoiceNbWeeks * AppUtils.tva;
+    }).reduce((globalTotalTva, gameTotalTva) => globalTotalTva + gameTotalTva, 0);
+    const reduction = AppUtils.roundToTwoDecimals((totalHT + totalTva) * (invoice.reduction / 100));
 
     return {
       headers: [

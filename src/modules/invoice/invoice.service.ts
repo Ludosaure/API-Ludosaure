@@ -1,13 +1,16 @@
 import { Injectable } from "@nestjs/common";
-import { InvoiceEntityRepository } from "./invoice-entity.repository";
 import { Invoice } from "../../domain/model/invoice.entity";
 import { Reservation } from "../../domain/model/reservation.entity";
 import { DateUtils } from "../../shared/date.utils";
+import { InvoiceGameEntityRepository } from "../invoice-game/invoice-game-entity.repository";
+import { InvoiceGame } from "../../domain/model/invoice-game.entity";
+import { InvoiceEntityRepository } from "./invoice-entity.repository";
 
 @Injectable()
 export default class InvoiceService {
 
-  constructor(private readonly invoiceRepository: InvoiceEntityRepository) {
+  constructor(private readonly invoiceRepository: InvoiceEntityRepository,
+              private readonly invoiceGameRepository: InvoiceGameEntityRepository) {
   }
 
   async createInvoice(amount: number, reservation: Reservation) {
@@ -28,6 +31,15 @@ export default class InvoiceService {
     invoice.reduction = reservation.appliedPlan.reduction;
     invoice.reservationTotalAmount = reservation.totalAmount;
     await this.invoiceRepository.saveInvoice(invoice);
+
+    for(const game of reservation.games) {
+      const invoiceGame = new InvoiceGame();
+      invoiceGame.gameId = game.id;
+      invoiceGame.invoiceId = invoice.id;
+      invoiceGame.name = game.name;
+      invoiceGame.weeklyAmount = game.weeklyAmount;
+      await this.invoiceGameRepository.saveInvoiceGame(invoiceGame);
+    }
   }
 
   async getPreviouslyInvoicedWeeksForReservation(reservationId: string, invoice: Invoice): Promise<number> {
