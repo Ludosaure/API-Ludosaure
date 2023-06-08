@@ -17,6 +17,9 @@ export class FavoriteEntityRepository extends Repository<FavoriteGame> implement
     return await this.find({
       where: {
         userId: userId
+      },
+      relations: {
+        game: true,
       }
     });
   }

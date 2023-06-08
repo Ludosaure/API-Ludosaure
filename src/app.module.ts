@@ -22,6 +22,7 @@ import {ReviewModule} from "./modules/review/review.module";
 import {PlanModule} from "./modules/plan/plan.module";
 import { CgvModule } from './modules/cgv/cgv.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { InvoiceGameModule } from "./modules/invoice-game/invoice-game.module";
 
 @Module({
     controllers: [AppController],
@@ -59,6 +60,7 @@ import { ScheduleModule } from '@nestjs/schedule';
         FaqModule,
         FavoriteModule,
         InvoiceModule,
+        InvoiceGameModule,
         MediaModule,
         MessageModule,
         NewsModule,

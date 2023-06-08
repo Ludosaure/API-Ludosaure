@@ -49,6 +49,7 @@ export class CreateReservationHandler implements ICommandHandler<CreateReservati
         reservation.createdAt = new Date();
         reservation.startDate = startDate;
         reservation.endDate = endDate;
+        reservation.nbWeeks = DateUtils.getNbWeeksBetween(startDate, endDate);
         reservation.user = foundUser;
         reservation.games = games;
         reservation.appliedPlan = await this.planRepository.findByDuration(startDate, endDate);

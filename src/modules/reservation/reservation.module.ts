@@ -15,7 +15,6 @@ import { CreateReservationHandler } from "./application/command/create-reservati
 import { UpdateReservationHandler } from "./application/command/update-reservation.handler";
 import { PlanEntityRepository } from "../plan/plan-entity.repository";
 import InvoiceService from "../invoice/invoice.service";
-import { InvoiceEntityRepository } from "../invoice/invoice-entity.repository";
 import { EmailReservationConfirmationService } from "../email/mail-bodies/email-reservation-confirmation.service";
 import EmailService from "../email/email.service";
 import { GetAllReservationsHandler } from "./application/query/get-all-reservations.handler";
@@ -32,6 +31,9 @@ import { FavoriteGame } from "../../domain/model/favorite-game.entity";
 import { FavoriteEntityRepository } from "../favorite/favorite-entity.repository";
 import { GameAvailableAgainService } from "../email/mail-bodies/game-available-again.service";
 import { PayReservationHandler } from "./application/command/pay-reservation.handler";
+import { InvoiceEntityRepository } from "../invoice/invoice-entity.repository";
+import { InvoiceGameEntityRepository } from "../invoice-game/invoice-game-entity.repository";
+import { InvoiceGame } from "../../domain/model/invoice-game.entity";
 
 @Module({
   imports: [
@@ -44,6 +46,7 @@ import { PayReservationHandler } from "./application/command/pay-reservation.han
       Invoice,
       Unavailability,
       FavoriteGame,
+      InvoiceGame,
     ])
   ],
   controllers: [ReservationController],
@@ -57,6 +60,7 @@ import { PayReservationHandler } from "./application/command/pay-reservation.han
     FavoriteService,
     InvoiceService,
     InvoiceEntityRepository,
+    InvoiceGameEntityRepository,
     ReservationEntityRepository,
     FavoriteEntityRepository,
     UserEntityRepository,

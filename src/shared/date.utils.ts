@@ -7,7 +7,7 @@ export class DateUtils {
      * @param startDate
      * @param endDate
      */
-    public static getWeeksBetween(startDate: Date, endDate: Date): number {
+    public static getNbWeeksBetween(startDate: Date, endDate: Date): number {
         startDate = new Date(startDate);
         endDate = new Date(endDate);
         const millisecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
