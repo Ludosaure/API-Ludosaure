@@ -14,6 +14,7 @@ import EmailService from "../email/email.service";
 import { UserEntityRepository } from "../user/user-entity.repository";
 import { AuthenticationService } from "./authentication.service";
 import { LocalStrategy } from "./strategy/local.strategy";
+import StripeService from "../stripe/stripe.service";
 
 @Module({
     imports: [
@@ -28,6 +29,7 @@ import { LocalStrategy } from "./strategy/local.strategy";
         EmailAccountConfirmationService,
         AuthenticationService,
         EmailService,
+        StripeService,
         PasswordValidator,
         UserEntityRepository,
         RegisterHandler,

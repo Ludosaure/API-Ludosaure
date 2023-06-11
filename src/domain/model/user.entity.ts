@@ -49,6 +49,9 @@ export class User {
     @Column({nullable: false, default: false, name: 'is_account_closed'})
     isAccountClosed: boolean;
 
+    @Column({nullable: true, name: 'stripe_customer_id'})
+    public stripeCustomerId: string;
+
     @OneToOne(() => Media, media => media.id, {nullable: true})
     @JoinColumn({name: 'profile_picture_id'})
     profilePicture: Media;

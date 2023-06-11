@@ -23,6 +23,7 @@ import {PlanModule} from "./modules/plan/plan.module";
 import { CgvModule } from './modules/cgv/cgv.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { InvoiceGameModule } from "./modules/invoice-game/invoice-game.module";
+import { StripeModule } from './modules/stripe/stripe.module';
 
 @Module({
     controllers: [AppController],
@@ -68,6 +69,7 @@ import { InvoiceGameModule } from "./modules/invoice-game/invoice-game.module";
         ReservationModule,
         ReviewModule,
         CgvModule,
+        StripeModule,
     ],
 })
 export class AppModule {

@@ -7,13 +7,15 @@ import { hash } from 'argon2';
 import { PasswordValidator } from '../../../../shared/password-validator.service';
 import {EmailAccountConfirmationService} from "../../../email/mail-bodies/email-account-confirmation.service";
 import {UserEntityRepository} from "../../../user/user-entity.repository";
+import StripeService from "../../../stripe/stripe.service";
 
 @CommandHandler(RegisterCommand)
 export class RegisterHandler implements ICommandHandler<RegisterCommand> {
   constructor(
     private readonly userRepository: UserEntityRepository,
     private readonly passwordValidator: PasswordValidator,
-    private readonly emailAccountConfirmationService: EmailAccountConfirmationService
+    private readonly emailAccountConfirmationService: EmailAccountConfirmationService,
+    private readonly stripeService: StripeService,
   ) {}
 
   async execute(command: RegisterCommand): Promise<void> {
@@ -29,6 +31,11 @@ export class RegisterHandler implements ICommandHandler<RegisterCommand> {
     user.lastname = command.lastname;
     user.phone = command.phone;
     user.password = await hash(command.password);
+
+    const fullName = `${user.firstname} ${user.lastname}`;
+    const stripeCustomer = await this.stripeService.createCustomer(fullName, user.email);
+    user.stripeCustomerId = stripeCustomer.id;
+
     await this.userRepository.saveOrUpdate(user);
 
     await this.emailAccountConfirmationService.sendVerificationLink(user.email);
