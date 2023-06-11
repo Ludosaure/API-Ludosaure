@@ -9,14 +9,17 @@ import {GameEntityRepository} from "../game/game-entity.repository";
 import {CreateUnavailabilityHandler} from "./application/command/create-unavailability.handler";
 import {GetUnavailabilitiesByGameIdHandler} from "./application/query/get-unavailabilities-by-game-id.handler";
 import {DeleteUnavailabilityHandler} from "./application/command/delete-unavailability.handler";
+import { ReservationEntityRepository } from "../reservation/reservation-entity.repository";
+import { Reservation } from "../../domain/model/reservation.entity";
 
 @Module({
     imports: [
         CqrsModule,
-        TypeOrmModule.forFeature([Unavailability, Game]),
+        TypeOrmModule.forFeature([Unavailability, Game, Reservation]),
     ],
     controllers: [UnavailabilityController],
     providers: [
+        ReservationEntityRepository,
         UnavailabilityEntityRepository,
         GameEntityRepository,
         GetUnavailabilitiesByGameIdHandler,
