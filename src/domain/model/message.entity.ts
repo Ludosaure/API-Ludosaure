@@ -9,12 +9,15 @@ export class Message {
     @Column({nullable: false})
     content: string;
 
-    @Column({nullable: false, name: 'send_date'})
+    @Column({nullable: false, name: 'send_date', default: () => 'CURRENT_TIMESTAMP'})
     sendDate: Date;
+
+    @Column({nullable: false, default: false, name: 'is_read'})
+    isRead: boolean;
 
     @ManyToOne(() => User, (user) => user.id, {nullable: false})
     @JoinColumn({name: 'sender_id'})
-    sender: User;
+    author: User;
 
     @ManyToOne(() => User, (user) => user.id, {nullable: false})
     @JoinColumn({name: 'receiver_id'})

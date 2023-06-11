@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { IsEmail, IsPhoneNumber } from "class-validator";
 import { Role } from "./enum/role";
 import { FavoriteGame } from "./favorite-game.entity";
@@ -52,7 +52,7 @@ export class User {
     @Column({nullable: true, name: 'stripe_customer_id'})
     public stripeCustomerId: string;
 
-    @OneToOne(() => Media, media => media.id, {nullable: true})
+    @ManyToOne(() => Media, media => media.id, {nullable: true})
     @JoinColumn({name: 'profile_picture_id'})
     profilePicture: Media;
 
