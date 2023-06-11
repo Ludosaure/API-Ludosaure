@@ -26,7 +26,7 @@ export class CreateUnavailabilityHandler implements ICommandHandler<CreateUnavai
         if(foundUnavailability != null) {
             throw new GameAlreadyUnavailableForThisDateException();
         }
-        const foundReservation = await this.reservationRepository.findByDate(command.date);
+        const foundReservation = await this.reservationRepository.findByGameAndDate(foundGame, command.date);
         if(foundReservation != null) {
             throw new GameAlreadyBookedForThisDateException();
         }
