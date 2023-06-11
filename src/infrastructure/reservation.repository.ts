@@ -1,4 +1,5 @@
 import {Reservation} from "../domain/model/reservation.entity";
+import { Game } from "../domain/model/game.entity";
 
 export interface ReservationRepository {
     findAll(): Promise<Reservation[]>;
@@ -11,7 +12,7 @@ export interface ReservationRepository {
 
     findCurrentOrFutureReservationsByGameId(gameId: string): Promise<Reservation[]>;
 
-    findByDate(date: Date): Promise<Reservation[]>;
+    findByGameAndDate(game: Game, date: Date): Promise<Reservation[]>;
 
     findLastDayReservations(): Promise<Reservation[]>;
 

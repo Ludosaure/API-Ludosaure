@@ -3,6 +3,7 @@ import { ReservationRepository } from "../../infrastructure/reservation.reposito
 import { Reservation } from "../../domain/model/reservation.entity";
 import { LessThan, MoreThan, Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
+import { Game } from "../../domain/model/game.entity";
 
 @Injectable()
 export class ReservationEntityRepository extends Repository<Reservation> implements ReservationRepository {
@@ -66,10 +67,13 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
         });
     }
 
-    findByDate(date: Date): Promise<Reservation[]> {
+    findByGameAndDate(game: Game, date: Date): Promise<Reservation[]> {
         return this.findBy({
             startDate: MoreThan(date),
-            endDate: LessThan(date)
+            endDate: LessThan(date),
+            games: {
+                id: game.id
+            }
         });
     }
 
