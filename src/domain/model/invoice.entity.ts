@@ -1,7 +1,6 @@
 import { IsEmail, IsPhoneNumber, Min } from "class-validator";
-import {Column, Entity, Generated, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
-import {Reservation} from "./reservation.entity";
-import { FavoriteGame } from "./favorite-game.entity";
+import { Column, Entity, Generated, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Reservation } from "./reservation.entity";
 import { InvoiceGame } from "./invoice-game.entity";
 
 @Entity()
@@ -29,7 +28,7 @@ export class Invoice {
     @Column({nullable: false})
     lastname: string;
 
-    @Column({nullable: false, unique: true})
+    @Column({nullable: false})
     @IsEmail()
     email: string;
 
@@ -46,7 +45,7 @@ export class Invoice {
     @Column({nullable: false, name: 'reservation_end_date'})
     reservationEndDate: Date;
 
-    @Column({nullable: false, unique: true, type: 'int'})
+    @Column({nullable: false, type: 'int'})
     reduction: number;
 
     @Column({nullable: false, name: 'reservation_nb_weeks', default: 0})

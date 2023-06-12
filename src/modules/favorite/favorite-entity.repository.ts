@@ -18,7 +18,7 @@ export class FavoriteEntityRepository extends Repository<FavoriteGame> implement
       where: {
         userId: userId
       },
-      relations: ["game", "game.picture"]
+      relations: ["game", "game.picture", "game.category"]
     });
   }
 
