@@ -32,6 +32,7 @@ export class UserEntityRepository extends Repository<User> implements UserReposi
   findByEmail(email: string): Promise<User> {
     return this.manager
       .createQueryBuilder(User, "user")
+      .leftJoinAndSelect("user.profilePicture", "profilePicture")
       .where("TRIM(LOWER(user.email)) = TRIM(LOWER(:email))", { email: email })
       .getOne();
   }
