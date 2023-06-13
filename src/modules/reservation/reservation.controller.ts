@@ -49,7 +49,7 @@ export class ReservationController {
     }
 
     @UseGuards(OwnReservationGuard)
-    @Get('/id/:id')
+    @Get('/id/:reservationId')
     async getReservationById(@Param() getReservationByIdRequest: GetReservationByIdRequestDto) {
         return await this.queryBus.execute<GetReservationByIdQuery, GetReservationByIdResponseDto>
         (GetReservationByIdQuery.of(getReservationByIdRequest));
