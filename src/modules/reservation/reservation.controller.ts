@@ -48,8 +48,7 @@ export class ReservationController {
         (GetAllReservationsQuery.of());
     }
 
-    @UseGuards(RolesGuard)
-    @Roles(Role.ADMIN, Role.CLIENT)
+    @UseGuards(OwnReservationGuard)
     @Get('/id/:id')
     async getReservationById(@Param() getReservationByIdRequest: GetReservationByIdRequestDto) {
         return await this.queryBus.execute<GetReservationByIdQuery, GetReservationByIdResponseDto>
