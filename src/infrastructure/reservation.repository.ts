@@ -18,7 +18,7 @@ export interface ReservationRepository {
 
     findLateReservations(): Promise<Reservation[]>;
 
-    saveOrUpdate(reservation: Reservation): Promise<void>;
+    saveOrUpdate(reservation: Reservation): Promise<Reservation>;
 
     deleteReservation(reservation: Reservation): Promise<void>;
 }
