@@ -105,7 +105,7 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
     }
 
     async saveOrUpdate(reservation: Reservation): Promise<Reservation> {
-        return this.save(reservation);
+        return await this.save(reservation);
     }
 
     async deleteReservation(reservation: Reservation): Promise<void> {
