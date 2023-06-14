@@ -1,5 +1,5 @@
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
-import { Body, Controller, Get, Param, Post, Put, Req, UseGuards } from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards} from "@nestjs/common";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { JwtAuthGuard } from "../../shared/guards/jwt-auth.guard";
 import { RolesGuard } from "../../shared/guards/roles.guard";
@@ -93,7 +93,7 @@ export class ReservationController {
     }
 
     @UseGuards(OwnReservationGuard)
-    @Put('/:reservationId/remove')
+    @Delete('/:reservationId')
     async removeReservation(@Param() removeReservationRequestDto: RemoveReservationRequestDto) {
         await this.commandBus.execute<RemoveReservationCommand>(RemoveReservationCommand.of(removeReservationRequestDto));
     }
