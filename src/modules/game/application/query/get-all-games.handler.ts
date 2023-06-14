@@ -15,6 +15,7 @@ export class GetAllGamesHandler implements ICommandHandler<GetAllGamesQuery> {
     const games = await this.gameRepository.findAll();
 
     for (const game of games) {
+      game.isAvailable = true;
       if (game.reservations != null) {
         for (const reservation of game.reservations) {
           if (

@@ -13,6 +13,7 @@ export class DateUtils {
         const millisecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
         const millisecondsBetween = endDate.getTime() - startDate.getTime();
         const weeksBetween = millisecondsBetween / millisecondsPerWeek;
+
         return Math.ceil(weeksBetween);
     }
 

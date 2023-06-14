@@ -28,6 +28,7 @@ export class GameEntityRepository extends Repository<Game> implements GameReposi
         unavailabilities: true,
         reviews: true,
         picture: true,
+        reservations: true,
       }
     });
   }
@@ -56,6 +57,7 @@ export class GameEntityRepository extends Repository<Game> implements GameReposi
         unavailabilities: true,
         reviews: true,
         picture: true,
+        reservations: true,
       }
     });
   }

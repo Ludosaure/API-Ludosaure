@@ -94,18 +94,25 @@ export class Reservation {
         if (this.startDate == null || this.endDate == null || this.games == null) {
             throw new ReservationNotInitializedProperlyException();
         }
+
         let totalAmount = 0;
         const weeks = DateUtils.getNbWeeksBetween(this.startDate, this.endDate);
+
         if (weeks < 1) {
             throw new ReservationTooShortException();
         }
+
         for (const game of this.games) {
             totalAmount += game.weeklyAmount * weeks;
         }
+
+        let reduction = 1 - this.appliedPlan.reduction / 100;
+
         if (this.appliedPlan != null) {
-            totalAmount = totalAmount * (1 - this.appliedPlan.reduction / 100);
+            totalAmount = totalAmount * reduction;
         }
-        return AppUtils.roundToTwoDecimals(totalAmount);
+
+        return totalAmount;
     }
 
     public areDatesValid(newEndDate: Date): boolean {

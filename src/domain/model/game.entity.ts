@@ -55,5 +55,5 @@ export class Game {
 
     nbReviews: number;
 
-    isAvailable = false;
+    isAvailable: boolean;
 }

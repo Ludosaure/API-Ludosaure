@@ -44,14 +44,17 @@ export class CreateReservationHandler implements ICommandHandler<CreateReservati
             }
         }
 
+        const weeks = DateUtils.getNbWeeksBetween(startDate, endDate);
+
         const reservation = new Reservation();
         reservation.createdAt = new Date();
         reservation.startDate = startDate;
         reservation.endDate = endDate;
-        reservation.nbWeeks = DateUtils.getNbWeeksBetween(startDate, endDate);
+        reservation.nbWeeks = weeks;
         reservation.user = foundUser;
         reservation.games = games;
-        reservation.appliedPlan = await this.planRepository.findByDuration(startDate, endDate);
+        reservation.appliedPlan = await this.planRepository.findByNbWeeks(weeks);
+
         reservation.totalAmount = reservation.calculateTotalAmount();
 
         const newReservation = await this.reservationRepository.saveOrUpdate(reservation);
