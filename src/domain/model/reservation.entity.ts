@@ -6,6 +6,7 @@ import {
     JoinTable,
     ManyToMany,
     ManyToOne,
+    OneToMany,
     PrimaryGeneratedColumn
 } from "typeorm";
 import {User} from "./user.entity";
@@ -22,6 +23,7 @@ import {
 import {InvalidDateException} from "../../modules/reservation/exceptions/invalid-date.exception";
 import { Min } from "class-validator";
 import { AppUtils } from "../../shared/appUtils";
+import { Invoice } from "./invoice.entity";
 
 @Entity()
 export class Reservation {
@@ -84,6 +86,9 @@ export class Reservation {
         }
     })
     games: Game[];
+
+    @OneToMany(() => Invoice, (invoice) => invoice.reservation, {nullable: true})
+    invoices: Invoice[];
 
     public calculateTotalAmount(): number {
         if (this.startDate == null || this.endDate == null || this.games == null) {
