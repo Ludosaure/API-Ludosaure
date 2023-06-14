@@ -106,13 +106,12 @@ export class Reservation {
             totalAmount += game.weeklyAmount * weeks;
         }
 
-        let reduction = 1 - this.appliedPlan.reduction / 100;
-
         if (this.appliedPlan != null) {
+            let reduction = 1 - this.appliedPlan.reduction / 100;
             totalAmount = totalAmount * reduction;
         }
 
-        return totalAmount;
+        return AppUtils.roundToTwoDecimals(totalAmount);
     }
 
     public areDatesValid(newEndDate: Date): boolean {
