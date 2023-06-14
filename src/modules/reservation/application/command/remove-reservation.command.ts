@@ -10,7 +10,7 @@ export class RemoveReservationCommand {
   public static of(
     removeReservationRequestDto: RemoveReservationRequestDto,
   ): RemoveReservationCommand {
-    const { id } = removeReservationRequestDto;
-    return new RemoveReservationCommand(id);
+    const { reservationId } = removeReservationRequestDto;
+    return new RemoveReservationCommand(reservationId);
   }
 }
