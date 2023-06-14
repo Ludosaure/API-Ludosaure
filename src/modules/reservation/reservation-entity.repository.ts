@@ -18,11 +18,7 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
                 startDate: "DESC",
                 endDate: "DESC"
             },
-            relations: {
-                user: true,
-                games: true,
-                appliedPlan: true,
-            }
+            relations: ["user", "games", "appliedPlan", "games.category"],
         });
     }
 
