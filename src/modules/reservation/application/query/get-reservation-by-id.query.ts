@@ -8,7 +8,7 @@ export class GetReservationByIdQuery {
     }
 
     static of(getReservationByIdRequest: GetReservationByIdRequestDto): GetReservationByIdQuery {
-        const {userId} = getReservationByIdRequest;
-        return new GetReservationByIdQuery(userId);
+        const {reservationId} = getReservationByIdRequest;
+        return new GetReservationByIdQuery(reservationId);
     }
 }

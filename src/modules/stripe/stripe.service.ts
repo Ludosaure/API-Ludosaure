@@ -23,12 +23,15 @@ export default class StripeService {
   }
 
   public async charge(amount: number, paymentMethodId: string, customerId: string) {
+
     return this.stripe.paymentIntents.create({
       amount,
       customer: customerId,
       payment_method: paymentMethodId,
       currency: stripeConfig.stripeCurrency,
-      confirm: true
-    })
+      automatic_payment_methods: {
+        enabled: true,
+      }
+    });
   }
 }

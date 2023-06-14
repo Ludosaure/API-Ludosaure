@@ -25,7 +25,7 @@ export class CreateGameHandler implements ICommandHandler<CreateGameCommand> {
         }
 
         const foundGame = await this.gameRepository.findByName(command.name);
-        if (foundGame != null) {
+        if (foundGame.length > 0) {
             throw new GameNameAlreadyExistsExceptions(command.name);
         }
 

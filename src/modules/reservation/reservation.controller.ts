@@ -1,5 +1,5 @@
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
-import {Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards} from "@nestjs/common";
+import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Req, UseGuards} from "@nestjs/common";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { JwtAuthGuard } from "../../shared/guards/jwt-auth.guard";
 import { RolesGuard } from "../../shared/guards/roles.guard";
@@ -50,9 +50,8 @@ export class ReservationController {
         (GetAllReservationsQuery.of());
     }
 
-    @UseGuards(RolesGuard)
-    @Roles(Role.ADMIN, Role.CLIENT)
-    @Get('/id/:id')
+    @UseGuards(OwnReservationGuard)
+    @Get('/id/:reservationId')
     async getReservationById(@Param() getReservationByIdRequest: GetReservationByIdRequestDto) {
         return await this.queryBus.execute<GetReservationByIdQuery, GetReservationByIdResponseDto>
         (GetReservationByIdQuery.of(getReservationByIdRequest));
@@ -66,11 +65,12 @@ export class ReservationController {
     }
 
     @UseGuards(RolesGuard)
+    @HttpCode(HttpStatus.OK)
     @Roles(Role.ADMIN, Role.CLIENT)
     @Post()
     async createReservation(@Body() createReservationRequest: CreateReservationRequestDto, @Req() request) {
         const user: User = request.user;
-        await this.commandBus.execute<CreateReservationCommand>(CreateReservationCommand.of(createReservationRequest, user));
+        return await this.commandBus.execute<CreateReservationCommand>(CreateReservationCommand.of(createReservationRequest, user));
     }
 
     @UseGuards(OwnReservationGuard)

@@ -6,6 +6,7 @@ import { CreateChargeRequestDto } from "./dto/request/create-charge-request.dto"
 import { RolesGuard } from "../../shared/guards/roles.guard";
 import { Roles } from "../../shared/roles.decorator";
 import { Role } from "../../domain/model/enum/role";
+import Stripe from "stripe";
 
 @ApiTags('Stripe')
 @Controller('stripe')
@@ -18,7 +19,7 @@ export default class StripeController {
 
   @Roles(Role.CLIENT, Role.ADMIN)
   @Post('/charge')
-  async createCharge(@Body() charge: CreateChargeRequestDto, @Req() request) {
-    await this.stripeService.charge(charge.amount, charge.paymentMethodId, request.user.stripeCustomerId);
+  async createCharge(@Body() charge: CreateChargeRequestDto, @Req() request): Promise<Stripe.Response<Stripe.PaymentIntent>> {
+    return await this.stripeService.charge(charge.amount, charge.paymentMethodId, request.user.stripeCustomerId);
   }
 }

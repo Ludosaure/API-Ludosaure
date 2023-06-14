@@ -18,7 +18,8 @@ export class CreateMediaHandler implements ICommandHandler<CreateMediaCommand> {
     const uploadResult = await s3.upload({
       Bucket: environmentConfig.awsBucketName,
       Body: imageBuffer,
-      Key: `${uuid()}-${filename}`
+      Key: `${uuid()}-${filename}`,
+      ContentType: "image/jpeg",
     }).promise();
 
     const media = new Media();

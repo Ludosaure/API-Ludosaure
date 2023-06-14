@@ -6,6 +6,7 @@ import {
     JoinTable,
     ManyToMany,
     ManyToOne,
+    OneToMany,
     PrimaryGeneratedColumn
 } from "typeorm";
 import {User} from "./user.entity";
@@ -22,6 +23,7 @@ import {
 import {InvalidDateException} from "../../modules/reservation/exceptions/invalid-date.exception";
 import { Min } from "class-validator";
 import { AppUtils } from "../../shared/appUtils";
+import { Invoice } from "./invoice.entity";
 
 @Entity()
 export class Reservation {
@@ -85,21 +87,30 @@ export class Reservation {
     })
     games: Game[];
 
+    @OneToMany(() => Invoice, (invoice) => invoice.reservation, {nullable: true})
+    invoices: Invoice[];
+
     public calculateTotalAmount(): number {
         if (this.startDate == null || this.endDate == null || this.games == null) {
             throw new ReservationNotInitializedProperlyException();
         }
+
         let totalAmount = 0;
         const weeks = DateUtils.getNbWeeksBetween(this.startDate, this.endDate);
+
         if (weeks < 1) {
             throw new ReservationTooShortException();
         }
+
         for (const game of this.games) {
             totalAmount += game.weeklyAmount * weeks;
         }
+
         if (this.appliedPlan != null) {
-            totalAmount = totalAmount * (1 - this.appliedPlan.reduction / 100);
+            let reduction = 1 - this.appliedPlan.reduction / 100;
+            totalAmount = totalAmount * reduction;
         }
+
         return AppUtils.roundToTwoDecimals(totalAmount);
     }
 

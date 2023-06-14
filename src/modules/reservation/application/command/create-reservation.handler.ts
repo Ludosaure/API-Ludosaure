@@ -10,7 +10,6 @@ import {PlanEntityRepository} from "../../../plan/plan-entity.repository";
 import InvoiceService from "../../../invoice/invoice.service";
 import {DateUtils} from "../../../../shared/date.utils";
 import {Game} from "../../../../domain/model/game.entity";
-import {EmailReservationConfirmationService} from "../../../email/mail-bodies/email-reservation-confirmation.service";
 import {InvalidDateException} from "../../exceptions/invalid-date.exception";
 import { UnavailabilityEntityRepository } from "../../../unavailability/unavailability-entity.repository";
 import { UnavailableGameException } from "../../exceptions/unavailable-game.exception";
@@ -25,7 +24,7 @@ export class CreateReservationHandler implements ICommandHandler<CreateReservati
                 private readonly invoiceService: InvoiceService) {
     }
 
-    async execute(command: CreateReservationCommand): Promise<void> {
+    async execute(command: CreateReservationCommand): Promise<String> {
         const foundUser = await this.userRepository.findById(command.userId);
         if (foundUser == null) {
             throw new UserNotFoundException();
@@ -45,18 +44,23 @@ export class CreateReservationHandler implements ICommandHandler<CreateReservati
             }
         }
 
+        const weeks = DateUtils.getNbWeeksBetween(startDate, endDate);
+
         const reservation = new Reservation();
         reservation.createdAt = new Date();
         reservation.startDate = startDate;
         reservation.endDate = endDate;
-        reservation.nbWeeks = DateUtils.getNbWeeksBetween(startDate, endDate);
+        reservation.nbWeeks = weeks;
         reservation.user = foundUser;
         reservation.games = games;
-        reservation.appliedPlan = await this.planRepository.findByDuration(startDate, endDate);
+        reservation.appliedPlan = await this.planRepository.findByNbWeeks(weeks);
+
         reservation.totalAmount = reservation.calculateTotalAmount();
 
-        await this.reservationRepository.saveOrUpdate(reservation);
+        const newReservation = await this.reservationRepository.saveOrUpdate(reservation);
         await this.invoiceService.createInvoice(reservation.totalAmount, reservation);
+
+        return newReservation.id;
     }
 
     private async initGames(gamesId: string[]): Promise<Game[]> {

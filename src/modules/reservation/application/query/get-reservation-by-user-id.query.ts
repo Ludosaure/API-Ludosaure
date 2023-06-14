@@ -1,4 +1,4 @@
-import {GetReservationByIdRequestDto} from "../../dto/request/get-reservation-by-id-request.dto";
+import { GetReservationByUserIdRequestDto } from "../../dto/request/get-reservation-by-user-id-request.dto";
 
 export class GetReservationByUserIdQuery {
     public readonly userId: string;
@@ -7,8 +7,8 @@ export class GetReservationByUserIdQuery {
         this.userId = userId;
     }
 
-    static of(getReservationByIdRequest: GetReservationByIdRequestDto): GetReservationByUserIdQuery {
-        const {userId} = getReservationByIdRequest;
+    static of(getReservationByUserIdRequestDto: GetReservationByUserIdRequestDto): GetReservationByUserIdQuery {
+        const { userId } = getReservationByUserIdRequestDto;
         return new GetReservationByUserIdQuery(userId);
     }
 }

@@ -54,4 +54,6 @@ export class Game {
     averageRating: number;
 
     nbReviews: number;
+
+    isAvailable: boolean;
 }

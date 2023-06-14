@@ -17,6 +17,14 @@ export class UserEntityRepository extends Repository<User> implements UserReposi
     );
   }
 
+  findAll(): Promise<User[]> {
+    return this.find({
+      relations: {
+        profilePicture: true
+      }
+    });
+  }
+
   findById(userId: string): Promise<User> {
     return this.findOneBy({ id: userId });
   }
@@ -24,6 +32,7 @@ export class UserEntityRepository extends Repository<User> implements UserReposi
   findByEmail(email: string): Promise<User> {
     return this.manager
       .createQueryBuilder(User, "user")
+      .leftJoinAndSelect("user.profilePicture", "profilePicture")
       .where("TRIM(LOWER(user.email)) = TRIM(LOWER(:email))", { email: email })
       .getOne();
   }

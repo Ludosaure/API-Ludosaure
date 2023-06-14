@@ -13,9 +13,25 @@ export class GetGameByIdHandler implements ICommandHandler<GetGameByIdQuery> {
     }
     async execute(query: GetGameByIdQuery): Promise<GetGameByIdResponseDto> {
         const game = await this.gameRepository.findById(query.id);
+
         if (game == null) {
             throw new GameNotFoundException();
         }
+
+        game.isAvailable = true;
+
+        for (const reservation of game.reservations) {
+            if (
+              reservation.endDate > new Date() &&
+              reservation.isPaid &&
+              !reservation.isCancelled &&
+              !reservation.isReturned
+            ) {
+              game.isAvailable = false;
+              break;
+            }
+          }
+
         game.averageRating = await this.reviewRepository.findAverageRatingByGameId(game.id);
         return new GetGameByIdResponseDto(game);
     }

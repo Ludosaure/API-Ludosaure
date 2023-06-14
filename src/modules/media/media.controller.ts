@@ -51,7 +51,7 @@ export class MediaController {
         maxSize: 10000000 // environ 10Mo
       })
       .addFileTypeValidator({
-        fileType: /(jpg|jpeg|png)$/
+        fileType: /(image\/jpg|image\/jpeg|image\/png)$/
       })
       .build({
         errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
