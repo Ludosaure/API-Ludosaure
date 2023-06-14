@@ -26,6 +26,8 @@ import { User } from "../../domain/model/user.entity";
 import { OwnReservationGuard } from "../../shared/guards/own-reservation.guard";
 import { PayReservationRequestDto } from "./dto/request/pay-reservation-request.dto";
 import { PayReservationCommand } from "./application/command/pay-reservation.command";
+import { RemoveReservationRequestDto } from './dto/request/remove-reservation-request.dto';
+import { RemoveReservationCommand } from './application/command/remove-reservation.command';
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
@@ -88,6 +90,12 @@ export class ReservationController {
     @Put('/cancel')
     async cancelReservation(@Body() cancelReservationRequestDto: CancelReservationRequestDto) {
         await this.commandBus.execute<CancelReservationCommand>(CancelReservationCommand.of(cancelReservationRequestDto));
+    }
+
+    @UseGuards(OwnReservationGuard)
+    @Put('/:reservationId/remove')
+    async removeReservation(@Param() removeReservationRequestDto: RemoveReservationRequestDto) {
+        await this.commandBus.execute<RemoveReservationCommand>(RemoveReservationCommand.of(removeReservationRequestDto));
     }
 
     @UseGuards(RolesGuard)
