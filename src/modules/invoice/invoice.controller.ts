@@ -48,7 +48,7 @@ export class InvoiceController {
     return await this.queryBus.execute<GetInvoicesByUserIdQuery, GetInvoicesByUserIdResponseDto>(GetInvoicesByUserIdQuery.of(getInvoicesByUserIdRequest));
   }
 
-  @Post("/generate/:id")
+  @Post("/generate/:invoiceId")
   @UseGuards(OwnInvoiceGuard)
   async generateInvoiceById(@Param() generateInvoiceByIdRequest: GenerateInvoiceRequestDto, @Res() response: Response) {
     const generateInvoiceResponseDto = await this.commandBus.execute<GenerateInvoiceCommand>(GenerateInvoiceCommand.of(generateInvoiceByIdRequest));
