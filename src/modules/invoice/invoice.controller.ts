@@ -18,7 +18,7 @@ import { GetInvoicesByReservationIdQuery } from "./application/query/get-invoice
 import { GetInvoicesByUserIdQuery } from "./application/query/get-invoices-by-user-id.query";
 import { GenerateInvoiceCommand } from "./application/command/generate-invoice.command";
 import { Response } from "express";
-import { GenerateInvoiceResponseDto } from "./dto/response/generate-invoice-response.dto";
+import { OwnInvoiceGuard } from "../../shared/guards/own-invoice.guard";
 
 @ApiTags("Invoice")
 @Controller("invoice")
@@ -49,7 +49,7 @@ export class InvoiceController {
   }
 
   @Post("/generate/:id")
-  @UseGuards(OwnGuard)
+  @UseGuards(OwnInvoiceGuard)
   async generateInvoiceById(@Param() generateInvoiceByIdRequest: GenerateInvoiceRequestDto, @Res() response: Response) {
     const generateInvoiceResponseDto = await this.commandBus.execute<GenerateInvoiceCommand>(GenerateInvoiceCommand.of(generateInvoiceByIdRequest));
     const { doc, filename } = generateInvoiceResponseDto;

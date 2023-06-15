@@ -6,7 +6,7 @@ export class GenerateInvoiceCommand {
     this.id = id;
   }
   static of(generateInvoiceByIdRequestDto: GenerateInvoiceRequestDto): GenerateInvoiceCommand {
-    const { id } = generateInvoiceByIdRequestDto;
-    return new GenerateInvoiceCommand(id);
+    const { invoiceId } = generateInvoiceByIdRequestDto;
+    return new GenerateInvoiceCommand(invoiceId);
   }
 }
