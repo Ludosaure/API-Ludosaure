@@ -18,7 +18,8 @@ import { GetInvoicesByReservationIdQuery } from "./application/query/get-invoice
 import { GetInvoicesByUserIdQuery } from "./application/query/get-invoices-by-user-id.query";
 import { GenerateInvoiceCommand } from "./application/command/generate-invoice.command";
 import { Response } from "express";
-import { GenerateInvoiceResponseDto } from "./dto/response/generate-invoice-response.dto";
+import { OwnInvoiceGuard } from "../../shared/guards/own-invoice.guard";
+import { Base64Encode } from "base64-stream";
 
 @ApiTags("Invoice")
 @Controller("invoice")
@@ -48,14 +49,11 @@ export class InvoiceController {
     return await this.queryBus.execute<GetInvoicesByUserIdQuery, GetInvoicesByUserIdResponseDto>(GetInvoicesByUserIdQuery.of(getInvoicesByUserIdRequest));
   }
 
-  @Post("/generate/:id")
-  @UseGuards(OwnGuard)
+  @Post("/generate/:invoiceId")
+  @UseGuards(OwnInvoiceGuard)
   async generateInvoiceById(@Param() generateInvoiceByIdRequest: GenerateInvoiceRequestDto, @Res() response: Response) {
-    const generateInvoiceResponseDto = await this.commandBus.execute<GenerateInvoiceCommand>(GenerateInvoiceCommand.of(generateInvoiceByIdRequest));
-    const { doc, filename } = generateInvoiceResponseDto;
-    response.setHeader("Content-Type", "application/pdf");
-    response.setHeader("Content-Disposition", `attachment; filename=${filename}`);
+    const base64String = await this.commandBus.execute<GenerateInvoiceCommand>(GenerateInvoiceCommand.of(generateInvoiceByIdRequest));
 
-    doc.pipe(response);
+    response.json(base64String);
   }
 }

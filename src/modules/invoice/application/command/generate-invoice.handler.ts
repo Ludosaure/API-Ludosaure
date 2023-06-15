@@ -1,6 +1,5 @@
 import { GenerateInvoiceCommand } from "./generate-invoice.command";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { GenerateInvoiceResponseDto } from "../../dto/response/generate-invoice-response.dto";
 import { AppUtils } from "../../../../shared/appUtils";
 import axios from "axios";
 import { Invoice } from "../../../../domain/model/invoice.entity";
@@ -12,19 +11,17 @@ const PDFTable = require("voilab-pdf-table");
 
 @CommandHandler(GenerateInvoiceCommand)
 export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCommand> {
-  doc: any;
   constructor(
     private readonly invoiceRepository: InvoiceEntityRepository,
     private readonly invoiceService: InvoiceService
   ) {
-    this.doc = new PDFDocument();
   }
 
-  async execute(command: GenerateInvoiceCommand): Promise<any> {
+  async execute(command: GenerateInvoiceCommand): Promise<string> {
+    const doc = new PDFDocument();
     const invoice = await this.invoiceRepository.findById(command.id);
 
     const logo = await this.fetchImage(AppUtils.logoUrl);
-    const filename = `facture_${invoice.invoiceNumber}.pdf`;
 
     const totalHTByGame = invoice.invoiceGames.map(invoiceGame => {
       const priceHT = invoiceGame.weeklyAmount * (1 - AppUtils.tva);
@@ -43,7 +40,7 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
     const alreadyPaidWeeks = await this.invoiceService.getPreviouslyInvoicedWeeksForReservation(invoice.reservation.id, invoice);
     
     // header
-    this.doc.image(logo, 50, 45, { width: 50 })
+    doc.image(logo, 50, 45, { width: 50 })
       .fillColor("#444444")
       .fontSize(20)
       .text(`La ludosaure - Facture #${invoice.invoiceNumber}`, 110, 57)
@@ -55,7 +52,7 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
       .text(invoice.phone, { align: "right" });
 
     // body
-    this.doc.fontSize(10)
+    doc.fontSize(10)
       .text(`Réservation #${invoice.reservationNumber}`, 100)
       .text(`Facture créée le: ${invoice.createdAt.toLocaleDateString()}`)
       .moveDown()
@@ -66,28 +63,28 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
       .moveDown()
       .text(`Nombre de semaines totales facturées: ${invoice.reservationNbWeeks}`);
     if (alreadyPaidAmount > 0 && alreadyPaidWeeks > 0) {
-      this.doc.text(`Montant déjà facturé: ${alreadyPaidAmount}€`)
+      doc.text(`Montant déjà facturé: ${alreadyPaidAmount}€`)
         .text(`Nombre de semaines déjà facturées: ${alreadyPaidWeeks}`);
     }
-    this.doc.moveDown(2);
+    doc.moveDown(2);
 
-    const invoiceTable = new PDFTable(this.doc);
+    const invoiceTable = new PDFTable(doc);
     this.initInvoiceTable(invoice, invoiceTable);
 
-    this.doc.moveDown(2)
+    doc.moveDown(2)
       .table(totalTable, {
         x: 170,
-        prepareHeader: () => this.doc.font("Helvetica-Bold").fontSize(10),
-        prepareRow: () => this.doc.font("Helvetica").fontSize(10)
+        prepareHeader: () => doc.font("Helvetica-Bold").fontSize(10),
+        prepareRow: () => doc.font("Helvetica").fontSize(10)
       });
 
     // footer
-    this.doc.fontSize(8)
+    doc.fontSize(8)
       .text(`* La réduction est appliquée sur le prix total de la réservation. Le prix est soustrait au pro rata de ce qui a déjà été facturé`, 100)
       .text(`** Total réduction correspond à la réduction sur le montant de cette facture uniquement. La réduction totale au pro rata sur les précédentes factures est de ${totalReduction}€`)
       .end();
 
-    return new GenerateInvoiceResponseDto(this.doc, filename);
+    return doc.read().toString("base64");
   }
 
   private initInvoiceTable(invoice: Invoice, invoiceTable: any) {
