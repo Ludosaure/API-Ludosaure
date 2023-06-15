@@ -19,6 +19,7 @@ import { GetInvoicesByUserIdQuery } from "./application/query/get-invoices-by-us
 import { GenerateInvoiceCommand } from "./application/command/generate-invoice.command";
 import { Response } from "express";
 import { OwnInvoiceGuard } from "../../shared/guards/own-invoice.guard";
+import { Base64Encode } from "base64-stream";
 
 @ApiTags("Invoice")
 @Controller("invoice")
@@ -48,14 +49,17 @@ export class InvoiceController {
     return await this.queryBus.execute<GetInvoicesByUserIdQuery, GetInvoicesByUserIdResponseDto>(GetInvoicesByUserIdQuery.of(getInvoicesByUserIdRequest));
   }
 
+  // Retourne le pdf en base 64
   @Post("/generate/:invoiceId")
   @UseGuards(OwnInvoiceGuard)
   async generateInvoiceById(@Param() generateInvoiceByIdRequest: GenerateInvoiceRequestDto, @Res() response: Response) {
     const generateInvoiceResponseDto = await this.commandBus.execute<GenerateInvoiceCommand>(GenerateInvoiceCommand.of(generateInvoiceByIdRequest));
-    const { doc, filename } = generateInvoiceResponseDto;
+    const { base64String, filename } = generateInvoiceResponseDto;
+
     response.setHeader("Content-Type", "application/pdf");
     response.setHeader("Content-Disposition", `attachment; filename=${filename}`);
+    response.send(Buffer.from(base64String, 'base64'));
 
-    doc.pipe(response);
+    return;
   }
 }

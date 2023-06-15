@@ -84,10 +84,22 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
     // footer
     this.doc.fontSize(8)
       .text(`* La réduction est appliquée sur le prix total de la réservation. Le prix est soustrait au pro rata de ce qui a déjà été facturé`, 100)
-      .text(`** Total réduction correspond à la réduction sur le montant de cette facture uniquement. La réduction totale au pro rata sur les précédentes factures est de ${totalReduction}€`)
-      .end();
+      .text(`** Total réduction correspond à la réduction sur le montant de cette facture uniquement. La réduction totale au pro rata sur les précédentes factures est de ${totalReduction}€`);
 
-    return new GenerateInvoiceResponseDto(this.doc, filename);
+    const chunks = [];
+    this.doc.on('data', function(chunk) {
+      chunks.push(chunk);
+    });
+
+    let base64String = "";
+    this.doc.on('end', function () {
+      const buffer = Buffer.concat(chunks);
+      base64String = buffer.toString('base64');
+    });
+
+    this.doc.end();
+
+    return new GenerateInvoiceResponseDto(base64String, filename);
   }
 
   private initInvoiceTable(invoice: Invoice, invoiceTable: any) {

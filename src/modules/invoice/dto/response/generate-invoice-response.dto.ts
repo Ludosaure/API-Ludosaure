@@ -1,8 +1,8 @@
 export class GenerateInvoiceResponseDto {
-    doc: any;
+    base64String: string;
     filename: string;
-    constructor(doc: any, filename: string) {
-        this.doc = doc;
+    constructor(base64String: string, filename: string) {
+        this.base64String = base64String;
         this.filename = filename;
     }
 }
