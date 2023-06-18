@@ -14,7 +14,6 @@ import {FaqModule} from "./modules/faq/faq.module";
 import {FavoriteModule} from "./modules/favorite/favorite.module";
 import {InvoiceModule} from "./modules/invoice/invoice.module";
 import {MediaModule} from "./modules/media/media.module";
-import {MessageModule} from "./modules/message/message.module";
 import {NewsModule} from "./modules/news/news.module";
 import {NotificationModule} from "./modules/notification/notification.module";
 import {ReservationModule} from "./modules/reservation/reservation.module";
@@ -63,7 +62,6 @@ import { StripeModule } from './modules/stripe/stripe.module';
         InvoiceModule,
         InvoiceGameModule,
         MediaModule,
-        MessageModule,
         NewsModule,
         NotificationModule,
         ReservationModule,
