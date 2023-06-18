@@ -18,7 +18,7 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
                 startDate: "DESC",
                 endDate: "DESC"
             },
-            relations: ["user", "games", "appliedPlan", "games.category"],
+            relations: ["user", "games", "appliedPlan", "games.category", "user.profilePicture"],
         });
     }
 
