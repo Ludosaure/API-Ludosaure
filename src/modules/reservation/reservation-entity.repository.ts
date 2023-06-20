@@ -18,7 +18,7 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
                 startDate: "DESC",
                 endDate: "DESC"
             },
-            relations: ["user", "games", "appliedPlan", "games.category"],
+            relations: ["user", "games", "appliedPlan", "games.category", "user.profilePicture"],
         });
     }
 
@@ -32,10 +32,13 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
     }
 
     findByUserId(userId: string): Promise<Reservation[]> {
-        return this.findBy({
-            user: {
-                id: userId
+        return this.find({
+            where: {
+                user: {
+                    id: userId
+                },
             },
+            relations: ["user", "games", "appliedPlan", "user.profilePicture", "games.picture", "games.category", "invoices"]
         });
     }
 
