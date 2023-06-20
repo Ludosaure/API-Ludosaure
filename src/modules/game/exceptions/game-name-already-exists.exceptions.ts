@@ -1,7 +1,7 @@
-import {HttpException, HttpStatus} from "@nestjs/common";
+import { HttpException, HttpStatus } from "@nestjs/common";
 
 export class GameNameAlreadyExistsExceptions extends HttpException {
     constructor(name: string) {
-        super(`Game with name ${name} already exists`, HttpStatus.BAD_REQUEST);
+        super(`Game with name ${name} already exists`, HttpStatus.CONFLICT);
     }
 }
