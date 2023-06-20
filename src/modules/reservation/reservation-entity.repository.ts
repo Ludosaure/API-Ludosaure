@@ -38,9 +38,7 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
                     id: userId
                 },
             },
-            relations: {
-                appliedPlan: true,
-            }
+            relations: ["user", "games", "appliedPlan", "user.profilePicture", "games.picture", "games.category", "invoices"]
         });
     }
 
