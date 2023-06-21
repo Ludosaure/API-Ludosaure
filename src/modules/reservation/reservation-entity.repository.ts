@@ -18,8 +18,8 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
                 isPaid: true,
             },
             order: {
-                startDate: "DESC",
-                endDate: "DESC"
+                endDate: "ASC",
+                startDate: "ASC",
             },
             relations: ["user", "games", "appliedPlan", "games.category", "user.profilePicture"],
         });
@@ -41,9 +41,6 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
                 user: {
                     id: userId
                 },
-            },
-            order: {
-                endDate: "ASC",
             },
             relations: ["user", "games", "appliedPlan", "user.profilePicture", "games.picture", "games.category", "invoices"]
         });
