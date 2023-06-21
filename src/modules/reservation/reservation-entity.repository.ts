@@ -14,6 +14,9 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
 
     findAll(): Promise<Reservation[]> {
         return this.find({
+            where: {
+                isPaid: true,
+            },
             order: {
                 startDate: "DESC",
                 endDate: "DESC"
@@ -34,9 +37,13 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
     findByUserId(userId: string): Promise<Reservation[]> {
         return this.find({
             where: {
+                isPaid: true,
                 user: {
                     id: userId
                 },
+            },
+            order: {
+                endDate: "ASC",
             },
             relations: ["user", "games", "appliedPlan", "user.profilePicture", "games.picture", "games.category", "invoices"]
         });
