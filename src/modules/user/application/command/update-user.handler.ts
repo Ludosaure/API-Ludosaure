@@ -6,6 +6,7 @@ import { hash } from "argon2";
 import { UserEntityRepository } from "../../user-entity.repository";
 import { MediaNotFoundException } from "../../../../shared/exceptions/media-not-found.exception";
 import { MediaEntityRepository } from "../../../media/media-entity.repository";
+import { User } from "../../../../domain/model/user.entity";
 
 @CommandHandler(UpdateUserCommand)
 export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
@@ -16,7 +17,7 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
   ) {
   }
 
-  async execute(command: UpdateUserCommand): Promise<void> {
+  async execute(command: UpdateUserCommand): Promise<User> {
     const foundUser = await this.userRepository.findById(command.userId);
     if (foundUser == null) {
       throw new UserNotFoundException();
