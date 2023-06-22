@@ -24,10 +24,8 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
 
     if (command.password != null && command.confirmPassword != null) {
       this.passwordValidator.validate(command.password, command.confirmPassword);
-    }
-
-    if (command.password != null)
       foundUser.password = await hash(command.password);
+    }
     if (command.phoneNumber != null)
       foundUser.phone = command.phoneNumber;
     if (command.pseudo != null)
