@@ -44,7 +44,7 @@ export class UserController {
   @UseGuards(JwtAuthGuard, OwnGuard)
   @Put()
   async update(@Body() updateUserRequest: UpdateUserRequestDto) {
-    await this.commandBus.execute<UpdateUserCommand>(UpdateUserCommand.of(updateUserRequest));
+    return await this.commandBus.execute<UpdateUserCommand>(UpdateUserCommand.of(updateUserRequest));
   }
 
   @Get("/unsubscribe")

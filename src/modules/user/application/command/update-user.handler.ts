@@ -42,5 +42,7 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
       foundUser.profilePicture = profilePicture;
     }
     await this.userRepository.saveOrUpdate(foundUser);
+
+    return foundUser;
   }
 }
