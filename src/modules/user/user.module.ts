@@ -14,6 +14,7 @@ import EmailService from "../email/email.service";
 import { UserEntityRepository } from "./user-entity.repository";
 import { Media } from "../../domain/model/media.entity";
 import { MediaEntityRepository } from "../media/media-entity.repository";
+import { GetUserByIdHandler } from "./application/query/get-user-by-id.handler";
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { MediaEntityRepository } from "../media/media-entity.repository";
     CloseAccountHandler,
     UpdateUserHandler,
     UnsubscribeHandler,
+    GetUserByIdHandler,
   ]
 })
 export class UserModule {

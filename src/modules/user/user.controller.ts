@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, Query, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Post, Put, Query, Req, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { GetAllUsersResponseDto } from "./dto/response/get-all-users-response.dto";
@@ -15,6 +15,7 @@ import { UnsubscribeRequestDto } from "./dto/request/unsubscribe-request.dto";
 import { UnsubscribeCommand } from "./application/command/unsubscribe.command";
 import { OwnGuard } from "../../shared/guards/own.guard";
 import { User } from "../../domain/model/user.entity";
+import { GetUserByIdQuery } from "./application/query/get-user-by-id.query";
 
 @ApiTags("User")
 @Controller("user")
@@ -38,6 +39,14 @@ export class UserController {
   @Get()
   async getAll(): Promise<GetAllUsersResponseDto> {
     return await this.queryBus.execute<GetAllUsersQuery, GetAllUsersResponseDto>(GetAllUsersQuery.of());
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get("/me")
+  async get(@Req() request): Promise<User> {
+    const user = request.user as User;
+    return await this.queryBus.execute<GetUserByIdQuery, User>(GetUserByIdQuery.of(user.id));
   }
 
   @ApiBearerAuth()
