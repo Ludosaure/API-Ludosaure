@@ -51,5 +51,5 @@ export class UserController {
   async unsubscribe(@Query() unsubscribeRequest: UnsubscribeRequestDto) {
     await this.commandBus.execute<UnsubscribeCommand>(UnsubscribeCommand.of(unsubscribeRequest));
   }
-  
+
 }
