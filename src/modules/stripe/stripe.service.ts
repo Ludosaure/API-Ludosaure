@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
-import { stripeConfig, StripeConfig } from "../../config/stripe.config";
+import { stripeConfig } from "../../config/stripe.config";
 
 @Injectable()
 export default class StripeService {

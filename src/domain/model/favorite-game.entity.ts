@@ -14,7 +14,14 @@ export class FavoriteGame {
     @JoinColumn({name: 'user_id'})
     user: User;
 
-    @ManyToOne(() => Game, (game) => game.id, {nullable: false})
+    @ManyToOne(
+        () => Game,
+        (game) => game.id,
+        {
+            nullable: false,
+            onDelete: 'CASCADE',
+        }
+    )
     @JoinColumn({name: 'game_id'})
     game: Game;
 

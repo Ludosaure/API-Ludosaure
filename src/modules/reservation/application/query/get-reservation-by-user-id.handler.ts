@@ -10,6 +10,7 @@ export class GetReservationByUserIdHandler implements IQueryHandler<GetReservati
 
     async execute(query: GetReservationByUserIdQuery): Promise<GetReservationByUserIdResponseDto> {
         const reservations = await this.reservationRepository.findByUserId(query.userId);
+
         return new GetReservationByUserIdResponseDto(reservations);
     }
 }

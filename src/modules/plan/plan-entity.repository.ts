@@ -38,7 +38,17 @@ export class PlanEntityRepository extends Repository<Plan> implements PlanReposi
     }
 
     findByNbWeeks(nbWeeks: number): Promise<Plan> {
-        return this.findOneBy({nbWeeks: nbWeeks})
+        return this.manager
+            .createQueryBuilder(Plan, 'plan')
+            .where(
+                'plan.nb_weeks <= :nbWeeks',
+                {
+                    nbWeeks: nbWeeks,
+                }
+            )
+            .orderBy('plan.nb_weeks', 'DESC')
+            .limit(1)
+            .getOne();
     }
 
     findByDuration(start: Date, end: Date): Promise<Plan> {

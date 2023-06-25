@@ -13,6 +13,7 @@ import {Game} from "../../../../domain/model/game.entity";
 import {InvalidDateException} from "../../exceptions/invalid-date.exception";
 import { UnavailabilityEntityRepository } from "../../../unavailability/unavailability-entity.repository";
 import { UnavailableGameException } from "../../exceptions/unavailable-game.exception";
+import {PlanNotFoundException} from "../../../plan/exceptions/plan-not-found.exception";
 
 @CommandHandler(CreateReservationCommand)
 export class CreateReservationHandler implements ICommandHandler<CreateReservationCommand> {
@@ -53,7 +54,13 @@ export class CreateReservationHandler implements ICommandHandler<CreateReservati
         reservation.nbWeeks = weeks;
         reservation.user = foundUser;
         reservation.games = games;
-        reservation.appliedPlan = await this.planRepository.findByNbWeeks(weeks);
+        const plan = await this.planRepository.findByNbWeeks(weeks);
+
+        if(plan == null) {
+            throw new PlanNotFoundException();
+        }
+
+        reservation.appliedPlan = plan;
 
         reservation.totalAmount = reservation.calculateTotalAmount();
 
