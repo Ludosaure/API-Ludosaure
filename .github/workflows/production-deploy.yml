@@ -43,7 +43,6 @@ env:
 
   CONTAINER_NAME: api-ludosasure
 
-
 permissions:
   contents: read
 
