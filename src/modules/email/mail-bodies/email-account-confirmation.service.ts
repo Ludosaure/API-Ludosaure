@@ -71,10 +71,9 @@ export class EmailAccountConfirmationService {
                     </head>
                     <body style="background-color: #e9ecef;">
                     
-                    <a href="//TODO rediriger vers site" target="_blank">
-                      <img src="${AppUtils.logoUrl}"
-                           alt="Logo" width="150"
-                           style=" width: 150px; max-width: 150px; min-width: 48px;margin: 25px auto;display: block">
+                    <img src="${AppUtils.logoUrl}"
+                       alt="Logo" width="150"
+                       style=" width: 150px; max-width: 150px; min-width: 48px;margin: 25px auto;display: block">
                     </a>
                     <div style="width: 100%;">
                       <div style="background-color:#ffffff; margin: auto; display: block; max-width: 600px; padding: 36px 24px 0;

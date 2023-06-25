@@ -6,6 +6,7 @@ import { hash } from "argon2";
 import { UserEntityRepository } from "../../user-entity.repository";
 import { MediaNotFoundException } from "../../../../shared/exceptions/media-not-found.exception";
 import { MediaEntityRepository } from "../../../media/media-entity.repository";
+import { User } from "../../../../domain/model/user.entity";
 
 @CommandHandler(UpdateUserCommand)
 export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
@@ -16,7 +17,7 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
   ) {
   }
 
-  async execute(command: UpdateUserCommand): Promise<void> {
+  async execute(command: UpdateUserCommand): Promise<User> {
     const foundUser = await this.userRepository.findById(command.userId);
     if (foundUser == null) {
       throw new UserNotFoundException();
@@ -24,10 +25,8 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
 
     if (command.password != null && command.confirmPassword != null) {
       this.passwordValidator.validate(command.password, command.confirmPassword);
-    }
-
-    if (command.password != null)
       foundUser.password = await hash(command.password);
+    }
     if (command.phoneNumber != null)
       foundUser.phone = command.phoneNumber;
     if (command.pseudo != null)
@@ -44,5 +43,7 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
       foundUser.profilePicture = profilePicture;
     }
     await this.userRepository.saveOrUpdate(foundUser);
+
+    return foundUser;
   }
 }

@@ -26,7 +26,14 @@ export class UserEntityRepository extends Repository<User> implements UserReposi
   }
 
   findById(userId: string): Promise<User> {
-    return this.findOneBy({ id: userId });
+    return this.findOne({
+      where: {
+        id: userId
+      },
+      relations: {
+        profilePicture: true
+      }
+    });
   }
 
   findByEmail(email: string): Promise<User> {

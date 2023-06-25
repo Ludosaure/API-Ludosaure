@@ -20,7 +20,6 @@ export class EmailReservationConfirmationService {
             from: emailConfig.emailUser,
             to: reservation.user.email,
             subject: `La Ludosaure - Confirmation de ${isUpdate ? 'modification de ' : ''}commande`,
-            // TODO file attachment with invoice (https://www.learmoreseekmore.com/2022/05/part-3-nestjs-email-with-file-attachemnt.html)
             html: `<!DOCTYPE html>
                     <html lang="">
                     <head>
@@ -68,10 +67,9 @@ export class EmailReservationConfirmationService {
                     </head>
                     <body style="background-color: #e9ecef;">
                     
-                    <a href="//TODO rediriger vers site" target="_blank">
-                      <img src="${AppUtils.logoUrl}"
-                           alt="Logo" width="150"
-                           style=" width: 150px; max-width: 150px; min-width: 48px;margin: 25px auto;display: block">
+                    <img src="${AppUtils.logoUrl}"
+                       alt="Logo" width="150"
+                       style=" width: 150px; max-width: 150px; min-width: 48px;margin: 25px auto;display: block">
                     </a>
                     <div style="width: 100%;">
                       <div style="background-color:#ffffff; margin: auto; display: block; max-width: 600px; padding: 36px 24px 0;
@@ -90,7 +88,7 @@ export class EmailReservationConfirmationService {
                           <b>Date de début :</b> ${reservation.startDate.toLocaleString()}.<br>
                           Vous pourrez venir récupérer vos jeux directement à notre boutique le jour du début de votre commande : <b>2 bis Bd Cahours, 35150 Janzé</b><br>
                           <b>Date de fin :</b> ${reservation.endDate.toLocaleString()}<br>
-                          <b>Jeux réservés :</b> ${reservation.games.map(game => game.name).join(', ')}<br> <!-- TODO add pictures of games -->
+                          <b>Jeux réservés :</b> ${reservation.games.map(game => game.name).join(', ')}<br>
                           ${reservation.appliedPlan != null ? `La durée de votre réservation vous a permis de bénéficier d\'une réduction de ${reservation.appliedPlan.reduction}%` : ''}<br>
                           <b>Prix total :</b> ${reservation.totalAmount}€<br><br>
                           <b>Vous pourrez retrouver votre facture dans votre espace personnel sur notre application ou notre site web.</b>
