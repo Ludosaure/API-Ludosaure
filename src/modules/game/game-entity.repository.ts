@@ -81,4 +81,8 @@ export class GameEntityRepository extends Repository<Game> implements GameReposi
   async saveOrUpdate(game: Game): Promise<void> {
     await this.save(game);
   }
+
+  async deleteGame(game: Game): Promise<void> {
+    await this.remove(game);
+  }
 }

@@ -19,11 +19,19 @@ import { Review } from "../../domain/model/review.entity";
 import { ReviewEntityRepository } from "../review/review-entity.repository";
 import { MediaEntityRepository } from "../media/media-entity.repository";
 import { Media } from "../../domain/model/media.entity";
+import { DeleteGameHandler } from './application/command/delete-game-handler';
 
 @Module({
   imports: [
     CqrsModule,
-    TypeOrmModule.forFeature([Game, Category, FavoriteGame, Reservation, Review, Media])
+    TypeOrmModule.forFeature([
+      Game,
+      Category,
+      FavoriteGame,
+      Reservation,
+      Review,
+      Media,
+    ]),
   ],
   controllers: [GameController],
   providers: [
@@ -37,7 +45,8 @@ import { Media } from "../../domain/model/media.entity";
     GetGameByIdHandler,
     GetGamesByNameHandler,
     CreateGameHandler,
-    UpdateGameHandler
+    UpdateGameHandler,
+    DeleteGameHandler,
   ]
 })
 export class GameModule {
