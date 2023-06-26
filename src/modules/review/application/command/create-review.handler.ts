@@ -34,8 +34,10 @@ export class CreateReviewHandler implements ICommandHandler<CreateReviewCommand>
     review.rating = command.rating;
     review.title = command.title;
     review.comment = command.comment;
+    review.createdAt = new Date();
     review.game = foundGame;
     review.user = command.user;
+
     await this.reviewRepository.saveOrUpdate(review);
   }
 }

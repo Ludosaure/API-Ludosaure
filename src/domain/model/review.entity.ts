@@ -15,11 +15,14 @@ export class Review {
     @Max(5)
     rating: number;
 
-    @Column({nullable: false})
+    @Column()
     title: string;
 
-    @Column({nullable: false})
+    @Column()
     comment: string;
+
+    @Column({ nullable: false })
+    createdAt: Date;
 
     @ManyToOne(() => Game, (game) => game.id, {nullable: false})
     @JoinColumn({name: 'game_id'})
