@@ -65,21 +65,22 @@ export class GameEntityRepository
   }
 
   userCanReviewGame(gameId: string, userId: string): Promise<boolean> {
-    return this.manager
-      .createQueryBuilder(Game, 'game')
-      .leftJoin('game.reviews', 'reviews')
+    const query = this.manager
+      .createQueryBuilder(Game, 'g')
+      .select('COUNT(r.id) as reviews_nb, COUNT(res.id) as res_nb')
+      .leftJoin('g.reservations', 'res', 'res.user_id = :userId', { userId })
       .leftJoin(
-        'game.reservations',
-        'reservations',
-        'reservations.isReturned = true AND reservations.isCancelled = false',
+        'g.reviews',
+        'r',
+        'r.game_id = :gameId AND r.user_id = :userId',
+        { gameId, userId },
       )
-      .where('game.id = :gameId', { gameId })
-      .andWhere(
-        'reviews.user_id = :userId OR NOT EXISTS (SELECT 1 FROM Review WHERE Review.user_id = :userId AND Review.game_id = game.id)',
-      )
-      .setParameter('userId', userId)
-      .getCount()
-      .then((count) => count > 0);
+      .where('g.id = :gameId', { gameId })
+      .andWhere('res.is_returned AND NOT res.is_cancelled AND res.is_paid');
+
+    return query.getRawOne().then((result) => {
+      return result.reviews_nb < 1 && result.res_nb > 0;
+    });
   }
 
   findByName(name: string): Promise<Game[]> {
