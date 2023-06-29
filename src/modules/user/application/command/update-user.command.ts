@@ -7,7 +7,6 @@ export class UpdateUserCommand {
     public readonly phoneNumber: string;
     public readonly pseudo: string;
     public readonly hasEnabledMailNotifications: boolean;
-    public readonly hasEnabledPhoneNotifications: boolean;
     public readonly profilePictureId: string;
 
 
@@ -18,7 +17,6 @@ export class UpdateUserCommand {
         phoneNumber: string,
         pseudo: string,
         hasEnabledMailNotifications: boolean,
-        hasEnabledPhoneNotifications: boolean,
         profilePictureId: string
     ) {
         this.userId = userId;
@@ -27,7 +25,6 @@ export class UpdateUserCommand {
         this.phoneNumber = phoneNumber;
         this.pseudo = pseudo;
         this.hasEnabledMailNotifications = hasEnabledMailNotifications;
-        this.hasEnabledPhoneNotifications = hasEnabledPhoneNotifications;
         this.profilePictureId = profilePictureId;
     }
 
@@ -39,7 +36,6 @@ export class UpdateUserCommand {
             phoneNumber,
             pseudo,
             hasEnabledMailNotifications,
-            hasEnabledPhoneNotifications,
             profilePictureId
         } = updateUserRequestDto;
         return new UpdateUserCommand(
@@ -48,7 +44,6 @@ export class UpdateUserCommand {
             confirmPassword,
             phoneNumber, pseudo,
             hasEnabledMailNotifications,
-            hasEnabledPhoneNotifications,
             profilePictureId);
     }
 }
