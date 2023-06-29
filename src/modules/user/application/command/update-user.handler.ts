@@ -33,8 +33,6 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
       foundUser.pseudo = command.pseudo;
     if (command.hasEnabledMailNotifications != null)
       foundUser.hasEnabledMailNotifications = command.hasEnabledMailNotifications;
-    if (command.hasEnabledPhoneNotifications != null)
-      foundUser.hasEnabledPhoneNotifications = command.hasEnabledPhoneNotifications;
     if (command.profilePictureId != null) {
       const profilePicture = await this.mediaRepository.findById(command.profilePictureId);
       if(profilePicture == null) {

@@ -40,9 +40,6 @@ export class User {
     @Column({nullable: false, default: true, name: 'has_enabled_mail_notifications'})
     hasEnabledMailNotifications: boolean;
 
-    @Column({nullable: false, default: true, name: 'has_enabled_phone_notifications'})
-    hasEnabledPhoneNotifications: boolean;
-
     @Column({nullable: false, default: false, name: 'must_change_password'})
     mustChangePassword: boolean;
 
