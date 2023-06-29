@@ -38,14 +38,7 @@ import { StripeModule } from './modules/stripe/stripe.module';
                 url: environmentConfig.dbUrl,
                 entities: ['dist/**/*.entity{.ts,.js}'],
                 autoLoadEntities: true,
-                synchronize: true,
-                /**
-                 * extra est ajouté spécifiquement pour ElephantSQL free qui n'accepte qu'une connexion à la fois,
-                 * potentiellement à supprimer quand on repassera sur AWS
-                 */
-                extra: {
-                    max: 1,
-                }
+                synchronize: false,
             }),
         }),
         ScheduleModule.forRoot(),
