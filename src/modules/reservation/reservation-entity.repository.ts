@@ -68,8 +68,8 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
 
     findByGameAndDate(game: Game, date: Date): Promise<Reservation[]> {
         return this.findBy({
-            startDate: MoreThan(date),
-            endDate: LessThan(date),
+            startDate: LessThan(date),
+            endDate: MoreThan(date),
             games: {
                 id: game.id
             }
