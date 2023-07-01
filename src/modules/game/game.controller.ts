@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
@@ -30,6 +31,7 @@ import { GetGameByIdRequestDto } from './dto/request/get-game-by-id-request.dto'
 import { GetGamesByNameRequestDto } from './dto/request/get-games-by-name-request.dto';
 import { DeleteGameRequestDto } from './dto/request/delete-game-request-dto';
 import { DeleteGameCommand } from './application/command/delete-game-command';
+import { User } from '../../domain/model/user.entity';
 
 @ApiTags('Game')
 @Controller('game')
@@ -63,7 +65,19 @@ export class GameController {
     return await this.queryBus.execute<
       GetGameByIdQuery,
       GetGameByIdResponseDto
-    >(GetGameByIdQuery.of(getGameByIdRequest));
+    >(GetGameByIdQuery.of(getGameByIdRequest, null));
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN, Role.CLIENT)
+  @Get('/id/:id/logged-user')
+  async getGameByIdForLoggedUser(@Param() getGameByIdRequest: GetGameByIdRequestDto, @Req() request) {
+    const user: User = request.user;
+
+    return await this.queryBus.execute<
+      GetGameByIdQuery,
+      GetGameByIdResponseDto
+    >(GetGameByIdQuery.of(getGameByIdRequest, user));
   }
 
   @Get('/name/:name')

@@ -13,15 +13,15 @@ export class UpdateReviewHandler implements ICommandHandler<UpdateReviewCommand>
     if (foundReview == null) {
       throw new ReviewNotFoundException();
     }
+
     if (command.rating != null) {
       foundReview.rating = command.rating;
     }
-    if (command.title != null) {
-      foundReview.title = command.title;
-    }
+
     if (command.comment != null) {
       foundReview.comment = command.comment;
     }
+
     await this.reviewRepository.saveOrUpdate(foundReview);
   }
 }
