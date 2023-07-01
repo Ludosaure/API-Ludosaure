@@ -1,14 +1,18 @@
-import {DeleteUnavailabilityRequestDto} from "../../dto/request/delete-unavailability-request.dto";
+import { DeleteUnavailabilityRequestDto } from "../../dto/request/delete-unavailability-request.dto";
 
 export class DeleteUnavailabilityCommand {
-  public readonly id: string;
-  constructor(id: string) {
-    this.id = id;
+  public readonly gameId: string;
+  public readonly date: Date;
+
+  private constructor(gameId: string, date: Date) {
+    this.gameId = gameId;
+    this.date = date;
   }
+
   public static of(
-    deleteUnavailabilityRequest: DeleteUnavailabilityRequestDto,
+    deleteUnavailabilityRequest: DeleteUnavailabilityRequestDto
   ): DeleteUnavailabilityCommand {
-    const { id } = deleteUnavailabilityRequest;
-    return new DeleteUnavailabilityCommand(id);
+    const { gameId, date } = deleteUnavailabilityRequest;
+    return new DeleteUnavailabilityCommand(gameId, date);
   }
 }
