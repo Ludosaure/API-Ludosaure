@@ -1,4 +1,4 @@
-import {Reservation} from "../../../../domain/model/reservation.entity";
+import { Reservation } from '../../../../domain/model/reservation.entity';
 
 export class GetReservationByIdResponseDto {
     readonly reservation: Reservation;

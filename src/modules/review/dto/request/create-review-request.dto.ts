@@ -9,11 +9,6 @@ export class CreateReviewRequestDto {
   @Max(5)
   rating: number;
 
-  @IsNotEmpty()
-  @ApiProperty({ default: "This is a title" })
-  title: string;
-
-  @IsNotEmpty()
   @ApiProperty({ default: "This is a comment" })
   comment: string;
 
