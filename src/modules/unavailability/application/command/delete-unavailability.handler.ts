@@ -16,7 +16,7 @@ export class DeleteUnavailabilityHandler implements ICommandHandler<DeleteUnavai
         if (foundGame == null) {
             throw new GameNotFoundException();
         }
-        const foundUnavailability = await this.unavailabilityRepository.findByGameIdAndDate(command.gameId, command.date);
+        const foundUnavailability = await this.unavailabilityRepository.findByGameIdAndDate(command.gameId, new Date(command.date));
         if (foundUnavailability == null) {
             throw new UnavailabilityNotFoundException();
         }
