@@ -11,10 +11,6 @@ export class UpdatePlanRequestDto {
     public readonly name: string;
 
     @IsOptional()
-    @ApiProperty({default: 2})
-    public readonly reduction: number;
-
-    @IsOptional()
-    @ApiProperty({default: 2})
-    public readonly nbWeeks: number;
+    @ApiProperty({default: false})
+    public readonly isActive: boolean;
 }

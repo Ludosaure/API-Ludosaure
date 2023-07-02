@@ -13,4 +13,7 @@ export class Plan {
 
     @Column({nullable: false, unique: true, name: 'nb_weeks', type: 'int'})
     nbWeeks: number;
+
+    @Column({nullable: false, name: 'is_active', type: 'boolean', default: true})
+    isActive: boolean;
 }

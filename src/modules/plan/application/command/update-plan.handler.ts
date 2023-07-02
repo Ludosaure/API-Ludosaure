@@ -25,19 +25,8 @@ export class UpdatePlanHandler implements ICommandHandler<UpdatePlanCommand> {
             }
             plan.name = command.name;
         }
-        if (command.reduction != null) {
-            foundPlan = await this.planRepository.findByReduction(command.reduction)
-            if (foundPlan != null) {
-                throw new ReductionAlreadyExistsException();
-            }
-            plan.reduction = command.reduction;
-        }
-        if (command.nbWeeks != null) {
-            foundPlan = await this.planRepository.findByNbWeeks(command.nbWeeks)
-            if (foundPlan != null) {
-                throw new NbWeeksAlreadyExistsException();
-            }
-            plan.nbWeeks = command.nbWeeks;
+        if(command.isActive != null) {
+            plan.isActive = command.isActive;
         }
         await this.planRepository.saveOrUpdate(plan);
     }
