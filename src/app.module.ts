@@ -15,7 +15,6 @@ import {FavoriteModule} from "./modules/favorite/favorite.module";
 import {InvoiceModule} from "./modules/invoice/invoice.module";
 import {MediaModule} from "./modules/media/media.module";
 import {NewsModule} from "./modules/news/news.module";
-import {NotificationModule} from "./modules/notification/notification.module";
 import {ReservationModule} from "./modules/reservation/reservation.module";
 import {ReviewModule} from "./modules/review/review.module";
 import {PlanModule} from "./modules/plan/plan.module";
@@ -56,7 +55,6 @@ import { StripeModule } from './modules/stripe/stripe.module';
         InvoiceGameModule,
         MediaModule,
         NewsModule,
-        NotificationModule,
         ReservationModule,
         ReviewModule,
         CgvModule,
