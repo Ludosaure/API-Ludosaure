@@ -29,9 +29,9 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
     });
 
     const totalHT = AppUtils.roundToTwoDecimals(totalHTByGame.reduce((globalTotalHT, gameTotalHT) => globalTotalHT + gameTotalHT, 0));
-    const totalTva = invoice.invoiceGames.map(invoiceGame => {
+    const totalTva = AppUtils.roundToTwoDecimals(invoice.invoiceGames.map(invoiceGame => {
       return invoiceGame.weeklyAmount * invoice.invoiceNbWeeks * AppUtils.tva;
-    }).reduce((globalTotalTva, gameTotalTva) => globalTotalTva + gameTotalTva, 0);
+    }).reduce((globalTotalTva, gameTotalTva) => globalTotalTva + gameTotalTva, 0));
     const totalReduction = AppUtils.roundToTwoDecimals((totalHT + totalTva) * (invoice.reduction / 100));
 
     const totalTable = this.initTotalTable(totalHT, totalTva, totalReduction, invoice.amount);
