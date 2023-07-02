@@ -14,7 +14,12 @@ export class PlanEntityRepository extends Repository<Plan> implements PlanReposi
     }
 
     async findAll(): Promise<Plan[]> {
-        return await this.find();
+        return await this.find({
+            order: {
+              nbWeeks: 'ASC',
+              reduction: 'ASC',
+            }
+        });
     }
 
     findById(id: string): Promise<Plan> {
