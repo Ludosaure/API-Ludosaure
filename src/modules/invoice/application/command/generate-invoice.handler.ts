@@ -32,7 +32,12 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
     const totalTva = AppUtils.roundToTwoDecimals(invoice.invoiceGames.map(invoiceGame => {
       return invoiceGame.weeklyAmount * invoice.invoiceNbWeeks * AppUtils.tva;
     }).reduce((globalTotalTva, gameTotalTva) => globalTotalTva + gameTotalTva, 0));
-    const totalReduction = AppUtils.roundToTwoDecimals((totalHT + totalTva) * (invoice.reduction / 100));
+
+    let reduction = 1;
+    if(invoice.reduction != null && invoice.reduction > 0) {
+        reduction = 1 - (invoice.reduction / 100);
+    }
+    const totalReduction = AppUtils.roundToTwoDecimals((totalHT + totalTva) * reduction);
 
     const totalTable = this.initTotalTable(totalHT, totalTva, totalReduction, invoice.amount);
 
@@ -51,6 +56,11 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
       .text(invoice.email, { align: "right" })
       .text(invoice.phone, { align: "right" });
 
+    let reductionText = "";
+    if(invoice.reduction != null && invoice.reduction > 0) {
+      reductionText = `Réduction appliquée: ${invoice.reduction}%*`;
+    }
+
     // body
     doc.fontSize(10)
       .text(`Réservation #${invoice.reservationNumber}`, 100)
@@ -59,7 +69,7 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
       .text(`Début de réservation: ${invoice.reservationStartDate.toLocaleDateString()}`)
       .text(`Fin de réservation: ${invoice.reservationEndDate.toLocaleDateString()}`)
       .moveDown()
-      .text(`Réduction appliquée: ${invoice.reduction}%*`)
+      .text(reductionText)
       .moveDown()
       .text(`Nombre de semaines totales facturées: ${invoice.reservationNbWeeks}`);
     if (alreadyPaidAmount > 0 && alreadyPaidWeeks > 0) {
