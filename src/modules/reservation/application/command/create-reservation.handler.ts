@@ -56,10 +56,6 @@ export class CreateReservationHandler implements ICommandHandler<CreateReservati
         reservation.games = games;
         const plan = await this.planRepository.findByNbWeeks(weeks);
 
-        if(plan == null) {
-            throw new PlanNotFoundException();
-        }
-
         reservation.appliedPlan = plan;
 
         reservation.totalAmount = reservation.calculateTotalAmount();
