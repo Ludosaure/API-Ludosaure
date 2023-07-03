@@ -33,7 +33,7 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
       return invoiceGame.weeklyAmount * invoice.invoiceNbWeeks * AppUtils.tva;
     }).reduce((globalTotalTva, gameTotalTva) => globalTotalTva + gameTotalTva, 0));
 
-    let reduction = 1;
+    let reduction = 0;
     if(invoice.reduction != null && invoice.reduction > 0) {
         reduction = invoice.reduction / 100;
     }
