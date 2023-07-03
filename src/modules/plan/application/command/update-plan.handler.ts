@@ -18,7 +18,7 @@ export class UpdatePlanHandler implements ICommandHandler<UpdatePlanCommand> {
         }
 
         let foundPlan;
-        if (command.name != null) {
+        if (command.name != null && command.name.trim() != '') {
             foundPlan = await this.planRepository.findByName(command.name);
             if (foundPlan != null && command.name.toUpperCase() !== plan.name.toUpperCase()) {
                 throw new NameAlreadyUsedException();
