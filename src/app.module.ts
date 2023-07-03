@@ -37,7 +37,7 @@ import { StripeModule } from './modules/stripe/stripe.module';
                 url: environmentConfig.dbUrl,
                 entities: ['dist/**/*.entity{.ts,.js}'],
                 autoLoadEntities: true,
-                synchronize: true,
+                synchronize: false,
             }),
         }),
         ScheduleModule.forRoot(),

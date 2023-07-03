@@ -32,7 +32,7 @@ export class PlanEntityRepository extends Repository<Plan> implements PlanReposi
             .where(
                 'UPPER(plan.name) LIKE UPPER(:name)',
                 {
-                    name: `%${name}%`,
+                    name: name,
                 },
             )
             .getOne();
@@ -43,6 +43,10 @@ export class PlanEntityRepository extends Repository<Plan> implements PlanReposi
     }
 
     findByNbWeeks(nbWeeks: number): Promise<Plan> {
+        return this.findOneBy({nbWeeks: nbWeeks});
+    }
+
+    findAppliedPlanByNbWeeks(nbWeeks: number): Promise<Plan> {
         return this.manager
             .createQueryBuilder(Plan, 'plan')
             .where(
