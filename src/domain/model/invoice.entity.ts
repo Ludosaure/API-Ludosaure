@@ -45,7 +45,7 @@ export class Invoice {
     @Column({nullable: false, name: 'reservation_end_date'})
     reservationEndDate: Date;
 
-    @Column({nullable: false, type: 'int'})
+    @Column({nullable: true, type: 'int'})
     reduction: number;
 
     @Column({nullable: false, name: 'reservation_nb_weeks', default: 0})
