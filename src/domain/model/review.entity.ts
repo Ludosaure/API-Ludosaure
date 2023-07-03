@@ -21,7 +21,7 @@ export class Review {
     @Column({ nullable: false })
     createdAt: Date;
 
-    @ManyToOne(() => Game, (game) => game.id, {nullable: false})
+    @ManyToOne(() => Game, (game) => game.id, {nullable: false, onDelete: 'CASCADE'})
     @JoinColumn({name: 'game_id'})
     game: Game;
 

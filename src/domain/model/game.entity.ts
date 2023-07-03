@@ -72,7 +72,13 @@ export class Game {
   )
   reservations: Reservation[];
 
-  @OneToMany(() => Review, (review) => review.game)
+  @OneToMany(
+      () => Review,
+      (review) => review.game,
+      {
+        onDelete: "CASCADE"
+      }
+  )
   reviews: Review[];
 
   averageRating: number;
