@@ -35,7 +35,7 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
 
     let reduction = 1;
     if(invoice.reduction != null && invoice.reduction > 0) {
-        reduction = 1 - (invoice.reduction / 100);
+        reduction = invoice.reduction / 100;
     }
     const totalReduction = AppUtils.roundToTwoDecimals((totalHT + totalTva) * reduction);
 

@@ -54,7 +54,7 @@ export class CreateReservationHandler implements ICommandHandler<CreateReservati
         reservation.nbWeeks = weeks;
         reservation.user = foundUser;
         reservation.games = games;
-        const plan = await this.planRepository.findAppliedPlanByNbWeeks(weeks);
+        const plan = await this.planRepository.findAppliedPlanByNbWeeks(weeks, true);
 
         reservation.appliedPlan = plan;
 
