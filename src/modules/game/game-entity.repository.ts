@@ -32,6 +32,9 @@ export class GameEntityRepository
         picture: true,
         reservations: true,
       },
+      order: {
+        name: 'ASC',
+      }
     });
   }
 
