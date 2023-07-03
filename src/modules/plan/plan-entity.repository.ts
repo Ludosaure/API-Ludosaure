@@ -46,7 +46,7 @@ export class PlanEntityRepository extends Repository<Plan> implements PlanReposi
         return this.findOneBy({nbWeeks: nbWeeks});
     }
 
-    findAppliedPlanByNbWeeks(nbWeeks: number): Promise<Plan> {
+    findAppliedPlanByNbWeeks(nbWeeks: number, active: boolean): Promise<Plan> {
         return this.manager
             .createQueryBuilder(Plan, 'plan')
             .where(
@@ -55,6 +55,7 @@ export class PlanEntityRepository extends Repository<Plan> implements PlanReposi
                     nbWeeks: nbWeeks,
                 }
             )
+            .andWhere('plan.isActive = :active', {active: active})
             .orderBy('plan.nb_weeks', 'DESC')
             .limit(1)
             .getOne();

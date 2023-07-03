@@ -28,7 +28,7 @@ export default class InvoiceService {
     invoice.reservationNumber = reservation.reservationNumber;
     invoice.reservationStartDate = reservation.startDate;
     invoice.reservationEndDate = reservation.endDate;
-    invoice.reduction = reservation.appliedPlan.reduction;
+    invoice.reduction = reservation.appliedPlan != null ? reservation.appliedPlan.reduction : null;
     invoice.reservationTotalAmount = reservation.totalAmount;
     await this.invoiceRepository.saveInvoice(invoice);
 
