@@ -80,7 +80,7 @@ export class EmailReservationReturnedService {
                         <p class="text">
                             Bonjour ${reservation.user.firstname} ${reservation.user.lastname},<br><br>
                             Les jeux de la réservation #${reservation.reservationNumber} du ${reservation.startDate.toLocaleString()} au ${reservation.endDate.toLocaleString()} ont bien été retournés.<br>
-                            Merci encore pour votre confiance et nous espérant vous revoir bientôt.<br><br>
+                            Merci encore pour votre confiance et nous espérons vous revoir bientôt.<br><br>
                             Si vous avez des questions, n'hésitez pas à nous contacter par mail à l'adresse suivante : <b>laludosaure@gmail.com</b>
                         <div style="padding: 24px"></div>
                       </div>
