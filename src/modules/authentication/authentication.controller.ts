@@ -45,6 +45,7 @@ export class AuthenticationController {
         await this.commandBus.execute<ConfirmAccountCommand>(
             ConfirmAccountCommand.of(confirmAccountRequest),
         );
+        return 'Votre compte a été vérifié avec succès.'
     }
 
     @HttpCode(HttpStatus.OK)
