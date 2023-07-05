@@ -86,6 +86,9 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
           .leftJoinAndSelect('reservation.user', 'user')
           .leftJoinAndSelect('reservation.games', 'games')
           .where('reservation.endDate >= :startLastDay', { startLastDay: today })
+          .andWhere('reservation.isReturned = false')
+          .andWhere('reservation.isCancelled = false')
+          .andWhere('reservation.isPaid = true')
           .andWhere('reservation.endDate < :endLastDay', {
               endLastDay: new Date(today.getTime() + 24 * 60 * 60 * 1000), // Ajouter 24 heures pour obtenir la fin de la journée actuelle
           })
@@ -94,16 +97,16 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
 
     async findLateReservations(): Promise<Reservation[]> {
         const today = new Date();
-
-        // Définir la date de début du jour suivant (00:00:00)
-        const nextDay = new Date(today.getTime() + 24 * 60 * 60 * 1000);
-        nextDay.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
 
         return await this.reservationRepository
           .createQueryBuilder('reservation')
           .leftJoinAndSelect('reservation.user', 'user')
           .leftJoinAndSelect('reservation.games', 'games')
-          .where('reservation.endDate >= :lateDate', { lateDate: nextDay })
+          .where('reservation.endDate < :today', { today: today })
+          .andWhere('reservation.isReturned = false')
+          .andWhere('reservation.isCancelled = false')
+          .andWhere('reservation.isPaid = true')
           .getMany();
     }
 
