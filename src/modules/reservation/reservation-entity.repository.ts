@@ -96,6 +96,7 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
     }
 
     async findLateReservations(): Promise<Reservation[]> {
+        // TODO il faut que la date de fin soit inférieure à la date actuelle
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 

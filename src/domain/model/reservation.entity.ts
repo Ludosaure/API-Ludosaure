@@ -1,5 +1,6 @@
 import {
     Column,
+    CreateDateColumn,
     Entity,
     Generated,
     JoinColumn,
@@ -37,10 +38,10 @@ export class Reservation {
     @Column({nullable: false, name: 'created_at'})
     createdAt: Date;
 
-    @Column({nullable: false, name: 'start_date'})
+    @CreateDateColumn({ type: 'date', nullable: false, name: 'start_date' })
     startDate: Date;
 
-    @Column({nullable: false, name: 'end_date'})
+    @CreateDateColumn({ type: 'date', nullable: false, name: 'end_date' })
     endDate: Date;
 
     @Column({nullable: false, name: 'nb_weeks', default: 0})

@@ -1,5 +1,5 @@
 import { IsEmail, IsPhoneNumber, Min } from "class-validator";
-import { Column, Entity, Generated, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Generated, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Reservation } from "./reservation.entity";
 import { InvoiceGame } from "./invoice-game.entity";
 
@@ -39,10 +39,10 @@ export class Invoice {
     @Column({nullable: false, name: 'reservation_number'})
     reservationNumber: number;
 
-    @Column({nullable: false, name: 'reservation_start_date'})
+    @CreateDateColumn({ type: 'date', nullable: false, name: 'reservation_start_date' })
     reservationStartDate: Date;
 
-    @Column({nullable: false, name: 'reservation_end_date'})
+    @CreateDateColumn({ type: 'date', nullable: false, name: 'reservation_end_date' })
     reservationEndDate: Date;
 
     @Column({nullable: true, type: 'int'})

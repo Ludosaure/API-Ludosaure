@@ -14,7 +14,7 @@ export default class EmailSchedulingService {
               private emailLateReservationService: EmailLateReservationService) {
   }
 
-  @Cron("0 12 * * *") // Every day at 8 AM
+  @Cron("0 15 * * *") // Every day at 8 AM
   async sendLastDayReservationMails() {
     const lastDayReservations = await this.reservationRepository.findLastDayReservations();
     const numberOfMailsToSend = lastDayReservations.filter(reservation => reservation.user.hasEnabledMailNotifications).length;
@@ -25,7 +25,7 @@ export default class EmailSchedulingService {
     }
   }
 
-  @Cron("0 12 * * *") // Every day at 8 AM
+  @Cron("0 15 * * *") // Every day at 8 AM
   async sendLateMails() {
     const lateReservations = await this.reservationRepository.findLateReservations();
     logger.log("Sending late reservation mails for " + lateReservations.length + " reservations");
