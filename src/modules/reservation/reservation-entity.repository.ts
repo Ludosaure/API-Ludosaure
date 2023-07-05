@@ -96,16 +96,11 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
     }
 
     async findLateReservations(): Promise<Reservation[]> {
-        // TODO il faut que la date de fin soit inférieure à la date actuelle
-        const today = new Date();
-        const nextDay = new Date(today.getTime() + 24 * 60 * 60 * 1000);
-        nextDay.setHours(0, 0, 0, 0);
-
         return await this.reservationRepository
           .createQueryBuilder('reservation')
           .leftJoinAndSelect('reservation.user', 'user')
           .leftJoinAndSelect('reservation.games', 'games')
-          .where('reservation.endDate < :lateDay', { lateDay: nextDay })
+          .where('reservation.endDate < :lateDay', { lateDay: new Date() })
           .andWhere('reservation.isReturned = false')
           .andWhere('reservation.isCancelled = false')
           .andWhere('reservation.isPaid = true')
