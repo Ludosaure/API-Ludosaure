@@ -100,7 +100,7 @@ export class ReservationEntityRepository extends Repository<Reservation> impleme
           .createQueryBuilder('reservation')
           .leftJoinAndSelect('reservation.user', 'user')
           .leftJoinAndSelect('reservation.games', 'games')
-          .where('reservation.endDate < :lateDay', { lateDay: new Date() })
+          .where('reservation.endDate < :lateDay', { lateDay: new Date(new Date().setHours(0, 0, 0, 0)) })
           .andWhere('reservation.isReturned = false')
           .andWhere('reservation.isCancelled = false')
           .andWhere('reservation.isPaid = true')
