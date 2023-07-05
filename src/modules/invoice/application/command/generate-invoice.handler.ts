@@ -61,13 +61,15 @@ export class GenerateInvoiceHandler implements ICommandHandler<GenerateInvoiceCo
       reductionText = `Réduction appliquée: ${invoice.reduction}%*`;
     }
 
+    const reservationStartDate = new Date(invoice.reservationStartDate);
+    const reservationEndDate = new Date(invoice.reservationEndDate);
     // body
     doc.fontSize(10)
       .text(`Réservation #${invoice.reservationNumber}`, 100)
       .text(`Facture créée le: ${invoice.createdAt.toLocaleDateString()}`)
       .moveDown()
-      .text(`Début de réservation: ${invoice.reservationStartDate.toLocaleDateString()}`)
-      .text(`Fin de réservation: ${invoice.reservationEndDate.toLocaleDateString()}`)
+      .text(`Début de réservation: ${reservationStartDate.toLocaleDateString()}`)
+      .text(`Fin de réservation: ${reservationEndDate.toLocaleDateString()}`)
       .moveDown()
       .text(reductionText)
       .moveDown()
