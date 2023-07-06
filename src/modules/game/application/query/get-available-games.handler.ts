@@ -19,10 +19,11 @@ export class GetAvailableGamesHandler implements ICommandHandler<GetAvailableGam
       isAvailable = true;
       if (game.reservations != null) {
         for (const reservation of game.reservations) {
-          if (new Date(reservation.endDate) > new Date(new Date().setHours(0, 0, 0, 0)) &&
+          if (
             reservation.isPaid &&
             !reservation.isCancelled &&
-            !reservation.isReturned) {
+            !reservation.isReturned
+          ) {
             isAvailable = false;
             break;
           }

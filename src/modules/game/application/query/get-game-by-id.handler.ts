@@ -22,7 +22,6 @@ export class GetGameByIdHandler implements ICommandHandler<GetGameByIdQuery> {
 
     for (const reservation of game.reservations) {
       if (
-        new Date(reservation.endDate) > new Date(new Date().setHours(0, 0, 0, 0)) &&
         reservation.isPaid &&
         !reservation.isCancelled &&
         !reservation.isReturned
