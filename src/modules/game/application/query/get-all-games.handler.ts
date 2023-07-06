@@ -19,7 +19,7 @@ export class GetAllGamesHandler implements ICommandHandler<GetAllGamesQuery> {
       if (game.reservations != null) {
         for (const reservation of game.reservations) {
           if (
-            reservation.endDate > new Date() &&
+            new Date(reservation.endDate) > new Date(new Date().setHours(0, 0, 0, 0)) &&
             reservation.isPaid &&
             !reservation.isCancelled &&
             !reservation.isReturned
