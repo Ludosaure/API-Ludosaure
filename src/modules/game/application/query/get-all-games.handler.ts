@@ -30,6 +30,7 @@ export class GetAllGamesHandler implements ICommandHandler<GetAllGamesQuery> {
         }
       }
     }
+    
 
     for (const game of games) {
       game.averageRating =
